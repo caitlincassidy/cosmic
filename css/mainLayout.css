@@ -1,0 +1,62 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+p {
+	font-family: 'Roboto', sans-serif;
+	font-size: 18px;
+}
+
+a {
+	font-family: 'Roboto', sans-serif;
+	font-size: 18px;
+}
+
+.welcome-container {
+	text-align: center;
+	position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 98%;
+}
+
+.welcome-title {
+	background-color: rgba(168,99,99,0.5);
+}
+
+.welcome-title h1 {
+	font-size: 80px;
+	font-weight: bold;
+	color: white;
+	font-family: 'Cairo', sans-serif;
+}
+
+.welcome-title h2 {
+	font-size: 30px;
+	color: white;
+	font-family: 'Gentium Basic', serif;
+}
+
+.welcome-container .btn {
+	font-family: 'Cairo', sans-serif;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.main-header {
+	background-color: #2e3396;
+	margin-bottom: 5%;
+}
+
+.main-header a {
+	color: white;
+}
+
+.main-header h1 {
+	font-family: 'Cairo', sans-serif;
+	font-weight: bold;
+	font-size: 50px;
+	color: white;
+}
