@@ -61,10 +61,107 @@
   				<a href="notes.html">Notes</a>
   			</div>
   		</div>
+
+		
   		<div class="col-lg-8">
-  			<div>Notes!</div>
+			<div class="page-header">
+				<h1>
+					<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Notes <small>(because you have poor memory...)</small>
+				</h1>
+			</div>
+			<div class="form-group">
+				<h2 id="gen">General</h2>
+				<textarea rows="5" cols="150">
+					</textarea>
+				
+<!--			I want to use the Bootstrap-styled input box, but I couldn't find a resizeable, larger text box. So using <textarea> for now.	
+				<input type="text" placeholder="Type your notes here before you forget them!" class="form-control input-lg" id="usr">-->
+			</div>
+			<div>
+				<h2 id="lecs">
+					Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new Lecture Note</button>
+				</h2>
+				<br>
+				<div class="list-group">
+					<a href="#" class="list-group-item listed-item">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lecture 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<br><a href="#"> See more... </a>
+				</div>
+			</div>
+			<br>
+			<div>
+				<h2 id="quizzes">
+					Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new Quiz Note</button>
+				</h2>
+				<br>
+				<div class="list-group">
+					<a href="#" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Quiz 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<br><a href="#"> See more... </a>
+				</div>
+			</div>
+			
+			<div>
+				<h2 id="labs">
+					Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new Lab Note</button>
+				</h2>
+				<br>
+				<div class="list-group">
+					<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 4 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 5 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 4 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 5 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 4 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 5 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 4 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<a href="#" class="list-group-item listed-item">Lab 5 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<br><a href="#"> See more... </a>
+				</div>
+			</div>
+  			
+			
+		<script>
+			// From http://www.bootply.com/100983
+			$(document).ready(function() {
+				/* smooth scrolling sections */
+				$('a[href*=\\#]:not([href=\\#])').click(function() {
+					if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+					  var target = $(this.hash);
+					  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+					  if (target.length) {
+						$('html,body').animate({
+						  scrollTop: target.offset().top - 50
+						}, 1000);
+						return false;
+					  }
+					}
+				});
+			});
+		</script>
+			
   		</div>
   		<div class="col-lg-2">
+			<ul class="nav nav-stacked" id="sidebar">
+			  <li><a href="#gen">General</a></li>
+			  <li><a href="#lecs">Lectures</a></li>
+			  <li><a href="#quizzes">Quizzes</a></li>
+			  <li><a href="#labs">Labs</a></li>
+			</ul>
+
+			
   		</div>
   	</div> <!-- class="row" -->
 	</div> <!-- class="container" -->

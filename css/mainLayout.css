@@ -60,3 +60,23 @@ a {
 	font-size: 50px;
 	color: white;
 }
+
+/*
+Modifying the width of list items on the Notes and Feedback page
+*/
+.listed-item {
+	width: 300px;
+}
+
+.affix {
+  width: 100%;
+}
+
+.affix-top {
+  width: 100%;
+}
+
+.affix-bottom {
+  position: absolute;
+  width: 100%;  
+}
