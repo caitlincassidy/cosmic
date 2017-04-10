@@ -68,15 +68,6 @@ Modifying the width of list items on the Notes and Feedback page
 	width: 300px;
 }
 
-.affix {
-  width: 100%;
-}
-
-.affix-top {
-  width: 100%;
-}
-
-.affix-bottom {
-  position: absolute;
-  width: 100%;  
-}
+.sticky {
+  position: relative;
+  top: 0; }
