@@ -3,27 +3,37 @@ $(document).ready(function() {
     <ul class="nav nav-pills nav-stacked">
     <li>
       <span class="menu-option glyphicon glyphicon-calendar" aria-hidden="true">
-        <a href="index.html" class="menu-text"> Events </a>
+        <a href="index.html" class="menu-text"> Events
+          <span class="empty-span"></span>
+        </a>
       </span>
     </li>
     <li>
       <span class="menu-option glyphicon glyphicon-list" aria-hidden="true">
-        <a href="tasks.html" class="menu-text"> Tasks </a>
+        <a href="tasks.html" class="menu-text"> Tasks
+          <span class="empty-span"></span>
+        </a>
       </span>
     </li>
     <li>
       <span class="menu-option glyphicon glyphicon-user" aria-hidden="true">
-        <a href="availabilities.html" class="menu-text"> Availabilities </a>
+        <a href="availabilities.html" class="menu-text"> Availabilities
+          <span class="empty-span"></span>
+        </a>
       </span>
     </li>
     <li>
       <span class="menu-option glyphicon glyphicon-stats" aria-hidden="true">
-        <a href="feedback.html" class="menu-text"> Feedback </a>
+        <a href="feedback.html" class="menu-text"> Feedback
+          <span class="empty-span"></span>
+        </a>
       </span>
     </li>
     <li>
       <span class="menu-option glyphicon glyphicon-pencil" aria-hidden="true">
-        <a href="notes.html" class="menu-text"> Notes </a>
+        <a href="notes.html" class="menu-text"> Notes
+          <span class="empty-span"></span>
+        </a>
       </span>
     </li>
   </ul>
