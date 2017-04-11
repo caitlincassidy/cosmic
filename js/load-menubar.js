@@ -41,6 +41,9 @@ $(document).ready(function() {
 
   var menubar = $.parseHTML(menubarString);
   $("#menubar").append(menubar);
+
+  // TODO: Keep menu bar in place even if scroll down
+  // @Isaac since he did it for notes?
 })
 
 // Source: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file
