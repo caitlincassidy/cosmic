@@ -71,3 +71,8 @@ Modifying the width of list items on the Notes and Feedback page
 .sticky {
   position: relative;
   top: 0; }
+
+/*To allow the modal to scroll*/
+.modal {
+	overflow:auto;
+}

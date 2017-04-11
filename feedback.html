@@ -86,8 +86,14 @@
 
 		$(document).on('click', ".glyphicon-plus", function(evt)
 		{
-			// alert('adding');
 			$('#request-feedback-modal').modal('toggle')
+
+		});
+
+		$(document).on('click', "#preview-feedback", function(evt)
+		{
+			$('#request-feedback-modal').modal('toggle');
+			$('#preview-feedback-modal').modal('toggle');
 
 		});
 	</script>
@@ -193,7 +199,77 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Preview</button>
+								<button id="preview-feedback" type="button" class="btn btn-primary">Preview</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Preview feedback request modal -->
+				<div class="modal fade" id="preview-feedback-modal" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal Content -->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Request Feedback Preview</h4>
+							</div>
+							<div class="modal-body">
+								<div id="request-feedback-email">
+									<h2>Email Preview</h2>
+									From: Professor Bilbo
+									<br/>
+									To: Students
+									<br/>
+									Subject: Quiz 1 Feedback
+									<br/>
+									<br/>
+									Dear Students,
+									<br/>
+									Please fill out <a>this form</a> to tell me what you thought of Quiz 1.
+									I value your opinions an want to continually improve the class.
+									<br/>
+									Thank you,
+									<br/>
+									Professor Bilbo
+								</div>
+								<hr>
+								<div id="request-feedback-form">
+									<h2>Form Preview</h2>
+									<span id="satisfied">
+										<label for="satisfied_radio">Were you satisfied with Quiz 1:</label>
+										<fieldset class="form-group" id="satisfied_radio">
+											<div class="form-check">
+												<label class="form-check-label">
+													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_yes" value="yes" checked>
+													Yes
+												</label>
+											</div>
+											<div class="form-check">
+												<label class="form-check-label">
+													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_no" value="no" checked>
+													No
+												</label>
+											</div>
+										</fieldset>
+									</span>
+									<div class="form-group" id="positives">
+										<label for="positives_textarea">Positives</label>
+										<textarea class="form-control" id="positives_textarea" rows="2"></textarea>
+									</div>
+									<div class="form-group" id="negatives">
+										<label for="negatives_textarea">Negatives</label>
+										<textarea class="form-control" id="negatives_textarea" rows="2"></textarea>
+									</div>
+									<div class="form-group" id="general_comments">
+										<label for="general_textarea">General Comments</label>
+										<textarea class="form-control" id="general_textarea" rows="2"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
 							</div>
 						</div>
 					</div>
