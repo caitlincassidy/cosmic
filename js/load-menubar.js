@@ -1,4 +1,50 @@
 $(document).ready(function() {
+var menubarString = `
+    <ul class="nav nav-pills nav-stacked">
+    <li>
+      <div class="menu-option-div">
+      </div>
+      <span class="menu-option glyphicon glyphicon-calendar" aria-hidden="true">
+      </span>
+      <a href="index.html" class="menu-text"> Events </a>
+    </li>
+    <li>
+      <span class="menu-option glyphicon glyphicon-list" aria-hidden="true">
+        <a href="tasks.html" class="menu-text"> Tasks
+          <span class="empty-span"></span>
+        </a>
+      </span>
+    </li>
+    <li>
+      <div class="div-around-span">
+      <span class="menu-option glyphicon glyphicon-user" aria-hidden="true">
+        <a href="availabilities.html" class="menu-text"> Availabilities
+          <span class="empty-span"></span>
+        </a>
+      </span>
+      </div>
+    </li>
+    <li>
+      <span class="menu-option glyphicon glyphicon-stats" aria-hidden="true">
+        <a href="feedback.html" class="menu-text"> Feedback
+          <span class="empty-span"></span>
+        </a>
+      </span>
+    </li>
+    <li>
+      <span class="menu-option glyphicon glyphicon-pencil" aria-hidden="true">
+        <a href="notes.html" class="menu-text"> Notes
+          <span class="empty-span"></span>
+        </a>
+      </span>
+    </li>
+  </ul>
+
+  <!-- SOURCE: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file -->
+
+  `;  
+
+/*
   var menubarString = `
     <ul class="nav nav-pills nav-stacked">
     <li>
@@ -16,11 +62,13 @@ $(document).ready(function() {
       </span>
     </li>
     <li>
+      <div class="div-around-span">
       <span class="menu-option glyphicon glyphicon-user" aria-hidden="true">
         <a href="availabilities.html" class="menu-text"> Availabilities
           <span class="empty-span"></span>
         </a>
       </span>
+      </div>
     </li>
     <li>
       <span class="menu-option glyphicon glyphicon-stats" aria-hidden="true">
@@ -41,6 +89,7 @@ $(document).ready(function() {
   <!-- SOURCE: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file -->
 
   `;
+  */
   // Source: http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript
 
 
