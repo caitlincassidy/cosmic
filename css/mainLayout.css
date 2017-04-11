@@ -71,3 +71,14 @@ Modifying the width of list items on the Notes and Feedback page
 .sticky {
   position: relative;
   top: 0; }
+
+
+/* task page css */
+.task-item {
+	width: 50%;
+}
+
+/* todo: align vertically center */
+.task-item > .glyphicon-menu-hamburger {
+	float: right;
+}
