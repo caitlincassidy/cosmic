@@ -1,3 +1,7 @@
+// TODO: A bit more space between the icon and word would look better
+// TODO: Make sure the icon next to the menu and on the actual page match
+//    (only a problem for feedback I think -- page has pencil, menu has stats)
+
 $(document).ready(function() {
   var menubarString = `
   <ul class="nav nav-pills nav-stacked">
