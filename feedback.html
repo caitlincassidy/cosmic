@@ -86,6 +86,7 @@
 
 		$(document).on('click', ".glyphicon-plus", function(evt)
 		{
+			$('#request-feedback').get(0).reset();
 			$('#request-feedback-modal').modal('toggle')
 
 		});
@@ -94,13 +95,12 @@
 		{
 			$('#request-feedback-modal').modal('toggle');
 			var inc_satisfied = $('#inc_satisfied').prop('checked');
-			$('#inc_satisfied').prop('checked', true);
 			var inc_positives = $('#inc_positives').prop('checked');
-			$('#inc_positives').prop('checked', true);
 			var inc_negatives = $('#inc_negatives').prop('checked');
-			$('#inc_negatives').prop('checked', true);
 			var inc_general = $('#inc_general').prop('checked');
-			$('#inc_general').prop('checked', true);
+
+			$('#request-feedback-form').get(0).reset();
+			$("#additional_info_loc").empty();
 
 			$('#preview-feedback-modal').modal('toggle');
 			if (! inc_satisfied) $("#satisfied").hide();
@@ -109,7 +109,7 @@
 			if (! inc_general) $("#general_comments").hide();
 
 			var additional_info = $("#additional_info").val();
-			$("#additional_info").val("");
+
 			if(additional_info.length > 0) {
 				$("#additional_info_loc").text(additional_info);
 				$("#additional_info_loc").append($("<br/>"))
@@ -162,12 +162,12 @@
 								<h4 class="modal-title">Request Feedback</h4>
 							</div>
 							<div class="modal-body">
-								<div id="request-feedback">
+								<form id="request-feedback">
 									<label for="when_radio">When to send feedback form:</label>
 									<fieldset class="form-group" id="when_radio">
 										<div class="form-check">
 											<label class="form-check-label">
-												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_now" value="now" checked>
+												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_now" value="now">
 												Now
 											</label>
 										</div>
@@ -215,7 +215,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -255,7 +255,7 @@
 									Professor Bilbo
 								</div>
 								<hr>
-								<div id="request-feedback-form">
+								<form id="request-feedback-form">
 									<h2>Form Preview</h2>
 									<span id="satisfied">
 										<label for="satisfied_radio">Were you satisfied with Quiz 1:</label>
@@ -286,7 +286,7 @@
 										<label for="general_textarea">General Comments</label>
 										<textarea class="form-control" id="general_textarea" rows="2"></textarea>
 									</div>
-								</div>
+								</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
