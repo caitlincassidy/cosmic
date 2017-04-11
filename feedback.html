@@ -93,7 +93,27 @@
 		$(document).on('click', "#preview-feedback", function(evt)
 		{
 			$('#request-feedback-modal').modal('toggle');
+			var inc_satisfied = $('#inc_satisfied').prop('checked');
+			$('#inc_satisfied').prop('checked', true);
+			var inc_positives = $('#inc_positives').prop('checked');
+			$('#inc_positives').prop('checked', true);
+			var inc_negatives = $('#inc_negatives').prop('checked');
+			$('#inc_negatives').prop('checked', true);
+			var inc_general = $('#inc_general').prop('checked');
+			$('#inc_general').prop('checked', true);
+
 			$('#preview-feedback-modal').modal('toggle');
+			if (! inc_satisfied) $("#satisfied").hide();
+			if (! inc_positives) $("#positives").hide();
+			if (! inc_negatives) $("#negatives").hide();
+			if (! inc_general) $("#general_comments").hide();
+
+			var additional_info = $("#additional_info").val();
+			$("#additional_info").val("");
+			if(additional_info.length > 0) {
+				$("#additional_info_loc").text(additional_info);
+				$("#additional_info_loc").append($("<br/>"))
+			}
 
 		});
 	</script>
@@ -164,25 +184,25 @@
 											<fieldset class="form-group" id="questions_checkboxes">
 												<div class="form-check">
 													<label class="form-check-label">
-														<input class="form-check-input" type="checkbox" value="">
+														<input id="inc_satisfied" class="form-check-input" type="checkbox" value="" checked>
 														Satisfied (Y/N)
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label">
-														<input class="form-check-input" type="checkbox" value="">
+														<input id="inc_positives" class="form-check-input" type="checkbox" value="" checked>
 														Postives (open)
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label">
-														<input class="form-check-input" type="checkbox" value="">
+														<input id="inc_negatives" class="form-check-input" type="checkbox" value="" checked>
 														Negatives (open)
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label">
-														<input class="form-check-input" type="checkbox" value="">
+														<input id="inc_general" class="form-check-input" type="checkbox" value="" checked>
 														General Comments (open)
 													</label>
 												</div>
@@ -229,6 +249,7 @@
 									Please fill out <a>this form</a> to tell me what you thought of Quiz 1.
 									I value your opinions an want to continually improve the class.
 									<br/>
+									<span id="additional_info_loc"></span>
 									Thank you,
 									<br/>
 									Professor Bilbo
@@ -241,13 +262,13 @@
 										<fieldset class="form-group" id="satisfied_radio">
 											<div class="form-check">
 												<label class="form-check-label">
-													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_yes" value="yes" checked>
+													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_yes" value="yes">
 													Yes
 												</label>
 											</div>
 											<div class="form-check">
 												<label class="form-check-label">
-													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_no" value="no" checked>
+													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_no" value="no">
 													No
 												</label>
 											</div>
