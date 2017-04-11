@@ -135,8 +135,65 @@
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 								<h4 class="modal-title">Request Feedback</h4>
 							</div>
-							<div class="modal-body blue-background">
-								<div id="request-feedback"></div>
+							<div class="modal-body">
+								<div id="request-feedback">
+									<label for="when_radio">When to send feedback form:</label>
+									<fieldset class="form-group" id="when_radio">
+										<div class="form-check">
+											<label class="form-check-label">
+												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_now" value="now" checked>
+												Now
+											</label>
+										</div>
+										<div class="form-check">
+											<label class="form-check-label">
+												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_later" value="later">
+												<input type="number" class="form-inline" id="num_days" placeholder="2"> days after event
+											</label>
+										</div>
+									</fieldset>
+									<div class="row">
+										<div class="col-xs-4">
+											<label for="questions_checkboxes">Questions:</label>
+											<fieldset class="form-group" id="questions_checkboxes">
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" value="">
+														Satisfied (Y/N)
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" value="">
+														Postives (open)
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" value="">
+														Negatives (open)
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" value="">
+														General Comments (open)
+													</label>
+												</div>
+											</fieldset>
+										</div>
+										<div class="col-xs-8">
+											<div class="form-group">
+												<label for="additional_info">Additional Information</label>
+												<textarea class="form-control" id="additional_info" rows="3"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Preview</button>
 							</div>
 						</div>
 					</div>
