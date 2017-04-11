@@ -71,3 +71,9 @@ Modifying the width of list items on the Notes and Feedback page
 .sticky {
   position: relative;
   top: 0; }
+
+
+/* Menubar css */
+.menu-option {
+	color: red;
+}
