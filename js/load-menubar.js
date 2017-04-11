@@ -1,99 +1,47 @@
 $(document).ready(function() {
-var menubarString = `
-    <ul class="nav nav-pills nav-stacked">
-    <li>
-      <div class="menu-option-div">
-      </div>
-      <span class="menu-option glyphicon glyphicon-calendar" aria-hidden="true">
-      </span>
-      <a href="index.html" class="menu-text"> Events </a>
-    </li>
-    <li>
-      <span class="menu-option glyphicon glyphicon-list" aria-hidden="true">
-        <a href="tasks.html" class="menu-text"> Tasks
-          <span class="empty-span"></span>
-        </a>
-      </span>
-    </li>
-    <li>
-      <div class="div-around-span">
-      <span class="menu-option glyphicon glyphicon-user" aria-hidden="true">
-        <a href="availabilities.html" class="menu-text"> Availabilities
-          <span class="empty-span"></span>
-        </a>
-      </span>
-      </div>
-    </li>
-    <li>
-      <span class="menu-option glyphicon glyphicon-stats" aria-hidden="true">
-        <a href="feedback.html" class="menu-text"> Feedback
-          <span class="empty-span"></span>
-        </a>
-      </span>
-    </li>
-    <li>
-      <span class="menu-option glyphicon glyphicon-pencil" aria-hidden="true">
-        <a href="notes.html" class="menu-text"> Notes
-          <span class="empty-span"></span>
-        </a>
-      </span>
-    </li>
-  </ul>
-
-  <!-- SOURCE: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file -->
-
-  `;  
-
-/*
   var menubarString = `
-    <ul class="nav nav-pills nav-stacked">
-    <li>
-      <span class="menu-option glyphicon glyphicon-calendar" aria-hidden="true">
-        <a href="index.html" class="menu-text"> Events
-          <span class="empty-span"></span>
-        </a>
-      </span>
+  <ul class="nav nav-pills nav-stacked">
+    <li role="presentation">
+      <a href="index.html">
+        <span class="glyphicon glyphicon-calendar"></span>
+        Events
+      </a>
     </li>
-    <li>
-      <span class="menu-option glyphicon glyphicon-list" aria-hidden="true">
-        <a href="tasks.html" class="menu-text"> Tasks
-          <span class="empty-span"></span>
-        </a>
-      </span>
-    </li>
-    <li>
-      <div class="div-around-span">
-      <span class="menu-option glyphicon glyphicon-user" aria-hidden="true">
-        <a href="availabilities.html" class="menu-text"> Availabilities
-          <span class="empty-span"></span>
-        </a>
-      </span>
-      </div>
-    </li>
-    <li>
-      <span class="menu-option glyphicon glyphicon-stats" aria-hidden="true">
-        <a href="feedback.html" class="menu-text"> Feedback
-          <span class="empty-span"></span>
-        </a>
-      </span>
-    </li>
-    <li>
-      <span class="menu-option glyphicon glyphicon-pencil" aria-hidden="true">
-        <a href="notes.html" class="menu-text"> Notes
-          <span class="empty-span"></span>
-        </a>
-      </span>
-    </li>
-  </ul>
 
-  <!-- SOURCE: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file -->
+    <li role="presentation">
+      <a href="tasks.html">
+        <span class="glyphicon glyphicon-list"></span>
+        Tasks
+      </a>
+    </li>
 
-  `;
-  */
-  // Source: http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript
+        <li role="presentation">
+      <a href="availabilities.html">
+        <span class="glyphicon glyphicon-user"></span>
+        Availabilities
+      </a>
+    </li>
 
+        <li role="presentation">
+      <a href="feedback.html">
+        <span class="glyphicon glyphicon-stats"></span>
+        Feedback
+      </a>
+    </li>
+
+    <li role="presentation">
+      <a href="notes.html">
+        <span class="glyphicon glyphicon-book"></span>
+        Notes
+      </a>
+    </li>
+</ul>
+
+`;
 
   var menubar = $.parseHTML(menubarString);
   $("#menubar").append(menubar);
-
 })
+
+// Source: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file
+// Source: http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript
