@@ -23,6 +23,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 </head>
 
@@ -89,7 +91,6 @@
             
             <br>
             <h2> Due April 22 </h2>
-            <!-- TODO: HAve a "show due date" button -->
 
             <p class="task-item"><input type="checkbox"></input> Send Quiz 1 beta to TAs for testing  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
@@ -98,16 +99,18 @@
             <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-3">
             <h2> Add new task </h2>
 
+            <!-- Task text -->
             <div class="form-group">
-              <textarea class="form-control" rows="2" style="width: 75%"></textarea>
+              <textarea class="form-control" rows="2" placeholder="Task to add"></textarea>
             </div>
 
+            <!-- Date it's due -->
             <div class="form-group">
-              <div class='input-group date' id='datetimepicker1' style="width: 75%">
-                <input type='text' class="form-control" />
+              <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" placeholder="Due date" />
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -121,6 +124,8 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">None</a></li>
+                <li role="separator" class="divider"></li>
                 <li><a href="#">Quiz 1</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#">Lecture 1</a></li>
@@ -134,8 +139,15 @@
               </ul>
             </div>
 
-            <button type="button" class="btn btn-default">Create</button>
+            <br />
+
+            <button type="button" class="btn btn-default" style="float: right">Create</button>
           </div>
+
+          <!-- Margin column -->
+          <div class="col-lg-1">
+          </div>
+
 
 
         </div> <!-- class=page-content -->
