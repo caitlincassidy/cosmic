@@ -1,16 +1,12 @@
 body {
 	margin: 0;
 	padding: 0;
-}
-
-p {
 	font-family: 'Roboto', sans-serif;
 	font-size: 18px;
 }
 
-a {
-	font-family: 'Roboto', sans-serif;
-	font-size: 18px;
+label {
+	font-weight: normal;
 }
 
 .welcome-container {
@@ -76,3 +72,8 @@ Modifying the width of list items on the Notes and Feedback page
 .modal {
 	overflow:auto;
 }
+
+ /* Menubar styling */
+ .menu-link > span {
+   margin-right: 8px;
+ }
