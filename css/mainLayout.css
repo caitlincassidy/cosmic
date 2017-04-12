@@ -73,7 +73,6 @@ Modifying the width of list items on the Notes and Feedback page
   top: 0; }
 
  /* Menubar styling */
- #menubar > a {
- 	 color: red;
-   padding: 5px;
+ .menu-link > span {
+   margin-right: 8px;
  }
