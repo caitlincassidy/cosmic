@@ -25,13 +25,14 @@
 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<script>
 
-	var new_event = function(date) {
-		alert('Clicked on: ' + date.format());
-
-	}
+		var new_event = function(date) {
+			// alert('Clicked on: ' + date.format());
+			$('#new-event-modal').modal('toggle');
+		}
 
 		$(document).ready(function() {
 
@@ -64,18 +65,73 @@
 				</div>
 			</div>
 		</div>
-  	<div class="row">
-  		<div class="col-lg-2" id="menubar">
-  		</div>
-  		<div class="col-lg-8">
-  			<div id='calendar'></div>
-  		</div>
-  		<div class="col-lg-2">
-  		</div>
-  	</div> <!-- class="row" -->
+		<div class="row">
+			<div class="col-lg-2" id="menubar">
+			</div>
+			<div class="col-lg-8">
+				<!-- New event modal -->
+				<div class="modal fade" id="new-event-modal" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal Content -->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h3 class="modal-title">New Event</h3>
+							</div>
+							<div class="modal-body">
+								<form id="request-feedback">
+									<div class="row">
+										<label for="event_type" class="col-xs-3 col-form-label"><b>Type:</b></label>
+										<div class="col-xs-9">
+											<select class="form-control" id="event_type">
+												<option selected>Event Type</option>
+												<option value="1">Lecture</option>
+												<option value="2">Quiz</option>
+												<option value="3">Lab</option>
+											</select>
+										</div>
+									</div>
+									<div class="row">
+										<label for="event_name" class="col-xs-3 col-form-label"><b>Name:</b></label>
+										<div class="col-xs-9">
+											<input class="form-control" type="text" value="" id="event_name">
+										</div>
+									</div>
+									<div class="row">
+										<label for="event_date" class="col-xs-3 col-form-label"><b>Date:</b></label>
+										<div class="col-xs-9">
+											<input class="form-control" type="date" value="" id="event_date">
+										</div>
+									</div>
+									<div class="row">
+										<label for="event_start_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
+										<div class="col-xs-9">
+											<input class="form-control" type="time" value="" id="event_start_time">
+										</div>
+									</div>
+									<div class="row">
+										<label for="event_end_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
+										<div class="col-xs-9">
+											<input class="form-control" type="time" value="" id="event_end_time">
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button id="preview-feedback" type="button" class="btn btn-primary">Create</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id='calendar'></div>
+			</div>
+			<div class="col-lg-2">
+			</div>
+		</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
 
-  <script id="load-menubar-script" src="js/load-menubar.js" link="index.html"></script>
+	<script id="load-menubar-script" src="js/load-menubar.js" link="index.html"></script>
 </body>
 
 </html>
