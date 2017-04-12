@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!-- Load style sheets -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,13 +26,11 @@
 <meta name="viewport" content=
   "width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
-</head>
-
-<body>
-	<script>
-
-
+	
+<script>
+		
+		var button_id;	
+		
 		$(document).ready(function() {
 			// From http://www.bootply.com/100983
 			/* smooth scrolling sections */
@@ -85,7 +84,21 @@
 			});
 
 		});
+		
+		// Display request new feedback form
+		$(document).on('click', ".glyphicon-plus", function(evt)
+		{
+			button_id = evt.target.id;
+			console.log(button_id);
+			$('#add-note-modal').modal('toggle');
+
+		});
 	</script>
+
+</head>
+
+<body>
+	
 	
 	<div class="container-fluid">
 		<div class="row main-header">
@@ -112,6 +125,52 @@
 					<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Notes <small>(because you have poor memory...)</small>
 				</h1>
 			</div>
+			
+			
+			<!-- Add Notes popup -->
+			<div class="modal fade" id="add-note-modal" role="dialog">
+				<div class="modal-dialog">
+					<!-- Modal Content -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h3 class="modal-title" id="note-type"></h3>
+							<script>
+								$(document).on('click', ".glyphicon-plus", function(evt)
+								{
+									button_id = evt.target.id;
+									console.log(button_id);
+									document.getElementById('note-type').innerHTML = "Add "+ button_id +" Note";
+								});
+							</script>
+						</div>
+						<div class="modal-body">
+							<div class="btn-group">
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lecture 1 <span class="caret"></span>
+							  </button>
+								<ul class="dropdown-menu">
+									<li><a href="#">Action</a></li>
+									<li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#">Separated link</a></li>
+								</ul>
+							</div>
+
+						</div>
+<!--
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button id="preview-feedback" type="button" class="btn btn-primary">Preview</button>
+						</div>
+-->
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
 			<div class="form-group">
 				<h2 id="gen">
 					General
@@ -122,39 +181,41 @@
 -->
 				
 <!--			I want to use the Bootstrap-styled input box, but I couldn't find a resizeable, larger text box. So using <textarea> for now.	-->
-				<textarea type="text" placeholder="Type your notes here before you forget them!" class="form-control input-lg"> </textarea>
-				<button type="button" class="btn btn-default pull-right"> Submit</button>
+				<textarea type="textarea" class="form-control input-lg" placeholder="Type your notes here before you forget them..."></textarea>
+				<br>
+				<button type="button" class="btn btn-lg pull-right"> Submit</button>
 				<br>
 			</div>
 			<div>
 				<h2 id="lecs">
-					Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new Lecture Note</button>
+					Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true" id="Lecture"></span> Add a new Lecture Note</button>
+					
 				</h2>
 				<br>
 				<div class="list-group">
 					<a href="#" class="list-group-item listed-item">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<a href="#" class="list-group-item listed-item">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<a href="#" class="list-group-item listed-item">Lecture 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<br><a href="#"> See more... </a>
+<!--					<br><a href="#"> See more... </a>-->
 				</div>
 			</div>
 			<br>
 			<div>
 				<h2 id="quizzes">
-					Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new Quiz Note</button>
+					Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true" id="Quiz"></span> Add a new Quiz Note</button>
 				</h2>
 				<br>
 				<div class="list-group">
 					<a href="#" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<a href="#" class="list-group-item listed-item">Quiz 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<br><a href="#"> See more... </a>
+<!--					<br><a href="#"> See more... </a>-->
 				</div>
 			</div>
 			
 			<div>
 				<br>
 				<h2 id="labs">
-					Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new Lab Note</button>
+					Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true" id="Lab"></span> Add a new Lab Note</button>
 				</h2>
 				<br>
 				<div class="list-group">
@@ -178,7 +239,7 @@
 					<a href="#" class="list-group-item listed-item">Lab 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<a href="#" class="list-group-item listed-item">Lab 4 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<a href="#" class="list-group-item listed-item">Lab 5 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<br><a href="#"> See more... </a>
+<!--					<br><a href="#"> See more... </a>-->
 				</div>
 			</div>
 			
