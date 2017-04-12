@@ -27,6 +27,18 @@
 </head>
 
 <body>
+  <script>
+    // Remove asking for TA availability task
+    // when checkbox next to it is clicked
+    // TODO(GR5): Apply to all checkboxes on page
+    $(document).on('click', "#checkbox-ask-availability", function(evt) {
+      console.log("click");
+      $(this).parent().remove();
+    });
+
+  </script>
+
+
 	<div class="container-fluid">
 		<div class="row main-header">
 			<div class="col-lg-2">
@@ -63,7 +75,7 @@
           <br>
           <h2> Due today (April 20) </h2>
 
-          <p class="task-item"><input type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+          <p class="task-item"><input id="checkbox-ask-availability" type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
           <p class="task-item"><input type="checkbox"></input> Pick up quiz materials from CopyTech <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
@@ -75,7 +87,7 @@
           <p> Nothing! :D </p>
           
           <br>
-          <h2> Due later </h2>
+          <h2> Due April 22 </h2>
           <!-- TODO: HAve a "show due date" button -->
 
           <p class="task-item"><input type="checkbox"></input> Send Quiz 1 beta to TAs for testing  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
@@ -84,13 +96,12 @@
 
           <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
-          <p class="task-item"><input type="checkbox"></input> Revise Quiz 1 beta based on TA feedback  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-
         </div>
 
   		</div>
   		<div class="col-lg-2">
+        <!-- New task column -->
+        <h3> Add new task </h3>
   		</div>
   	</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
