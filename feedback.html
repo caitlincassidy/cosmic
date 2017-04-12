@@ -88,7 +88,14 @@
 		$(document).on('click', ".glyphicon-plus", function(evt)
 		{
 			$('#request-feedback').get(0).reset();
-			$('#request-feedback-modal').modal('toggle')
+			$('#request-feedback-modal').modal('toggle');
+
+		});
+
+		// Display request new feedback form
+		$(document).on('click', "#back-to-request-feedback", function(evt)
+		{
+			$('#request-feedback-modal').modal('toggle');
 
 		});
 
@@ -101,20 +108,45 @@
 			var inc_negatives = $('#inc_negatives').prop('checked');
 			var inc_general = $('#inc_general').prop('checked');
 
-			$('#request-feedback-form').get(0).reset();
+			var send_now = $("#when_radio_now").prop('checked');
+
 			$("#additional_info_loc").empty();
+			$('#request-feedback-form').get(0).reset();
 
 			$('#preview-feedback-modal').modal('toggle');
-			if (! inc_satisfied) $("#satisfied").hide();
-			if (! inc_positives) $("#positives").hide();
-			if (! inc_negatives) $("#negatives").hide();
-			if (! inc_general) $("#general_comments").hide();
+			if (! inc_satisfied) {
+				$("#satisfied").hide();
+			} else {
+				$("#satisfied").show();
+			}
+			if (! inc_positives) {
+				$("#positives").hide();
+			} else {
+				$("#positives").show();
+			}
+			if (! inc_negatives) {
+				$("#negatives").hide();
+			} else {
+				$("#negatives").show();
+			}
+			if (! inc_general) {
+				$("#general_comments").hide();
+			} else {
+				$("#general_comments").show();
+			}
 
 			var additional_info = $("#additional_info").val();
 
 			if(additional_info.length > 0) {
 				$("#additional_info_loc").text(additional_info);
-				$("#additional_info_loc").append($("<br/>"))
+				$("#additional_info_loc").append($("<br/>"));
+				$("#additional_info_loc").append($("<br/>"));
+			}
+
+			if (send_now) {
+				$("#send-button").text("Send");
+			} else {
+				$("#send-button").text("Schedule");
 			}
 
 		});
@@ -161,29 +193,29 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Request Feedback</h4>
+								<h3 class="modal-title">Request Feedback</h3>
 							</div>
 							<div class="modal-body">
 								<form id="request-feedback">
-									<label for="when_radio">When to send feedback form:</label>
+									<label for="when_radio"><b>When to send feedback form:</b></label>
 									<fieldset class="form-group" id="when_radio">
 										<div class="form-check">
 											<label class="form-check-label">
-												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_now" value="now">
+												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_now" value="now" checked>
 												Now
 											</label>
 										</div>
 										<div class="form-check">
 											<label class="form-check-label">
 												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_later" value="later">
-												<!-- TODO: Make text box for # days smaller width -->
-												<input type="number" class="form-inline" id="num_days" placeholder="2"> days after event
+												<!-- TODO: Make text box for # days smaller width DONE -->
+												<input type="number" class="form-inline" id="num_days" placeholder="2" style="width: 40px;"> days after event
 											</label>
 										</div>
 									</fieldset>
 									<div class="row">
 										<div class="col-xs-4">
-											<label for="questions_checkboxes">Questions:</label>
+											<label for="questions_checkboxes"><b>Questions:</b></label>
 											<fieldset class="form-group" id="questions_checkboxes">
 												<div class="form-check">
 													<label class="form-check-label">
@@ -213,7 +245,7 @@
 										</div>
 										<div class="col-xs-8">
 											<div class="form-group">
-												<label for="additional_info">Additional Information</label>
+												<label for="additional_info"><b>Additional Information</b></label>
 												<textarea class="form-control" id="additional_info" rows="3"></textarea>
 											</div>
 										</div>
@@ -235,30 +267,27 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Request Feedback Preview</h4>
+								<h3 class="modal-title">Request Feedback Preview</h3>
 							</div>
 							<div class="modal-body">
 								<div id="request-feedback-email">
 									<!-- TODO: It's weird that the "request feedback preview"
-									heading is smaller than the "email preview" and "form preview" headings. -->
-									<!-- TOOD: Remove the space between the line
-									under "request feedback preview" and the "email preview" heading -->
-									<h2>Email Preview</h2>
+									heading is smaller than the "email preview" and "form preview" headings. DONE-->
+									<h4>Email Preview</h4>
 									From: Professor Bilbo
 									<br/>
 									To: Students
 									<br/>
 									Subject: Quiz 1 Feedback
-									<br/>
-									<br/>
+									<br/><br/>
 									Dear Students,
-									<br/>
+									<br/><br/>
 									<!-- TODO: the 'this form' text is larger than all the other text. -->
 									Please fill out <a>this form</a> to tell me what you thought of Quiz 1.
 									I value your opinions and want to continually improve the class.
-									<br/>
+									<br/><br/>
 									<!-- TODO: Might want an empty line before and after
-									the additional info paragraph. -->
+									the additional info paragraph. DONE -->
 									<span id="additional_info_loc"></span>
 									Thank you,
 									<br/>
@@ -266,9 +295,9 @@
 								</div>
 								<hr>
 								<form id="request-feedback-form">
-									<h2>Form Preview</h2>
+									<h4>Form Preview</h4>
 									<span id="satisfied">
-										<label for="satisfied_radio">Were you satisfied with Quiz 1:</label>
+										<label for="satisfied_radio"><b>Were you satisfied with Quiz 1:</b></label>
 										<fieldset class="form-group" id="satisfied_radio">
 											<div class="form-check">
 												<label class="form-check-label">
@@ -285,24 +314,25 @@
 										</fieldset>
 									</span>
 									<div class="form-group" id="positives">
-										<label for="positives_textarea">Positives</label>
-										<textarea class="form-control" id="positives_textarea" rows="2"></textarea>
+										<label for="positives_textarea"><b>Positives</b></label>
+										<textarea class="form-control" id="positives_textarea" rows="2" value=""></textarea>
 									</div>
 									<div class="form-group" id="negatives">
-										<label for="negatives_textarea">Negatives</label>
-										<textarea class="form-control" id="negatives_textarea" rows="2"></textarea>
+										<label for="negatives_textarea"><b>Negatives</b></label>
+										<textarea class="form-control" id="negatives_textarea" rows="2" value=""></textarea>
 									</div>
 									<div class="form-group" id="general_comments">
-										<label for="general_textarea">General Comments</label>
-										<textarea class="form-control" id="general_textarea" rows="2"></textarea>
+										<label for="general_textarea"><b>General Comments</b></label>
+										<textarea class="form-control" id="general_textarea" rows="2" value=""></textarea>
 									</div>
 								</form>
 							</div>
 							<div class="modal-footer">
 								<!-- TODO: As a user, I would want a "back" button where I can go back and edit
-								the questions I'm asking on my form, the additional info, etc. -->
+								the questions I'm asking on my form, the additional info, etc. DONE -->
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="back-to-request-feedback">Back</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal" id="send-button">Send</button>
 							</div>
 						</div>
 					</div>
@@ -375,9 +405,9 @@
 <!-- TODO for request new feedback form:
 	* Can you make only the headings bold on the form, not everything?
 	(Only 'When to send feedback form:', 'Questions:',
-	and 'Additional Information' in bold)
+	and 'Additional Information' in bold) DONE
 
-	* Also unbold the 'Yes/No' options in the form preview section. 
+	* Also unbold the 'Yes/No' options in the form preview section. DONE
 
 	* It's confusing if I selected to send the form 2 days from now
 	but then I have to click the button 'Send' in order
@@ -386,6 +416,6 @@
 	Maybe have that button say "Send" if they chose send now
 	and say "Schedule" if they chose to send x days after?
 	Possibly with displaying how many days after they chose
-	somewhere?
+	somewhere? DONE
 
 	-->
