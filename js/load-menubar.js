@@ -1,3 +1,6 @@
+// TODO: Keep menu bar in place even if scroll down
+// @Isaac since he did it for notes?
+
 $(document).ready(function() {
   var menubarString = `
   <ul class="nav nav-pills nav-stacked">
@@ -42,9 +45,13 @@ $(document).ready(function() {
   var menubar = $.parseHTML(menubarString);
   $("#menubar").append(menubar);
 
-  // TODO: Keep menu bar in place even if scroll down
-  // @Isaac since he did it for notes?
-})
+  // Make the correct menu option active
+  var menuLink = $('#load-menubar-script').attr("link");
+  var linkString = 'a[href="' + menuLink + '"]';
+  var activeMenuOption = $(linkString);
+  $(activeMenuOption).parent().addClass('active');
+});
+
 
 // Source: http://stackoverflow.com/questions/8988855/include-another-html-file-in-a-html-file
 // Source: http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript
