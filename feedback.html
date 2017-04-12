@@ -208,7 +208,6 @@
 										<div class="form-check">
 											<label class="form-check-label">
 												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_later" value="later">
-												<!-- TODO: Make text box for # days smaller width DONE -->
 												<input type="number" class="form-inline" id="num_days" placeholder="2" style="width: 40px;"> days after event
 											</label>
 										</div>
@@ -271,8 +270,6 @@
 							</div>
 							<div class="modal-body">
 								<div id="request-feedback-email">
-									<!-- TODO: It's weird that the "request feedback preview"
-									heading is smaller than the "email preview" and "form preview" headings. DONE-->
 									<h4>Email Preview</h4>
 									From: Professor Bilbo
 									<br/>
@@ -282,12 +279,9 @@
 									<br/><br/>
 									Dear Students,
 									<br/><br/>
-									<!-- TODO: the 'this form' text is larger than all the other text. DONE -->
 									Please fill out <a>this form</a> to tell me what you thought of Quiz 1.
 									I value your opinions and want to continually improve the class.
 									<br/><br/>
-									<!-- TODO: Might want an empty line before and after
-									the additional info paragraph. DONE -->
 									<span id="additional_info_loc"></span>
 									Thank you,
 									<br/>
@@ -328,8 +322,6 @@
 								</form>
 							</div>
 							<div class="modal-footer">
-								<!-- TODO: As a user, I would want a "back" button where I can go back and edit
-								the questions I'm asking on my form, the additional info, etc. DONE -->
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal" id="back-to-request-feedback">Back</button>
 								<button type="button" class="btn btn-primary" data-dismiss="modal" id="send-button">Send</button>
@@ -401,21 +393,3 @@
 </body>
 
 </html>
-
-<!-- TODO for request new feedback form:
-	* Can you make only the headings bold on the form, not everything?
-	(Only 'When to send feedback form:', 'Questions:',
-	and 'Additional Information' in bold) DONE
-
-	* Also unbold the 'Yes/No' options in the form preview section. DONE
-
-	* It's confusing if I selected to send the form 2 days from now
-	but then I have to click the button 'Send' in order
-	to actually schedule it.
-
-	Maybe have that button say "Send" if they chose send now
-	and say "Schedule" if they chose to send x days after?
-	Possibly with displaying how many days after they chose
-	somewhere? DONE
-
-	-->
