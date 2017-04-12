@@ -73,3 +73,7 @@ Modifying the width of list items on the Notes and Feedback page
 	overflow:auto;
 }
 
+ /* Menubar styling */
+ .menu-link > span {
+   margin-right: 8px;
+ }
