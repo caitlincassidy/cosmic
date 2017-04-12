@@ -64,9 +64,9 @@
 
 				  // stop the sticky sidebar at the footer to avoid overlapping
 				  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-					  stickyStop = $('.main-content').offset().top + $('.main-content').height();
+					  stickyStop = $('#main-content').offset().top + $('#main-content').height();
 				  if (stickyStop < sidebarBottom) {
-					var stopPosition = $('.main-content').height() - stickyHeight;
+					var stopPosition = $('#main-content').height() - stickyHeight;
 					stickySidebar.css('top', stopPosition);
 				  }
 				}
@@ -111,7 +111,7 @@
 				<li><a href="notes.html">Notes</a></li>
 			</ul>
   		</div>
-  		<div class="col-lg-8">
+  		<div class="col-lg-8" id="main-content">
 			<div class="page-header">
 				<h1>
 					<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Notes <small>(because you have poor memory...)</small>
