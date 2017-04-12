@@ -62,9 +62,9 @@
 
 				  // stop the sticky sidebar at the footer to avoid overlapping
 				  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-					  stickyStop = $('.main-content').offset().top + $('.main-content').height();
+					  stickyStop = $('#main-content').offset().top + $('#main-content').height();
 				  if (stickyStop < sidebarBottom) {
-					var stopPosition = $('.main-content').height() - stickyHeight;
+					var stopPosition = $('#main-content').height() - stickyHeight;
 					stickySidebar.css('top', stopPosition);
 				  }
 				}
@@ -102,7 +102,7 @@
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
   		</div>
-  		<div class="col-lg-8">
+  		<div class="col-lg-8" id="main-content">
 			<div class="page-header">
 				<h1>
 					<span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Feedback <small>(because you're a narcissist...)</small>
