@@ -30,8 +30,12 @@
 	<script>
 
 		var new_event = function(date) {
-			// alert('Clicked on: ' + date.format());
 			$('#new-event-modal').modal('toggle');
+			$("#event_date").val(date.format());
+
+			$("#event_start_time").val("13:00");
+			$("#event_end_time").val("14:00");
+			
 		}
 
 		$(document).ready(function() {
@@ -110,7 +114,7 @@
 										</div>
 									</div>
 									<div class="row">
-										<label for="event_end_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
+										<label for="event_end_time" class="col-xs-3 col-form-label"><b>End Time:</b></label>
 										<div class="col-xs-9">
 											<input class="form-control" type="time" value="" id="event_end_time">
 										</div>
