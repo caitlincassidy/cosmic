@@ -38,6 +38,17 @@
 			
 		}
 
+		var lecture1 = {
+			title: "Lecture 1",
+			start: moment("04/12/2017 13:00").format(),
+			end: moment("04/12/2017 14:00").format(),
+		}
+		var lecture2 = {
+			title: "Lecture 2",
+			start: moment("04/14/2017 13:00").format(),
+			end: moment("04/14/2017 14:00").format(),
+		}
+
 		$(document).ready(function() {
 
   			// page is now ready, initialize the calendar...
@@ -46,6 +57,9 @@
       			weekends: false, // will hide Saturdays and Sundays
       			dayClick: new_event
       		});
+
+      		$('#calendar').fullCalendar('renderEvent', lecture1);
+      		$('#calendar').fullCalendar('renderEvent', lecture2);
 
   		});
 
