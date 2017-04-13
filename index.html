@@ -30,6 +30,7 @@
 	<script>
 
 		var new_event = function(date) {
+			$('#event-info').get(0).reset();
 			$('#new-event-modal').modal('toggle');
 			$("#event_date").val(date.format());
 
@@ -108,7 +109,7 @@
 								<h3 class="modal-title">New Event</h3>
 							</div>
 							<div class="modal-body">
-								<form id="request-feedback">
+								<form id="event-info">
 									<div class="row">
 										<label for="event_type" class="col-xs-3 col-form-label"><b>Type:</b></label>
 										<div class="col-xs-9">
