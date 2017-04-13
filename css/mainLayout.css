@@ -77,3 +77,15 @@ Modifying the width of list items on the Notes and Feedback page
  .menu-link > span {
    margin-right: 8px;
  }
+
+ .lecture-event {
+ 	background-color: green;
+ }
+
+ .quiz-event {
+ 	background-color: purple;
+ }
+
+ .lab-event {
+ 	background-color: blue;
+ }
