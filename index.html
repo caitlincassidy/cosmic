@@ -68,21 +68,32 @@
       			dayClick: new_event
       		});
 
-      		$('#calendar').fullCalendar('renderEvent', lecture1);
-      		$('#calendar').fullCalendar('renderEvent', lecture2);
-      		$('#calendar').fullCalendar('renderEvent', quiz1);
+  			$('#calendar').fullCalendar('renderEvent', lecture1);
+  			$('#calendar').fullCalendar('renderEvent', lecture2);
+  			$('#calendar').fullCalendar('renderEvent', quiz1);
   		});
 
 		$(document).on('click', "#create-event-btn", function(evt)
 		{
-			var event = {
-				title: $("#event_name").val(),
-				start: moment($("#event_date").val()+" " +$("#event_start_time").val()).format(),
-				end: moment($("#event_date").val()+" " +$("#event_end_time").val()).format(),
-				className: $("#event_type").val() + "-event",
+			var start = moment($("#event_date").val()+" " +$("#event_start_time").val());
+			var end = moment($("#event_date").val()+" " +$("#event_end_time").val());
+			console.log($("#event_type").val());
+			if (! $("#event_type").val()) {
+				alert("Must choose an event type");
+			} else if (! $("#event_name").val()) {
+				alert("Must name event");
+			} else if (end.isBefore(start)) {
+				alert("Beginning time must be before ending time");
+			} else {
+				var event = {
+					title: $("#event_name").val(),
+					start: start.format(),
+					end: end.format(),
+					className: $("#event_type").val() + "-event",
+				}
+				$('#calendar').fullCalendar('renderEvent', event);
+				$('#new-event-modal').modal('toggle');
 			}
-			$('#calendar').fullCalendar('renderEvent', event);
-			$('#new-event-modal').modal('toggle');
 		});
 
 	</script>
@@ -124,7 +135,7 @@
 										<label for="event_type" class="col-xs-3 col-form-label"><b>Type:</b></label>
 										<div class="col-xs-9">
 											<select class="form-control" id="event_type">
-												<option selected>Event Type</option>
+												<option value="" selected>Event Type</option>
 												<option value="lecture">Lecture</option>
 												<option value="quiz">Quiz</option>
 												<option value="lab">Lab</option>
