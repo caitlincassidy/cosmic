@@ -77,3 +77,8 @@ Modifying the width of list items on the Notes and Feedback page
  .menu-link > span {
    margin-right: 8px;
  }
+
+/* All links will have the pointer-cursor */
+a {
+	cursor:pointer
+}
