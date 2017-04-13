@@ -28,9 +28,6 @@
 
 	
 <script>
-		
-		var button_id;	
-		
 		$(document).ready(function() {
 			// From http://www.bootply.com/100983
 			/* smooth scrolling sections */
@@ -89,7 +86,6 @@
 		$(document).on('click', ".glyphicon-plus", function(evt)
 		{
 			button_id = evt.target.id;
-			console.log(button_id);
 			$('#add-note-modal').modal('toggle');
 
 		});
@@ -139,31 +135,37 @@
 								$(document).on('click', ".glyphicon-plus", function(evt)
 								{
 									button_id = evt.target.id;
-									console.log(button_id);
 									document.getElementById('note-type').innerHTML = "Add "+ button_id +" Note";
 								});
 							</script>
 						</div>
 						<div class="modal-body">
 							<div class="btn-group">
-							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lecture 1 <span class="caret"></span>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="selection" id="dropdown_selection">Lecture 1 </span><span class="caret"></span>
 							  </button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Lecture 1 </a></li>
+									<li><a href="#">Lecture 2 </a></li>
+									<li><a href="#">Lecture 3 </a></li>
 								</ul>
 							</div>
+							
+							<script>
+								$(".dropdown-menu li a").click(function(){
+									$(this).parents(".btn-group").find('#dropdown_selection').text($(this).text());
+									$(this).parents(".btn-group").find('#dropdown_selection').val($(this).text());
+//									console.log($("#dropdown_selection").text());
 
+								});
+							</script>
+							<br>
+							<br>
+							<textarea type="textarea" class="form-control input-lg" placeholder="Type your notes here before you forget them..."></textarea>
 						</div>
-<!--
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button id="preview-feedback" type="button" class="btn btn-primary">Preview</button>
+							<button id="submit_note" type="button" class="btn btn-primary">Submit Note</button>
 						</div>
--->
 					</div>
 				</div>
 			</div>
@@ -175,12 +177,6 @@
 				<h2 id="gen">
 					General
 				</h2>
-<!--
-				<textarea rows="5" cols="110">
-					</textarea>
--->
-				
-<!--			I want to use the Bootstrap-styled input box, but I couldn't find a resizeable, larger text box. So using <textarea> for now.	-->
 				<textarea type="textarea" class="form-control input-lg" placeholder="Type your notes here before you forget them..."></textarea>
 				<br>
 				<button type="button" class="btn btn-lg pull-right"> Submit</button>
