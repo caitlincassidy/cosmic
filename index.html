@@ -30,33 +30,46 @@
 	<script>
 
 		var new_event = function(date) {
-			$('#event-info').get(0).reset();
+			$('#event-info-form').get(0).reset();
 			$('#new-event-modal').modal('toggle');
-			$("#event_date").val(date.format());
+			$("#new_event_date").val(date.format());
 
-			$("#event_start_time").val("13:00");
-			$("#event_end_time").val("14:00");
+			$("#new_event_start_time").val("13:00");
+			$("#new_event_end_time").val("14:00");
 			
+		}
+
+		var open_event = function(event) {
+			console.log(event.title);
+			$("#event-title").text(event.title);
+			$("#event_type").text(event.eventType);
+			$("#event_date").text(moment(event.start).format("MMM D, YYYY"));
+			$("#event_start_time").text(moment(event.start).format("h:mm A"));
+			$("#event_end_time").text(moment(event.end).format("h:mm A"));
+			$('#event-modal').modal('toggle');
 		}
 
 		var lecture1 = {
 			title: "Lecture 1",
 			start: moment("04/12/2017 13:00").format(),
 			end: moment("04/12/2017 14:00").format(),
-			className: "lecture-event"
+			className: "lecture-event",
+			eventType: "Lecture",
 		}
 		var lecture2 = {
 			title: "Lecture 2",
 			start: moment("04/14/2017 13:00").format(),
 			end: moment("04/14/2017 14:00").format(),
-			className: "lecture-event"
+			className: "lecture-event",
+			eventType: "Lecture",
 		}
 
 		var quiz1 = {
 			title: "Quiz 1",
 			start: moment("04/28/2017 13:00").format(),
 			end: moment("04/28/2017 14:00").format(),
-			className: "quiz-event"
+			className: "quiz-event",
+			eventType: "Quiz"
 		}
 
 		$(document).ready(function() {
@@ -65,7 +78,9 @@
   			$('#calendar').fullCalendar({
       			// put your options and callbacks here
       			weekends: false, // will hide Saturdays and Sundays
-      			dayClick: new_event
+      			displayEventEnd: true,
+      			dayClick: new_event,
+      			eventClick: open_event,
       		});
 
   			$('#calendar').fullCalendar('renderEvent', lecture1);
@@ -75,21 +90,22 @@
 
 		$(document).on('click', "#create-event-btn", function(evt)
 		{
-			var start = moment($("#event_date").val()+" " +$("#event_start_time").val());
-			var end = moment($("#event_date").val()+" " +$("#event_end_time").val());
-			console.log($("#event_type").val());
-			if (! $("#event_type").val()) {
+			var start = moment($("#new_event_date").val()+" " +$("#new_event_start_time").val());
+			var end = moment($("#new_event_date").val()+" " +$("#new_event_end_time").val());
+			console.log($("#new_event_type").val());
+			if (! $("#new_event_type").val()) {
 				alert("Must choose an event type");
-			} else if (! $("#event_name").val()) {
+			} else if (! $("#new_event_name").val()) {
 				alert("Must name event");
 			} else if (end.isBefore(start)) {
 				alert("Beginning time must be before ending time");
 			} else {
 				var event = {
-					title: $("#event_name").val(),
+					title: $("#new_event_name").val(),
 					start: start.format(),
 					end: end.format(),
-					className: $("#event_type").val() + "-event",
+					className: $("#new_event_type").val().toLowerCase() + "-event",
+					eventType: $("#new_event_type").val(),
 				}
 				$('#calendar').fullCalendar('renderEvent', event);
 				$('#new-event-modal').modal('toggle');
@@ -130,40 +146,40 @@
 								<h3 class="modal-title">New Event</h3>
 							</div>
 							<div class="modal-body">
-								<form id="event-info">
+								<form id="event-info-form">
 									<div class="row">
-										<label for="event_type" class="col-xs-3 col-form-label"><b>Type:</b></label>
+										<label for="new_event_type" class="col-xs-3 col-form-label"><b>Type:</b></label>
 										<div class="col-xs-9">
-											<select class="form-control" id="event_type">
+											<select class="form-control" id="new_event_type">
 												<option value="" selected>Event Type</option>
-												<option value="lecture">Lecture</option>
-												<option value="quiz">Quiz</option>
-												<option value="lab">Lab</option>
+												<option value="Lecture">Lecture</option>
+												<option value="Quiz">Quiz</option>
+												<option value="Lab">Lab</option>
 											</select>
 										</div>
 									</div>
 									<div class="row">
-										<label for="event_name" class="col-xs-3 col-form-label"><b>Name:</b></label>
+										<label for="new_event_name" class="col-xs-3 col-form-label"><b>Name:</b></label>
 										<div class="col-xs-9">
-											<input class="form-control" type="text" value="" id="event_name">
+											<input class="form-control" type="text" value="" id="new_event_name">
 										</div>
 									</div>
 									<div class="row">
-										<label for="event_date" class="col-xs-3 col-form-label"><b>Date:</b></label>
+										<label for="new_event_date" class="col-xs-3 col-form-label"><b>Date:</b></label>
 										<div class="col-xs-9">
-											<input class="form-control" type="date" value="" id="event_date">
+											<input class="form-control" type="date" value="" id="new_event_date">
 										</div>
 									</div>
 									<div class="row">
-										<label for="event_start_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
+										<label for="new_event_start_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
 										<div class="col-xs-9">
-											<input class="form-control" type="time" value="" id="event_start_time">
+											<input class="form-control" type="time" value="" id="new_event_start_time">
 										</div>
 									</div>
 									<div class="row">
-										<label for="event_end_time" class="col-xs-3 col-form-label"><b>End Time:</b></label>
+										<label for="new_event_end_time" class="col-xs-3 col-form-label"><b>End Time:</b></label>
 										<div class="col-xs-9">
-											<input class="form-control" type="time" value="" id="event_end_time">
+											<input class="form-control" type="time" value="" id="new_event_end_time">
 										</div>
 									</div>
 								</form>
@@ -171,6 +187,49 @@
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								<button id="create-event-btn" type="button" class="btn btn-primary">Create</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Event info modal -->
+				<div class="modal fade" id="event-modal" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal Content -->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h3 class="modal-title" id="event-title"></h3>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<label for="event_type" class="col-xs-3 col-form-label"><b>Type:</b></label>
+									<div class="col-xs-9">
+										<span id="event_type"></span>
+									</div>
+								</div>
+								<div class="row">
+									<label for="event_date" class="col-xs-3 col-form-label"><b>Date:</b></label>
+									<div class="col-xs-9">
+										<span id="event_date"></span>
+									</div>
+								</div>
+								<div class="row">
+									<label for="event_start_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
+									<div class="col-xs-9">
+										<span id="event_start_time"></span>
+									</div>
+								</div>
+								<div class="row">
+									<label for="event_end_time" class="col-xs-3 col-form-label"><b>End Time:</b></label>
+									<div class="col-xs-9">
+										<span id="event_end_time"></span>
+									</div>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button id="edit-event-btn" type="button" class="btn btn-primary">Edit</button>
 							</div>
 						</div>
 					</div>
