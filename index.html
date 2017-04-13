@@ -40,16 +40,27 @@
 
 		$(document).ready(function() {
 
-  		// page is now ready, initialize the calendar...
-  		$('#calendar').fullCalendar({
-      		// put your options and callbacks here
-      		weekends: false, // will hide Saturdays and Sundays
-      		dayClick: new_event
-      	});
+  			// page is now ready, initialize the calendar...
+  			$('#calendar').fullCalendar({
+      			// put your options and callbacks here
+      			weekends: false, // will hide Saturdays and Sundays
+      			dayClick: new_event
+      		});
 
-  	});
+  		});
 
-  </script>
+		$(document).on('click', "#create-event-btn", function(evt)
+		{
+			var event = {
+				title: $("#event_name").val(),
+				start: moment($("#event_date").val()+" " +$("#event_start_time").val()).format(),
+				end: moment($("#event_date").val()+" " +$("#event_end_time").val()).format()
+			}
+			$('#calendar').fullCalendar('renderEvent', event);
+			$('#new-event-modal').modal('toggle');
+		});
+
+	</script>
 
 </head>
 
@@ -123,7 +134,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button id="preview-feedback" type="button" class="btn btn-primary">Create</button>
+								<button id="create-event-btn" type="button" class="btn btn-primary">Create</button>
 							</div>
 						</div>
 					</div>
