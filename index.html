@@ -33,14 +33,11 @@
 			$('#event-info-form').get(0).reset();
 			$('#new-event-modal').modal('toggle');
 			$("#new_event_date").val(date.format());
-
 			$("#new_event_start_time").val("13:00");
 			$("#new_event_end_time").val("14:00");
-			
 		}
 
 		var open_event = function(event) {
-			console.log(event.title);
 			$("#event-title").text(event.title);
 			$("#event_type").text(event.eventType);
 			$("#event_date").text(moment(event.start).format("MMM D, YYYY"));
@@ -87,6 +84,19 @@
   			$('#calendar').fullCalendar('renderEvent', lecture2);
   			$('#calendar').fullCalendar('renderEvent', quiz1);
   		});
+
+		$(document).on('click', "#edit-event-btn", function(evt)
+		{
+			console.log('edit');
+			$('#event-info-form').get(0).reset();
+			$('#event-modal').modal('toggle');
+			$('#new-event-modal').modal('toggle');
+			$("#new_event_type").val($("#event_type").text());
+			$("#new_event_date").val(moment($("#event_date").text()).format("YYYY-MM-DD"));
+			console.log(moment($("#event_start_time").text(), "h:mm A").format("HH:mm"));
+			$("#new_event_start_time").val(moment($("#event_start_time").text(), "h:mm A").format("HH:mm"));
+			$("#new_event_end_time").val(moment($("#event_end_time").text(), "h:mm A").format("HH:mm"));
+		});
 
 		$(document).on('click', "#create-event-btn", function(evt)
 		{
