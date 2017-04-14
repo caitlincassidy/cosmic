@@ -92,6 +92,7 @@
 			$('#event-modal').modal('toggle');
 			$('#new-event-modal').modal('toggle');
 			$("#new_event_type").val($("#event_type").text());
+			$("#new_event_name").val($("#event-title").text());
 			$("#new_event_date").val(moment($("#event_date").text()).format("YYYY-MM-DD"));
 			console.log(moment($("#event_start_time").text(), "h:mm A").format("HH:mm"));
 			$("#new_event_start_time").val(moment($("#event_start_time").text(), "h:mm A").format("HH:mm"));
