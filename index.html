@@ -30,7 +30,9 @@
 	<script>
 
 		var new_event = function(date) {
+			current_event = null;
 			$('#event-info-form').get(0).reset();
+			$("#create-event-btn").text("Create");
 			$('#new-event-modal').modal('toggle');
 			$("#new_event_date").val(date.format());
 			$("#new_event_start_time").val("13:00");
@@ -38,6 +40,7 @@
 		}
 
 		var open_event = function(event) {
+			current_event = event;
 			$("#event-title").text(event.title);
 			$("#event_type").text(event.eventType);
 			$("#event_date").text(moment(event.start).format("MMM D, YYYY"));
@@ -69,6 +72,9 @@
 			eventType: "Quiz"
 		}
 
+		// necessary to cleanly update event
+		var current_event = null;
+
 		$(document).ready(function() {
 
   			// page is now ready, initialize the calendar...
@@ -87,23 +93,21 @@
 
 		$(document).on('click', "#edit-event-btn", function(evt)
 		{
-			console.log('edit');
 			$('#event-info-form').get(0).reset();
 			$('#event-modal').modal('toggle');
 			$('#new-event-modal').modal('toggle');
-			$("#new_event_type").val($("#event_type").text());
-			$("#new_event_name").val($("#event-title").text());
-			$("#new_event_date").val(moment($("#event_date").text()).format("YYYY-MM-DD"));
-			console.log(moment($("#event_start_time").text(), "h:mm A").format("HH:mm"));
-			$("#new_event_start_time").val(moment($("#event_start_time").text(), "h:mm A").format("HH:mm"));
-			$("#new_event_end_time").val(moment($("#event_end_time").text(), "h:mm A").format("HH:mm"));
+			$("#new_event_type").val(current_event.eventType);
+			$("#new_event_name").val(current_event.title);
+			$("#new_event_date").val(moment(current_event.start).format("YYYY-MM-DD"));
+			$("#new_event_start_time").val(moment(current_event.start).format("HH:mm"));
+			$("#new_event_end_time").val(moment(current_event.end).format("HH:mm"));
+			$("#create-event-btn").text("Update");
 		});
 
 		$(document).on('click', "#create-event-btn", function(evt)
 		{
 			var start = moment($("#new_event_date").val()+" " +$("#new_event_start_time").val());
 			var end = moment($("#new_event_date").val()+" " +$("#new_event_end_time").val());
-			console.log($("#new_event_type").val());
 			if (! $("#new_event_type").val()) {
 				alert("Must choose an event type");
 			} else if (! $("#new_event_name").val()) {
@@ -111,14 +115,20 @@
 			} else if (end.isBefore(start)) {
 				alert("Beginning time must be before ending time");
 			} else {
-				var event = {
-					title: $("#new_event_name").val(),
-					start: start.format(),
-					end: end.format(),
-					className: $("#new_event_type").val().toLowerCase() + "-event",
-					eventType: $("#new_event_type").val(),
+				var event = {};
+				var action = 'renderEvent';
+				if (current_event) {
+					action = 'updateEvent';
+					event = current_event;
 				}
-				$('#calendar').fullCalendar('renderEvent', event);
+					event.title = $("#new_event_name").val();
+					event.start = start.format();
+					event.end = end.format();
+					event.className = $("#new_event_type").val().toLowerCase() + "-event";
+					event.eventType = $("#new_event_type").val();
+
+				$('#calendar').fullCalendar(action, event);
+				current_event = null;
 				$('#new-event-modal').modal('toggle');
 			}
 		});
