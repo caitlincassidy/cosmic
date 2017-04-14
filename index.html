@@ -32,6 +32,7 @@
 		var new_event = function(date) {
 			current_event = null;
 			$('#event-info-form').get(0).reset();
+			$("#change-event-modal-title").text("New Event");
 			$("#create-event-btn").text("Create");
 			$('#new-event-modal').modal('toggle');
 			$("#new_event_date").val(date.format());
@@ -102,6 +103,7 @@
 			$("#new_event_start_time").val(moment(current_event.start).format("HH:mm"));
 			$("#new_event_end_time").val(moment(current_event.end).format("HH:mm"));
 			$("#create-event-btn").text("Update");
+			$("#change-event-modal-title").text("Edit Event");
 		});
 
 		$(document).on('click', "#create-event-btn", function(evt)
@@ -121,16 +123,24 @@
 					action = 'updateEvent';
 					event = current_event;
 				}
-					event.title = $("#new_event_name").val();
-					event.start = start.format();
-					event.end = end.format();
-					event.className = $("#new_event_type").val().toLowerCase() + "-event";
-					event.eventType = $("#new_event_type").val();
+				event.title = $("#new_event_name").val();
+				event.start = start.format();
+				event.end = end.format();
+				event.className = $("#new_event_type").val().toLowerCase() + "-event";
+				event.eventType = $("#new_event_type").val();
 
 				$('#calendar').fullCalendar(action, event);
 				current_event = null;
 				$('#new-event-modal').modal('toggle');
 			}
+		});
+
+		$(document).on('click', "#delete-event-btn", function(evt)
+		{
+			$('#calendar').fullCalendar( 'removeEvents' , function(event) {
+				return event === current_event;
+			});
+			current_event = null;
 		});
 
 	</script>
@@ -164,7 +174,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h3 class="modal-title">New Event</h3>
+								<h3 class="modal-title" id="change-event-modal-title">New Event</h3>
 							</div>
 							<div class="modal-body">
 								<form id="event-info-form">
@@ -249,6 +259,7 @@
 
 							</div>
 							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="delete-event-btn">Delete</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								<button id="edit-event-btn" type="button" class="btn btn-primary">Edit</button>
 							</div>
