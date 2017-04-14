@@ -30,43 +30,59 @@
 
   <script type="text/javascript">
 
-    // Display results for review session availability form
-    $(document).on('click', '#review-session-results', function() {
+    // Toggle the display of availability results
+    // for the review session form
+    $(document).on('click', '#review-session-item', function() {
+      if ($('#review-session-results').length == 0) {
+        // Currently, no results are displayed
+        // Add HTML to display them
 
-      // Who filled out the form
-      var peopleTypesString = `
-        <div id="people-types">
-          <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
-          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
-          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
-        </div>
-      `;
-      
-      var peopleTypes = $.parseHTML(peopleTypesString);
+        // Who filled out the form
+        var peopleTypesString = `
+          <div id="people-types">
+            <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
+            <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
+            <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
+          </div>
+        `;    
+        var peopleTypes = $.parseHTML(peopleTypesString);
 
+        // Times with colors indicating how many people are available
+        // TODO(Becky): Make the colors + fonts correct with the rest of the page
+        // See https://docs.google.com/spreadsheets/d/1JJ1zOtqbRdkwyiZrcodbDxq-wx4hQzkr3sBdXDPLQP8/edit#gid=0
+        var results = $.parseHTML(`<img src="img/availability-results.jpg"></img>`);
 
-      // Days + times + colorings
-      var tableString = `
-        <img src="img/availability-results.jpg"></img>
-        <img src="img/availability-key.jpg"></img>
+        // Key for what the colors mean
+        var key = $.parseHTML(`<img src="img/availability-key.jpg"></img>`);
 
-      `;
-      var resultsTable = $.parseHTML(tableString);
+        // Overall setup
+        var overallDivs = `
+          <div class="row" id="review-session-results">
+            <br />
+            <div class="col-lg-2" id="results-1"></div>
+            <div class="col-lg-2" id="results-2"></div>
+            <div class="col-lg-8" id="results-3"></div>
+          </div>
+        `;
 
+        // Widen div
+        $("#review-session-item").css("width", "100%");
 
-      // Make overall setup
-      var overallDivs = `
-        <div class="col-lg-3" id="results-1"></div>
-        <div class="col-lg-3" id="results-2"></div>
-        <div class="col-lg-3" id="results-3"></div>
-      `;
+        // Append to page
+        $("#review-session-item").append($.parseHTML(overallDivs));
+        $("#results-1").append(peopleTypes);
+        $("#results-2").append(key);
+        $("#results-3").append(results);
 
-      // Append to page
-      $("#review-session").append(peopleTypes);
-      $("#review-session").append(resultsTable);
+      } else {
+        // Results are currently shown, so remove them
+        $('#review-session-results').remove();
+        
+        // Reset width
+        $("#review-session-item").css("width", "");
+      }
 
-
-    })
+    });
 
   </script>
 
@@ -95,23 +111,18 @@
           <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
         </h1>  
 
-        <p> Initial Staff Meeting (2/16 - 2/26)
-        <button type="button" class="btn btn-default">View Results</button> </p>
-
-        <p> Weekly Office Hours (2/20 - 2/24)
-        <button type="button" class="btn btn-default">View Results</button> </p>
-
-        <!-- TODO: Make this appear only after they've
-        created a new survey -->
-        <div id="review-session">
-          <p> Quiz 1 Review Session (3/20 - 3/23)
-          <button type="button" class="btn btn-default" id="review-session-results">View Results</button> </p>
-
-        </div>
+        <!-- Links so that they appear clickable -->
+        <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <!-- TODO: only make this appear after they've created the new survey? -->
+        <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 
         <br />
 
         <button type="button" class="btn btn-default">New Survey</button> </p>
+
+        <!-- TODO(Rachel): Make this functional -->
+        <button type="button" class="btn btn-default">New Event</button> </p>
 
 
   		</div>
