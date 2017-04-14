@@ -27,6 +27,50 @@
 </head>
 
 <body>
+
+  <script type="text/javascript">
+
+    // Display results for review session availability form
+    $(document).on('click', '#review-session-results', function() {
+
+      // Who filled out the form
+      var peopleTypesString = `
+        <div id="people-types">
+          <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
+          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
+          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
+        </div>
+      `;
+      
+      var peopleTypes = $.parseHTML(peopleTypesString);
+
+
+      // Days + times + colorings
+      var tableString = `
+        <img src="img/availability-results.jpg"></img>
+        <img src="img/availability-key.jpg"></img>
+
+      `;
+      var resultsTable = $.parseHTML(tableString);
+
+
+      // Make overall setup
+      var overallDivs = `
+        <div class="col-lg-3" id="results-1"></div>
+        <div class="col-lg-3" id="results-2"></div>
+        <div class="col-lg-3" id="results-3"></div>
+      `;
+
+      // Append to page
+      $("#review-session").append(peopleTypes);
+      $("#review-session").append(resultsTable);
+
+
+    })
+
+  </script>
+
+
 	<div class="container-fluid">
 		<div class="row main-header">
 			<div class="col-lg-2">
@@ -50,6 +94,26 @@
   			<h1>
           <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
         </h1>  
+
+        <p> Initial Staff Meeting (2/16 - 2/26)
+        <button type="button" class="btn btn-default">View Results</button> </p>
+
+        <p> Weekly Office Hours (2/20 - 2/24)
+        <button type="button" class="btn btn-default">View Results</button> </p>
+
+        <!-- TODO: Make this appear only after they've
+        created a new survey -->
+        <div id="review-session">
+          <p> Quiz 1 Review Session (3/20 - 3/23)
+          <button type="button" class="btn btn-default" id="review-session-results">View Results</button> </p>
+
+        </div>
+
+        <br />
+
+        <button type="button" class="btn btn-default">New Survey</button> </p>
+
+
   		</div>
   		<div class="col-lg-2">
   		</div>
