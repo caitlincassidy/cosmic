@@ -81,14 +81,6 @@
 			});
 
 		});
-		
-		// Display request new feedback form
-		$(document).on('click', ".glyphicon-plus", function(evt)
-		{
-			button_id = evt.target.id;
-			$('#add-note-modal').modal('toggle');
-
-		});
 	</script>
 
 </head>
@@ -122,57 +114,6 @@
 				</h1>
 			</div>
 			
-			
-			<!-- Add Notes popup -->
-			<div class="modal fade" id="add-note-modal" role="dialog">
-				<div class="modal-dialog">
-					<!-- Modal Content -->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h3 class="modal-title" id="note-type"></h3>
-							<script>
-								$(document).on('click', ".glyphicon-plus", function(evt)
-								{
-									button_id = evt.target.id;
-									document.getElementById('note-type').innerHTML = "Add "+ button_id +" Note";
-								});
-							</script>
-						</div>
-						<div class="modal-body">
-							<div class="btn-group">
-							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="selection" id="dropdown_selection">Lecture 1 </span><span class="caret"></span>
-							  </button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">Lecture 1 </a></li>
-									<li><a href="#">Lecture 2 </a></li>
-									<li><a href="#">Lecture 3 </a></li>
-								</ul>
-							</div>
-							
-							<script>
-								$(".dropdown-menu li a").click(function(){
-									$(this).parents(".btn-group").find('#dropdown_selection').text($(this).text());
-									$(this).parents(".btn-group").find('#dropdown_selection').val($(this).text());
-//									console.log($("#dropdown_selection").text());
-
-								});
-							</script>
-							<br>
-							<br>
-							<textarea type="textarea" class="form-control input-lg" placeholder="Type your notes here before you forget them..."></textarea>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button id="submit_note" type="button" class="btn btn-primary">Submit Note</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			
-			
-			
 			<div class="form-group">
 				<h2 id="gen">
 					General
@@ -191,12 +132,15 @@
 				</h2>
 				<br>
 				<div class="list-group">
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#lec_1_textarea">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg" id="lec_1_textarea" data-toggle="collapse">The students didn't understand this lecture at all...</textarea>
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#lec_2_textarea">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg" id="lec_2_textarea" data-toggle="collapse"></textarea>
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#lec_3_textarea">Lecture 3 <span  class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg" id="lec_3_textarea" data-toggle="collapse">Standing ovation! They loved the candy!</textarea>
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lec_1">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_1" data-toggle="collapse">The students didn't understand this lecture at all...</textarea>
+					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_1"> Save Note</button>
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lec_2">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_2" data-toggle="collapse"></textarea>
+					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_2"> Save Note</button>
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lec_3">Lecture 3 <span  class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_3" data-toggle="collapse">Standing ovation! They loved the candy!</textarea>
+					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_3"> Save Note</button>
 				</div>
 			</div>
 			<br>
@@ -209,10 +153,14 @@
 				</h2>
 				<br>
 				<div class="list-group">
-					<a data-toggle="collapse" data-target="#quiz_1_textarea" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg" id="quiz_1_textarea" data-toggle="collapse">The first part was too long</textarea>
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#quiz_2_textarea">Quiz 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg" id="quiz_2_textarea" data-toggle="collapse"></textarea>
+					<a data-toggle="collapse" data-target=".quiz_1" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg quiz_1" data-toggle="collapse"></textarea>
+					<button type="button" class="btn btn-primary pull-right quiz_col collapse quiz_1" id="quiz_1_save"> Save Note</button>
+					<script>
+						$("#quiz_1_save").click(function() {
+							alert("Note saved!");
+						})
+					</script>
 				</div>
 			</div>
 			
@@ -226,12 +174,15 @@
 				</h2>
 				<br>
 				<div class="list-group">
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#lab_1_textarea">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg" id="lab_1_textarea" data-toggle="collapse">The students didn't understand this lab at all...</textarea>
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#lab_2_textarea">Lab 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg" id="lab_2_textarea" data-toggle="collapse"></textarea>
-					<a class="list-group-item listed-item" data-toggle="collapse" data-target="#lab_3_textarea">Lab 3 <span  class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg" id="lab_3_textarea" data-toggle="collapse">Standing ovation! They loved the candy!</textarea>
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lab_1">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg lab_1" data-toggle="collapse">The students didn't understand this lab at all...</textarea>
+					<button type="button" class="btn btn-primary pull-right lab_col collapse lab_1"> Save Note</button>
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lab_2">Lab 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg lab_2" data-toggle="collapse"></textarea>
+					<button type="button" class="btn btn-primary pull-right lab_col collapse lab_2"> Save Note</button>
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lab_3">Lab 3 <span  class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg lab_3" data-toggle="collapse">Standing ovation! They loved the candy!</textarea>
+					<button type="button" class="btn btn-primary pull-right lab_col collapse lab_3"> Save Note</button>
 				</div>
 			</div>
 			
@@ -247,8 +198,8 @@
 
 			
   		</div>
-  	</div> <!-- class="row" -->
-	</div> <!-- class="container" -->
+  	</div>
+	</div>
 
 
   <script id="load-menubar-script" src="js/load-menubar.js" link="notes.html"></script>
