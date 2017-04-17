@@ -51,8 +51,38 @@
 				eventClick: open_event,
 			});
 
-			$(document).on('click', '#new-event-btn', function(evt) {
-          new_event();
+      $('.fc-month-button').text('Month');
+      $('.fc-agendaWeek-button').text('Week');
+      $('.fc-agendaDay-button').text('Day');
+
+      $(document).on('change', '#lecture-event-filter', function(evt) {
+      	if (evt.target.checked)
+      		$('.lecture-event').show();
+      	else
+      		$('.lecture-event').hide();
+      });
+      $(document).on('change', '#quiz-event-filter', function(evt) {
+      	if (evt.target.checked)
+      		$('.quiz-event').show();
+      	else
+      		$('.quiz-event').hide();
+      });
+      $(document).on('change', '#lab-event-filter', function(evt) {
+      	if (evt.target.checked)
+      		$('.lab-event').show();
+      	else
+      		$('.lab-event').hide();
+      });
+
+      $(document).on('click', '#select-all-filters', function(evt) {
+      	$('#lecture-event-filter').attr('checked', true).trigger('change');
+      	$('#quiz-event-filter').attr('checked', true).trigger('change');
+      	$('#lab-event-filter').attr('checked', true).trigger('change');
+      });
+      $(document).on('click', '#clear-all-filters', function(evt) {
+      	$('#lecture-event-filter').attr('checked', false).trigger('change');
+      	$('#quiz-event-filter').attr('checked', false).trigger('change');
+      	$('#lab-event-filter').attr('checked', false).trigger('change');
       });
 		});
 	</script>
@@ -81,19 +111,26 @@
 		<div class="row">
 			<div class="col-lg-2" id="menubar">
 			</div>
+			<!-- main content column -->
 			<div class="col-lg-8">
 				<!-- New event modal -->
 				<div class="modal fade" id="new-event-modal" role="dialog"></div>
 				<!-- Event info modal -->
 				<div class="modal fade" id="event-modal" role="dialog"></div>
 				<div id='calendar'></div>
-			</div>
+			</div> <!-- main content column -->
 			<div class="col-lg-2">
 				<div class="row">
           <a href="events-list-view.html">List View</a>
         </div>
-        <div class="row">
-          <button id='new-event-btn' type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Event</button>
+        <div class="row event-filter-container">
+        	<form class="event-filter">
+					  <input type="checkbox" id="lecture-event-filter" value="Lectures" checked> Lectures <br>
+					  <input type="checkbox" id="quiz-event-filter" value="Quizzes" checked>  Quizzes <br>
+					  <input type="checkbox" id="lab-event-filter" value="Labs" checked> Labs <br>
+					</form>
+					<button id="select-all-filters" type="button" class="btn btn-default">Select All</button>
+					<button id="clear-all-filters" type="button" class="btn btn-default">Clear All</button>
         </div>
 			</div>
 		</div> <!-- class="row" -->

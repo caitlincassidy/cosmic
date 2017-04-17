@@ -89,3 +89,31 @@ Modifying the width of list items on the Notes and Feedback page
  .lab-event {
  	background-color: blue;
  }
+
+
+/* Events Page Styling */
+.fc-widget-content {
+	cursor: pointer;
+}
+
+/*td.fc-day:hover {
+	background-color: #f4f4f4;
+}*/
+
+.fc-event-container {
+	opacity: 0.8;
+}
+
+.fc-event-container:hover {
+	opacity: 1.0;
+}
+
+.event-filter-container {
+	margin-top: 10%;
+  border-top: thin solid #a8a9ad;
+}
+
+.event-filter {
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
