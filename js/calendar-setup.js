@@ -51,3 +51,79 @@ var sampleEvents = [
 	lecture2,
 	quiz1
 ];
+
+var calendarView = function() {
+	$('#calendar').fullCalendar('destroy');
+	$('#calendar').fullCalendar({
+		// put your options and callbacks here
+		header: {
+	    left: 'prev, next, today, title',
+	    right: 'month, agendaWeek, agendaFiveDay, agendaDay'
+	  },
+	  views: {
+	    agendaFiveDay: {
+	        type: 'agenda',
+	        duration: { days: 5 },
+	        buttonText: '5 Day'
+	    }
+	  },
+	  defaultView: 'month',
+	  editable: true,
+	  events: sampleEvents,
+		displayEventEnd: true,
+		dayClick: new_event,
+		eventClick: open_event,
+	});
+
+	// change Full Calendar default button labels
+  $('.fc-month-button').text('Month');
+  $('.fc-agendaWeek-button').text('Week');
+  $('.fc-agendaDay-button').text('Day');
+};
+
+var listView = function() {
+	$('#calendar').fullCalendar('destroy');
+	$('#calendar').fullCalendar({
+    // put your options and callbacks here
+    header: {
+      left: 'prev, next, today, title',
+      right: 'listMonth, listWeek, listFiveDay, listDay'
+    },
+    views: {
+      listFiveDay: {
+          type: 'list',
+          duration: { days: 5 },
+          buttonText: '5 Day'
+      }
+    },
+    defaultView: 'listMonth',
+    editable: true,
+    events: sampleEvents,
+    displayEventEnd: true,
+    dayClick: new_event,
+    eventClick: open_event,
+  });
+
+	// change Full Calendar default button labels
+	$('.fc-listMonth-button').text('Month');
+	$('.fc-listWeek-button').text('Week');
+	$('.fc-listDay-button').text('Day');
+};
+
+var filterEvents = function() {
+	filters = $('.event-filter').children();
+	filters.each(function(index, filter) {
+		if (!filter.checked) {
+			var filterType = filter.id.split('-')[0];
+			$('.' + filterType + '-event').hide();
+		}
+	});
+};
+
+var toggleView = function(target) {
+	if (target.checked)
+		listView();
+	else
+		calendarView();
+	filterEvents();
+};

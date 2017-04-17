@@ -7,6 +7,7 @@
 
 	<!-- Load style sheets -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
 	<link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
@@ -25,67 +26,17 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 	<!-- Custom javascript -->
 	<script src="js/calendar-setup.js"></script>
 	<script>
 		$(document).ready(function() {
-			$('#calendar').fullCalendar({
-				// put your options and callbacks here
-				header: {
-			    left: 'prev, next, today, title',
-			    right: 'month, agendaWeek, agendaFiveDay, agendaDay'
-			  },
-			  views: {
-			    agendaFiveDay: {
-			        type: 'agenda',
-			        duration: { days: 5 },
-			        buttonText: '5 Day'
-			    }
-			  },
-			  defaultView: 'month',
-			  editable: true,
-			  events: sampleEvents,
-				displayEventEnd: true,
-				dayClick: new_event,
-				eventClick: open_event,
-			});
-
-      $('.fc-month-button').text('Month');
-      $('.fc-agendaWeek-button').text('Week');
-      $('.fc-agendaDay-button').text('Day');
-
-      $(document).on('change', '#lecture-event-filter', function(evt) {
-      	if (evt.target.checked)
-      		$('.lecture-event').show();
-      	else
-      		$('.lecture-event').hide();
-      });
-      $(document).on('change', '#quiz-event-filter', function(evt) {
-      	if (evt.target.checked)
-      		$('.quiz-event').show();
-      	else
-      		$('.quiz-event').hide();
-      });
-      $(document).on('change', '#lab-event-filter', function(evt) {
-      	if (evt.target.checked)
-      		$('.lab-event').show();
-      	else
-      		$('.lab-event').hide();
-      });
-
-      $(document).on('click', '#select-all-filters', function(evt) {
-      	$('#lecture-event-filter').attr('checked', true).trigger('change');
-      	$('#quiz-event-filter').attr('checked', true).trigger('change');
-      	$('#lab-event-filter').attr('checked', true).trigger('change');
-      });
-      $(document).on('click', '#clear-all-filters', function(evt) {
-      	$('#lecture-event-filter').attr('checked', false).trigger('change');
-      	$('#quiz-event-filter').attr('checked', false).trigger('change');
-      	$('#lab-event-filter').attr('checked', false).trigger('change');
-      });
+			// page is now ready, initialize the calendar...
+			calendarView();
 		});
 	</script>
+	<script src="js/event-filter.js" defer></script>
 	<script src="js/load-new-event-modal.js" defer></script>
 	<script src="js/load-event-modal.js" defer></script>
 	<script src="js/event-modal.js" defer></script>
@@ -121,7 +72,7 @@
 			</div> <!-- main content column -->
 			<div class="col-lg-2">
 				<div class="row">
-          <a href="events-list-view.html">List View</a>
+          <input id="eventsToggle" type="checkbox" data-toggle="toggle" data-on="Calendar" data-off="List" onchange="toggleView(this)">
         </div>
         <div class="row event-filter-container">
         	<form class="event-filter">
