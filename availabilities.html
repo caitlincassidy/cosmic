@@ -2,27 +2,31 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<title>Cosmic</title>
+  <meta charset="utf-8">
+  <title>Cosmic</title>
 
-<!-- Load style sheets -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Load style sheets -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
-<link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
+  <link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
 
-<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
- <link rel="stylesheet" href="css/mainLayout.css">
+  <link rel="stylesheet" href="css/mainLayout.css">
 
-<!-- Use mobile-aware viewport -->
-<meta name="viewport" content=
+  <!-- Use mobile-aware viewport -->
+  <meta name="viewport" content=
   "width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Load any supplemental Javascript libraries here -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+  <!-- Load any supplemental Javascript libraries here -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Custom javascript -->
+  <script src="js/load-new-event-modal.js" defer></script>
 
 </head>
 
@@ -39,11 +43,11 @@
 
         // Who filled out the form
         var peopleTypesString = `
-          <div id="people-types">
-            <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
-            <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
-            <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
-          </div>
+        <div id="people-types">
+          <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
+          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
+          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
+        </div>
         `;    
         var peopleTypes = $.parseHTML(peopleTypesString);
 
@@ -57,12 +61,12 @@
 
         // Overall setup
         var overallDivs = `
-          <div class="row" id="review-session-results">
-            <br />
-            <div class="col-lg-2" id="results-1"></div>
-            <div class="col-lg-2" id="results-2"></div>
-            <div class="col-lg-8" id="results-3"></div>
-          </div>
+        <div class="row" id="review-session-results">
+          <br />
+          <div class="col-lg-2" id="results-1"></div>
+          <div class="col-lg-2" id="results-2"></div>
+          <div class="col-lg-8" id="results-3"></div>
+        </div>
         `;
 
         // Widen div
@@ -84,55 +88,67 @@
 
     });
 
+    $(document).on('click', "#new-event-btn", function(evt) {
+      $('#event-info-form').get(0).reset();
+      $("#change-event-modal-title").text("New Event");
+      $("#create-event-btn").text("Create");
+      $('#new-event-modal').modal('toggle');
+      $("#new_event_date").val(moment().format("YYYY-MM-DD"));
+      $("#new_event_start_time").val("13:00");
+      $("#new_event_end_time").val("14:00");
+    });
+
   </script>
 
 
-	<div class="container-fluid">
-		<div class="row main-header">
-			<div class="col-lg-2">
-			</div>
-			<div class="col-lg-8">
-				<h1> C&nbsp;O&nbsp;S&nbsp;M&nbsp;I&nbsp;C </h1>
-			</div>
-			<div class="col-lg-2">
-				<div class="row">
-  				<a href="login.html">Logout</a>
-  			</div>
-				<div class="row">
-  				<a href="settings.html">Settings</a>
-  			</div>
-			</div>
-		</div>
-  	<div class="row">
-  		<div class="col-lg-2" id="menubar">
-  		</div>
-  		<div class="col-lg-8">
-  			<h1>
-          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
-        </h1>  
+  <div class="container-fluid">
+    <div class="row main-header">
+     <div class="col-lg-2">
+     </div>
+     <div class="col-lg-8">
+      <h1> C&nbsp;O&nbsp;S&nbsp;M&nbsp;I&nbsp;C </h1>
+    </div>
+    <div class="col-lg-2">
+      <div class="row">
+        <a href="login.html">Logout</a>
+      </div>
+      <div class="row">
+        <a href="settings.html">Settings</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2" id="menubar">
+    </div>
+    <div class="col-lg-8">
+      <!-- New event modal -->
+      <div class="modal fade" id="new-event-modal" role="dialog"></div>
+      <h1>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
+      </h1>  
 
-        <!-- Links so that they appear clickable -->
-        <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-        <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-        <!-- TODO: only make this appear after they've created the new survey? -->
-        <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+      <!-- Links so that they appear clickable -->
+      <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+      <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+      <!-- TODO: only make this appear after they've created the new survey? -->
+      <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 
-        <br />
+      <br />
 
-		<!-- TODO(Isaac): Perhaps move the buttons to the right sidebar, so that it's easier to make new events/surveys while expanding availability responses? -->
-        <button type="button" class="btn btn-default">New Survey</button> </p>
+      <!-- TODO(Isaac): Perhaps move the buttons to the right sidebar, so that it's easier to make new events/surveys while expanding availability responses? -->
+      <button type="button" class="btn btn-default">New Survey</button> </p>
 
-        <!-- TODO(Rachel): Make this functional -->
-        <button type="button" class="btn btn-default">New Event</button> </p>
+      <!-- TODO(Rachel): Make this functional -->
+      <button type="button" class="btn btn-default" id="new-event-btn">New Event</button> </p>
 
 
-  		</div>
-  		<div class="col-lg-2">
-  		</div>
-  	</div> <!-- class="row" -->
-	</div> <!-- class="container" -->
+    </div>
+    <div class="col-lg-2">
+    </div>
+  </div> <!-- class="row" -->
+</div> <!-- class="container" -->
 
-  <script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
+<script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
 </body>
 
 </html>
