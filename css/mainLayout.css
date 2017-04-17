@@ -82,3 +82,16 @@ Modifying the width of list items on the Notes and Feedback page
 .listed-item-availability {
 	width: 50%;
 }
+
+ .lecture-event {
+ 	background-color: green;
+ }
+
+ .quiz-event {
+ 	background-color: purple;
+ }
+
+ .lab-event {
+ 	background-color: blue;
+ }
+
