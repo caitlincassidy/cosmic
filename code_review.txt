@@ -1,0 +1,19 @@
+1. View/Collapse All Button
+I'm a little confused about what the desired behavior for this button is. For example, if I click on 'General Quiz Notes', the general notes expand (which is what I expect), but if I then click on 'View/Collapse All', the general notes will collapse, but all the specific lectures notes will expand. So now when I toggle the 'View/Collapse All' button general notes will always do the opposite of what the specific lectures notes do. I would have expected that 'View/Collapse All' opens or collapses all of the items that can be opened/collapsed. I would suggest creating two separate buttons, or having the label change when you toggle the view.
+
+Looking at the feedback page, it looks like you have two separate buttons for this. (I also like having the icons, like you have on the feedback page as well).
+
+2. General Notes
+I know this doesn't have a backend, but can we add a saved button, or some message that lets the user know that they changes they make in this box won't be lost? Just noticed the other notes have save buttons. I think it should be consistent with the other specific notes.
+
+3. General Notes
+I kind of want to move this button down to the next row...just because it doesn't really pair up with the 'View/Collapse All' button. I would put it in a similar drop-down element as the rest of the notes (but have some white space between the general notes and the specific lecture/quiz/lab notes).
+
+4. Heading
+The parenthetical comments are fun :) , but I would rather not have them in there when we submit this...
+
+5. notes.html
+I would take out any script tags that you aren't using (i.e. full-calendar)
+
+6. notes.html
+Idk if we will re-use the stick-bar code. If we do, we should definitely put it in a separate .js file. Even if we don't, it's just neater to do so.
