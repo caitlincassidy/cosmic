@@ -27,6 +27,35 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<!-- Custom javascript -->
+	<script src="js/calendar-setup.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#calendar').fullCalendar({
+				// put your options and callbacks here
+				header: {
+			    left: 'prev, next, today, title',
+			    right: 'month, agendaWeek, agendaFiveDay, agendaDay'
+			  },
+			  views: {
+			    agendaFiveDay: {
+			        type: 'agenda',
+			        duration: { days: 5 },
+			        buttonText: '5 Day'
+			    }
+			  },
+			  defaultView: 'month',
+			  editable: true,
+			  events: sampleEvents,
+				displayEventEnd: true,
+				dayClick: new_event,
+				eventClick: open_event,
+			});
+
+			$(document).on('click', '#new-event-btn', function(evt) {
+          new_event();
+      });
+		});
+	</script>
 	<script src="js/load-new-event-modal.js" defer></script>
 	<script src="js/load-event-modal.js" defer></script>
 	<script src="js/event-modal.js" defer></script>
@@ -60,6 +89,12 @@
 				<div id='calendar'></div>
 			</div>
 			<div class="col-lg-2">
+				<div class="row">
+          <a href="events-list-view.html">List View</a>
+        </div>
+        <div class="row">
+          <button id='new-event-btn' type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Event</button>
+        </div>
 			</div>
 		</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
