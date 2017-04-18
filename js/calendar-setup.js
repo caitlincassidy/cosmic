@@ -81,6 +81,18 @@ var calendarView = function() {
   $('.fc-agendaDay-button').text('Day');
 };
 
+// TODO: Why are there blue dots to the left of the event
+// name in the list view?
+
+// TODO: It seems weird that the day of the week is allll
+// the way on the right edge of the list, when
+// everything else is on the left side. Can you move the day
+// of the week to be next to the 'April 12 2017' part?
+// there can be some amount of whitespace between them
+
+// TODO: It's difficult to read the text with the dark
+// green / dark purple background. Can you either choose
+// different colors or just lighten those ones?
 var listView = function() {
 	$('#calendar').fullCalendar('destroy');
 	$('#calendar').fullCalendar({
