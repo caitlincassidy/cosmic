@@ -104,13 +104,14 @@
 
     $(document).on('click', "#new-survey-btn", function(evt) {
       $('#request-availability-form').get(0).reset();
-      $("#availabilities_dates").daterangepicker();
-      // $("#change-event-modal-title").text("New Event");
-      // $("#create-event-btn").text("Create");
+      $("#availabilities_dates").daterangepicker({
+        "applyClass": "btn-primary",
+        "startDate": moment().startOf("week").add(1,"week").format("MM/DD/YYYY"),
+        "endDate": moment().endOf("week").add(1,"week").format("MM/DD/YYYY"),
+      });
       $('#new-survey-modal').modal('toggle');
-      // $("#new_event_date").val(moment().format("YYYY-MM-DD"));
-      // $("#new_event_start_time").val("13:00");
-      // $("#new_event_end_time").val("14:00");
+      $("#availabilities_start_time").val("17:00");
+      $("#availabilities_end_time").val("22:00");
     });
 
   </script>
@@ -181,7 +182,7 @@
                     <div class="row">
                       <label for="availabilities_dates" class="col-xs-4 col-form-label"><b>Dates:</b></label>
                       <div class="col-xs-8">
-                        <input type="text" class="form-control" id="availabilities_dates" value="01/01/2015 - 01/31/2015" />
+                        <input type="text" class="form-control" id="availabilities_dates" />
                       </div>
                     </div>
                     <div class="row">
@@ -212,7 +213,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button id="preview-feedback" type="button" class="btn btn-primary">Preview</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
             </div>
           </div>
         </div>
