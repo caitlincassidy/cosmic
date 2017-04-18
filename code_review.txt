@@ -1,3 +1,5 @@
+----Notes----
+
 1. View/Collapse All Button
 I'm a little confused about what the desired behavior for this button is. For example, if I click on 'General Quiz Notes', the general notes expand (which is what I expect), but if I then click on 'View/Collapse All', the general notes will collapse, but all the specific lectures notes will expand. So now when I toggle the 'View/Collapse All' button general notes will always do the opposite of what the specific lectures notes do. I would have expected that 'View/Collapse All' opens or collapses all of the items that can be opened/collapsed. I would suggest creating two separate buttons, or having the label change when you toggle the view.
 
@@ -17,3 +19,20 @@ I would take out any script tags that you aren't using (i.e. full-calendar)
 
 6. notes.html
 Idk if we will re-use the stick-bar code. If we do, we should definitely put it in a separate .js file. Even if we don't, it's just neater to do so.
+
+
+----Feedback----
+1. feedback.html
+Put all the js in a separate file. Also, is the sticky-bar code the same as what's used in notes.html? Should have that in one place.
+
+2. feedback.html
+Take out any script tags you're not using (e.g. full-calendar)
+
+3. Heading
+Would take out the parenthetical comment.
+
+4. The buttons don't work on this page like they do on the notes page. Would put in some dummy data to show how the buttons display things. Right now they just jump you back to the top of the page.
+
+5. General
+The 'See more' link collapses the notes instead of showing more notes. I would update the label or something to toggle between 'see more' and 'see less'. Right now it's misleading.
+
