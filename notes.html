@@ -11,6 +11,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+<script src="js/sticky-sidebar.js"></script>
+<script src="js/collapse-expand-all.js"></script>
 
 <!-- Load style sheets -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,7 +23,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
- <link rel="stylesheet" href="css/mainLayout.css">
+<link rel="stylesheet" href="css/mainLayout.css">
 
 <!-- Use mobile-aware viewport -->
 <meta name="viewport" content=
@@ -28,65 +31,16 @@
 
 	
 <script>
-		$(document).ready(function() {
-			// From http://www.bootply.com/100983
-			/* smooth scrolling sections */
-			$('a[href*=\\#]:not([href=\\#])').click(function() {
-				if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-				  var target = $(this.hash);
-				  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-				  if (target.length) {
-					$('html,body').animate({
-					  scrollTop: target.offset().top - 50
-					}, 1000);
-					return false;
-				  }
-				}
-			});
-
-			// From http://zurb.com/building-blocks/sticky-sidebar
-			var stickySidebar = $('.sticky');
-
-			if (stickySidebar.length > 0) { 
-			  var stickyHeight = stickySidebar.height(),
-				  sidebarTop = stickySidebar.offset().top;
-			}
-
-			// on scroll move the sidebar
-			$(window).scroll(function () {
-			  if (stickySidebar.length > 0) { 
-				var scrollTop = $(window).scrollTop();
-
-				if (sidebarTop < scrollTop) {
-				  stickySidebar.css('top', scrollTop - sidebarTop);
-
-				  // stop the sticky sidebar at the footer to avoid overlapping
-				  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-					  stickyStop = $('#main-content').offset().top + $('#main-content').height();
-				  if (stickyStop < sidebarBottom) {
-					var stopPosition = $('#main-content').height() - stickyHeight;
-					stickySidebar.css('top', stopPosition);
-				  }
-				}
-				else {
-				  stickySidebar.css('top', '0');
-				} 
-			  }
-			});
-
-			$(window).resize(function () {
-			  if (stickySidebar.length > 0) { 
-				stickyHeight = stickySidebar.height();
-			  }
-			});
-
-		});
-	</script>
+	$(document).ready(function() {
+		$("#quiz_1_save").click(function() {
+			alert("Note saved!");
+		})
+	});
+</script>
 
 </head>
 
 <body>
-	
 	
 	<div class="container-fluid">
 		<div class="row main-header">
@@ -110,7 +64,7 @@
   		<div class="col-lg-8" id="main-content">
 			<div class="page-header">
 				<h1>
-					<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Notes <small>(because you have poor memory...)</small>
+					<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Notes
 				</h1>
 			</div>
 			
@@ -126,20 +80,24 @@
 			<div>
 				<h2 id="lecs">
 					Lectures 
-					<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#lec_gen_textarea">General Quiz Notes</button>
-					<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".lec_col">View/Collapse All</button>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg" id="lec_gen_textarea" data-toggle="collapse">Handouts are effective </textarea>
+					<button type="button" class="btn btn-default" id="expand_all_lec"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+					<button type="button" class="btn btn-default" id="collapse_all_lec"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 				</h2>
 				<br>
 				<div class="list-group">
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".gen_lec">General Lecture Notes <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col form-control collapse input-lg gen_lec">Handouts are effective </textarea>
+					<button type="button" class="btn btn-primary pull-right lec_col collapse gen_lec"> Save Note</button>
+					<br>
+					
 					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lec_1">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_1" data-toggle="collapse">The students didn't understand this lecture at all...</textarea>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_1">The students didn't understand this lecture at all...</textarea>
 					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_1"> Save Note</button>
 					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lec_2">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_2" data-toggle="collapse"></textarea>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_2"></textarea>
 					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_2"> Save Note</button>
 					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lec_3">Lecture 3 <span  class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_3" data-toggle="collapse">Standing ovation! They loved the candy!</textarea>
+					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_3">Standing ovation! They loved the candy!</textarea>
 					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_3"> Save Note</button>
 				</div>
 			</div>
@@ -147,20 +105,19 @@
 			<div>
 				<h2 id="quizzes">
 					Quizzes 
-					<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#quiz_gen_textarea">General Quiz Notes</button>
-					<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".quiz_col">View/Collapse All</button>
-					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg" id="quiz_gen_textarea" data-toggle="collapse">Quiz review sessions are important! </textarea>
+					<button type="button" class="btn btn-default" id="expand_all_quiz"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+					<button type="button" class="btn btn-default" id="collapse_all_quiz"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 				</h2>
 				<br>
 				<div class="list-group">
+					<a data-toggle="collapse" data-target=".gen_quiz" class="list-group-item listed-item">General Quiz Notes<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg gen_quiz">Quiz review sessions are important! </textarea>
+					<button type="button" class="btn btn-primary pull-right quiz_col collapse gen_quiz"> Save Note</button>
+					<br>
+					
 					<a data-toggle="collapse" data-target=".quiz_1" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg quiz_1" data-toggle="collapse"></textarea>
 					<button type="button" class="btn btn-primary pull-right quiz_col collapse quiz_1" id="quiz_1_save"> Save Note</button>
-					<script>
-						$("#quiz_1_save").click(function() {
-							alert("Note saved!");
-						})
-					</script>
 				</div>
 			</div>
 			
@@ -168,12 +125,17 @@
 				<br>
 				<h2 id="labs">
 					Labs 
-					<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#lab_gen_textarea">General Labs Notes</button>
-					<button type="button" class="btn btn-default" data-toggle="collapse" data-target=".lab_col">View/Collapse All</button>
-					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg" id="lab_gen_textarea" data-toggle="collapse"></textarea>
+					<button type="button" class="btn btn-default" id="expand_all_lab"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+					<button type="button" class="btn btn-default" id="collapse_all_lab"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+
 				</h2>
 				<br>
 				<div class="list-group">
+					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".gen_lab">General Lab Notes <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>					
+					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg gen_lab" data-toggle="collapse"></textarea>
+					<button type="button" class="btn btn-primary pull-right lab_col collapse gen_lab"> Save Note</button>
+					<br>
+					
 					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".lab_1">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg lab_1" data-toggle="collapse">The students didn't understand this lab at all...</textarea>
 					<button type="button" class="btn btn-primary pull-right lab_col collapse lab_1"> Save Note</button>
