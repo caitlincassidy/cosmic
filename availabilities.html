@@ -56,7 +56,7 @@
         var peopleTypes = $.parseHTML(peopleTypesString);
 
         // Times with colors indicating how many people are available
-        // TODO(Becky): Make the colors + fonts correct with the rest of the page
+        // TODO(@Becky): Make the colors + fonts correct with the rest of the page
         // See https://docs.google.com/spreadsheets/d/1JJ1zOtqbRdkwyiZrcodbDxq-wx4hQzkr3sBdXDPLQP8/edit#gid=0
         var results = $.parseHTML(`<img src="img/availability-results.jpg"></img>`);
 
@@ -115,7 +115,6 @@
 
   </script>
 
-
   <div class="container-fluid">
     <div class="row main-header">
      <div class="col-lg-2">
@@ -135,7 +134,7 @@
   <div class="row">
     <div class="col-lg-2" id="menubar">
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-10">
       <!-- New event modal -->
       <div class="modal fade" id="new-event-modal" role="dialog"></div>
       <div class="modal fade" id="new-survey-modal" role="dialog">
@@ -179,14 +178,14 @@
                     </fieldset>
                   </div>
                   <div class="col-xs-8">
-                  <div class="row">
-                    <label for="availabilities_dates" class="col-xs-4 col-form-label"><b>Dates:</b></label>
+                    <div class="row">
+                      <label for="availabilities_dates" class="col-xs-4 col-form-label"><b>Dates:</b></label>
                       <div class="col-xs-8">
                         <input type="text" class="form-control" id="availabilities_dates" value="01/01/2015 - 01/31/2015" />
                       </div>
                     </div>
                     <div class="row">
-                    <label for="availabilities_start_time" class="col-xs-4 col-form-label"><b>Start Time:</b></label>
+                      <label for="availabilities_start_time" class="col-xs-4 col-form-label"><b>Start Time:</b></label>
                       <div class="col-xs-8">
                         <input class="form-control" type="time" value="" id="availabilities_start_time">
                       </div>
@@ -218,32 +217,41 @@
           </div>
         </div>
       </div>
+
       <h1>
         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
       </h1>  
 
-      <!-- Links so that they appear clickable -->
-      <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-      <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-      <!-- TODO: only make this appear after they've created the new survey? -->
-      <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+      <div class="col-lg-10">
 
-      <br />
+        <!-- Links so that they appear clickable -->
+        <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <!-- TODO: only make this appear after they've created the new survey? -->
+        <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 
-      <!-- TODO(Isaac): Perhaps move the buttons to the right sidebar, so that it's easier to make new events/surveys while expanding availability responses? -->
-      <button type="button" class="btn btn-default" id="new-survey-btn">New Survey</button> </p>
+      </div>
 
-      <!-- TODO(Rachel): Make this functional -->
-      <button type="button" class="btn btn-default" id="new-event-btn">New Event</button> </p>
+
+      <div class="col-lg-1"> <!-- column for buttons -->
+        <!-- TODO(@Rachel): Make this functional -->
+        <button type="button" class="btn btn-default" id="new-survey-btn">New Survey</button> </p>
+
+        <!-- TODO(@Rachel): Make this functional -->
+        <button type="button" class="btn btn-default" id="new-event-btn">New Event</button> </p>
+      </div>
+
+      <div class="col-lg-1"> <!-- margin -->
+      </div>
 
 
     </div>
-    <div class="col-lg-2">
-    </div>
+
   </div> <!-- class="row" -->
 </div> <!-- class="container" -->
 
 <script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
+<!-- >>>>>>> master -->
 </body>
 
 </html>
