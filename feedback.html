@@ -100,6 +100,18 @@
 				}
 
 			});
+			
+			
+			$(".quiz_but").click(function() {
+				
+				var x = document.getElementById('request');
+				if (x.style.display === 'none') {
+					x.style.display = 'inline-block';
+				} else {
+					x.style.display = 'none';
+				}
+//				$(".add_feedback").collapse('toggle');
+			});
 		});
 	</script>
 	
@@ -301,8 +313,15 @@
 						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
 					<br>
-					<div class="list-group">
-						<a href="#" class="list-group-item listed-item add_feedback">Quiz 1 <span class="pull-right glyphicon glyphicon-plus"></span></a>
+					<div class="input-group">
+						<a data-toggle="collapse" data-target=".fb_quiz_1" class="list-group-item listed-item quiz_but" style="display:inline-block">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+						<img src="img/satisfied.png" class="collapse fb_quiz_1" data-toggle="collapse">
+						<ul class="collapse fb_quiz_1">
+							<li>The quiz was really hard! I think the practice quizzes weren't adequate.</li>
+							<li>Wasn't too bad; however, I wish I had more review time in Office Hours</li>
+						</ul>
+						&nbsp;
+							<a id="request" class="btn btn-primary add_feedback collapse in" style="display:inline-block"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Request Feedback</a>
 					</div>
 				</div>
 
@@ -327,6 +346,7 @@
 					<li><a href="#quizzes">Quizzes</a></li>
 					<li><a href="#labs">Labs</a></li>
 				</ul>
+				
 			</div>
 		</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
