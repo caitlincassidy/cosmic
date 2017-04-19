@@ -7,6 +7,7 @@
 
 	<!-- Load style sheets -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
 	<link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
@@ -25,8 +26,17 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 	<!-- Custom javascript -->
+	<script src="js/calendar-setup.js"></script>
+	<script>
+		$(document).ready(function() {
+			// page is now ready, initialize the calendar...
+			calendarView();
+		});
+	</script>
+	<script src="js/event-filter.js" defer></script>
 	<script src="js/load-new-event-modal.js" defer></script>
 	<script src="js/load-event-modal.js" defer></script>
 	<script src="js/event-modal.js" defer></script>
@@ -52,14 +62,34 @@
 		<div class="row">
 			<div class="col-lg-2" id="menubar">
 			</div>
+			<!-- main content column -->
 			<div class="col-lg-8">
 				<!-- New event modal -->
 				<div class="modal fade" id="new-event-modal" role="dialog"></div>
 				<!-- Event info modal -->
 				<div class="modal fade" id="event-modal" role="dialog"></div>
 				<div id='calendar'></div>
-			</div>
+			</div> <!-- main content column -->
 			<div class="col-lg-2">
+				<div class="row toggle-container">
+          <div class="btn-group toggle" data-toggle="buttons">
+					  <label class="btn btn-primary btn-lg active">
+					    <input type="radio" name="options" id="cal-toggle" autocomplete="off" onchange="toggleView(this)" checked> Calendar
+					  </label>
+					  <label class="btn btn-primary btn-lg">
+					    <input type="radio" name="options" id="list-toggle" autocomplete="off" onchange="toggleView(this)"> List
+					  </label>
+					</div>
+        </div>
+        <div class="row event-filter-container">
+        	<form class="event-filter">
+					  <input type="checkbox" id="lecture-event-filter" value="Lectures" checked> Lectures <br>
+					  <input type="checkbox" id="quiz-event-filter" value="Quizzes" checked>  Quizzes <br>
+					  <input type="checkbox" id="lab-event-filter" value="Labs" checked> Labs <br>
+					</form>
+					<button id="select-all-filters" type="button" class="btn btn-default">Select All</button>
+					<button id="clear-all-filters" type="button" class="btn btn-default">Clear All</button>
+        </div>
 			</div>
 		</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
