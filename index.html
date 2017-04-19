@@ -71,12 +71,15 @@
 				<div id='calendar'></div>
 			</div> <!-- main content column -->
 			<div class="col-lg-2">
-				<div class="row">
-					<!-- TODO: It seems odd that it displays 'Calendar' when I'm in list view and vice versa. Is there a way you can put 'Calendar' on the left side and 'List' on the right side? Like this when 'Calendar' is selected:
-					Calendar |------ List -->
-
-					<!-- TODO: Can we have the top of the toggle be aligned with the top of the calendar (the row with the headings for the days of the week)? Right now, it seems like the toggle is grouped with the 'Month' 'Week' '5 Day' 'Day' buttons, when in reality it's pretty different. So moving it down so it's no longer aligned with those buttons would be better for showing the groupings. -->
-          <input id="eventsToggle" type="checkbox" data-toggle="toggle" data-on="Calendar" data-off="List" onchange="toggleView(this)">
+				<div class="row toggle-container">
+          <div class="btn-group toggle" data-toggle="buttons">
+					  <label class="btn btn-primary btn-lg active">
+					    <input type="radio" name="options" id="cal-toggle" autocomplete="off" onchange="toggleView(this)" checked> Calendar
+					  </label>
+					  <label class="btn btn-primary btn-lg">
+					    <input type="radio" name="options" id="list-toggle" autocomplete="off" onchange="toggleView(this)"> List
+					  </label>
+					</div>
         </div>
         <div class="row event-filter-container">
         	<form class="event-filter">

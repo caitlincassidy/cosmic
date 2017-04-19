@@ -109,12 +109,12 @@ Modifying the width of list items on the Notes and Feedback page
 }
 
 .event-filter-container {
-	margin-top: 10%;
-  border-top: thin solid #a8a9ad;
+	margin-right: 2%;
+	border-top: thin solid #a8a9ad;
 }
 
 .event-filter {
-	margin-top: 5%;
+	margin-top: 10%;
 	margin-bottom: 5%;
 }
 
@@ -127,4 +127,16 @@ Modifying the width of list items on the Notes and Feedback page
 .fc-list-item-time {
 	color: white;
 	font-size: 16px;
+}
+
+.toggle-container {
+	margin-right: 2%;
+	margin-top: 24%;
+	border-top: thin solid #a8a9ad;
+	margin-bottom: 5%;
+	text-align:center;
+}
+
+.btn-group.toggle {
+	margin-top: 5%;
 }

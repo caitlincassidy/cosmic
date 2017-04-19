@@ -146,7 +146,7 @@ var filterEvents = function() {
 };
 
 var toggleView = function(target) {
-	if (target.checked)
+	if (target.id === "list-toggle")
 		listView();
 	else
 		calendarView();
