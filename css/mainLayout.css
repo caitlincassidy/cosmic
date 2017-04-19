@@ -79,15 +79,15 @@ Modifying the width of list items on the Notes and Feedback page
  }
 
  .lecture-event {
- 	background-color: green;
+ 	background-color: #5253a8;
  }
 
  .quiz-event {
- 	background-color: purple;
+ 	background-color: #a85252;
  }
 
  .lab-event {
- 	background-color: blue;
+ 	background-color: #52a89b;
  }
 
 
@@ -116,4 +116,15 @@ Modifying the width of list items on the Notes and Feedback page
 .event-filter {
 	margin-top: 5%;
 	margin-bottom: 5%;
+}
+
+.fc-list-item-title {
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.fc-list-item-time {
+	color: white;
+	font-size: 16px;
 }
