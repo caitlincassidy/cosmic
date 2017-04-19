@@ -91,7 +91,15 @@
         }
       );
     });
-    // TODO(GR5): Make it undo-able
+          // TODO(GR5): Make it undo-able
+
+    $(document).ready(function() {
+      $("#new_task_due_date").daterangepicker({
+        "applyClass": "btn-primary",
+        "singleDatePicker": true,
+        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
+      });
+    });
 
     // Make new task dropdown actually display the selected event
     // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
@@ -175,13 +183,7 @@
 
             <!-- Date it's due -->
             <div class="form-group">
-              <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" placeholder="Due date" />
-                <span class="input-group-addon">
-				        <!-- TODO(GR5): Make this button popup something; perhaps use an existing calendar javascript/bootstrap setup from online? -->
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
+                <input type='text' class="form-control" placeholder="Due date" id="new_task_due_date"/>
             </div>
 
 
