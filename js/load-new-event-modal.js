@@ -46,7 +46,7 @@ var newEventModalString =
 			</form>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 			<button id="create-event-btn" type="button" class="btn btn-primary">Create</button>
 		</div>
 	</div>

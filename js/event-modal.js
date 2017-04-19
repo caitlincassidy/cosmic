@@ -47,4 +47,7 @@ $(document).on('click', "#delete-event-btn", function(evt)
 		return event === current_event;
 	});
 	current_event = null;
+
+	// get rid of weird blue dots
+	$('.fc-list-item-marker').remove();
 });
