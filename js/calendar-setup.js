@@ -1,12 +1,28 @@
+// add event button
+
 var new_event = function(date) {
 	current_event = null;
+	var day;
+	var time;
+	if (date !== undefined) {
+		if (date.format('HH:mm') !== '00:00') {
+			day = date.format('YYYY-MM-DD');
+			startTime = date.format('HH:mm');
+			endTime = moment(date.format()).add(1, 'hours').format('HH:mm');
+		}
+		else {
+			day = date.format();
+			startTime = undefined;
+			endTime = undefined;
+		}
+	}
 	$('#event-info-form').get(0).reset();
 	$("#change-event-modal-title").text("New Event");
 	$("#create-event-btn").text("Create");
 	$('#new-event-modal').modal('toggle');
-	$("#new_event_date").val(date.format());
-	$("#new_event_start_time").val("13:00");
-	$("#new_event_end_time").val("14:00");
+	$("#new_event_date").val(day);
+	$("#new_event_start_time").val(startTime);
+	$("#new_event_end_time").val(endTime);
 }
 
 var open_event = function(event) {
@@ -152,3 +168,7 @@ var toggleView = function(target) {
 		calendarView();
 	filterEvents();
 };
+
+$(document).on('click', '#add-event-btn', function() {
+	new_event();
+});

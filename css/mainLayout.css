@@ -163,14 +163,8 @@ a {
 
 .toggle-container {
 	margin-right: 2%;
-	margin-top: 24%;
-	border-top: thin solid #a8a9ad;
 	margin-bottom: 5%;
 	text-align:center;
-}
-
-.btn-group.toggle {
-	margin-top: 5%;
 }
 
 .btn-primary {
@@ -179,4 +173,17 @@ a {
 
 .btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
 	background-color: #1a1a3a !important;
+}
+
+.add-event-button-container {
+	border-top: thin solid #a8a9ad;
+	margin-right: 2%;
+	text-align: center;
+}
+
+#add-event-btn {
+	margin-bottom: 10%;
+	margin-top: 10%;
+	background-color: #52a89b !important;
+	border-color: #52a89b !important;
 }
