@@ -25,6 +25,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script src="http://www.eyecon.ro/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+  <!-- Include Date Range Picker -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
 
 
 </head>
@@ -79,8 +85,16 @@
     // when checkbox next to it is clicked
     // TODO(GR5): Apply to all checkboxes on page
     $(document).on('click', "#checkbox-ask-availability", function(evt) {
-      console.log("click");
       $(this).parent().remove();
+    });
+
+    // Make new task dropdown actually display the selected event
+    // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+    $(document).on('click', ".dropdown-menu li a", function() {
+      $(".btn:first-child").text($(this).text());
+      $(".btn:first-child").val($(this).text());
+      // Keeps the caret down displayed
+      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
     });
 
   </script>
@@ -105,7 +119,6 @@
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
   		</div>
-<<<<<<< HEAD
   		<div class="col-lg-10">
         <div class="page-header">
           <h1>
@@ -113,7 +126,7 @@
           </h1>
         </div>
 
-        <div class="page-content row">
+        <div class="page-content main-content row">
           <div class="col-lg-8">
             <h2> Outstanding </h2>
 
@@ -160,19 +173,20 @@
               <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" placeholder="Due date" />
                 <span class="input-group-addon">
-				<!-- TODO(Isaac): Make this button popup something; perhaps use an existing calendar javascript/bootstrap setup from online? -->
+				        <!-- TODO(GR5): Make this button popup something; perhaps use an existing calendar javascript/bootstrap setup from online? -->
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
             </div>
 
+
             <!-- Event dropdown -->
             <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 For event...
                 <span class="caret"></span>
               </button>
-			<!-- TODO(Isaac): Make the dropdown text read what's selected -->
+
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li><a href="#">None</a></li>
                 <li role="separator" class="divider"></li>
@@ -202,15 +216,6 @@
 
         </div> <!-- class=page-content -->
 
-=======
-  		<div class="col-lg-8">
-        <h1>
-          <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Tasks
-        </h1>  		
-      </div>
-  		<div class="col-lg-2">
->>>>>>> master
-  		</div>
 
   	</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
@@ -222,5 +227,3 @@
 </html>
 
 <!-- TODO(GR5): Make checkboxes + hamburger button work -->
-
-<!-- Source: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
