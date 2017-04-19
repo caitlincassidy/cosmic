@@ -58,10 +58,10 @@
         // Times with colors indicating how many people are available
         // TODO(@Becky): Make the colors + fonts correct with the rest of the page
         // See https://docs.google.com/spreadsheets/d/1JJ1zOtqbRdkwyiZrcodbDxq-wx4hQzkr3sBdXDPLQP8/edit#gid=0
-        var results = $.parseHTML(`<img src="img/availability-results.jpg"></img>`);
+        var results = $.parseHTML(`<img src="img/availability-results.png"></img>`);
 
         // Key for what the colors mean
-        var key = $.parseHTML(`<img src="img/availability-key.jpg"></img>`);
+        var key = $.parseHTML(`<img src="img/availability-key.png"></img>`);
 
         // Overall setup
         var overallDivs = `
@@ -219,9 +219,11 @@
         </div>
       </div>
 
-      <h1>
-        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
-      </h1>  
+      <div class="page-header">
+          <h1>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
+          </h1>
+        </div>
 
       <div class="col-lg-10">
 

@@ -23,10 +23,96 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="http://www.eyecon.ro/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+  <!-- Include Date Range Picker -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+
 
 </head>
 
 <body>
+<script>
+	$(document).ready(function() {
+		
+		
+// From http://zurb.com/building-blocks/sticky-sidebar
+	var stickySidebar = $('.sticky');
+
+	if (stickySidebar.length > 0) { 
+	  var stickyHeight = stickySidebar.height(),
+		  sidebarTop = stickySidebar.offset().top;
+	}
+
+	// on scroll move the sidebar
+	$(window).scroll(function () {
+	  if (stickySidebar.length > 0) { 
+		var scrollTop = $(window).scrollTop();
+
+		if (sidebarTop < scrollTop) {
+		  stickySidebar.css('top', scrollTop - sidebarTop);
+
+		  // stop the sticky sidebar at the footer to avoid overlapping
+		  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
+			  stickyStop = $('.main-content').offset().top + $('.main-content').height();
+		  if (stickyStop < sidebarBottom) {
+			var stopPosition = $('.main-content').height() - stickyHeight;
+			stickySidebar.css('top', stopPosition);
+		  }
+		}
+		else {
+		  stickySidebar.css('top', '0');
+		} 
+	  }
+	});
+
+	$(window).resize(function () {
+	  if (stickySidebar.length > 0) { 
+		stickyHeight = stickySidebar.height();
+	  }
+	});	
+	
+	});
+</script>	
+	
+
+  <script>
+    // Remove a task
+    $(document).on('click', ":checkbox", function(evt) {
+      $(this).parent().fadeOut(
+        400,
+        function() {
+          // Remove dom element
+          $(this).remove();
+        }
+      );
+    });
+          // TODO(GR5): Make it undo-able
+
+    $(document).ready(function() {
+      $("#new_task_due_date").daterangepicker({
+        "applyClass": "btn-primary",
+        "singleDatePicker": true,
+        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
+      });
+    });
+
+    // Make new task dropdown actually display the selected event
+    // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+    $(document).on('click', ".dropdown-menu li a", function() {
+      $(".btn:first-child").text($(this).text());
+      $(".btn:first-child").val($(this).text());
+      // Keeps the caret down displayed
+      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+
+  </script>
+
+
 	<div class="container-fluid">
 		<div class="row main-header">
 			<div class="col-lg-2">
@@ -46,13 +132,98 @@
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
   		</div>
-  		<div class="col-lg-8">
-        <h1>
-          <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Tasks
-        </h1>  		
-      </div>
-  		<div class="col-lg-2">
-  		</div>
+  		<div class="col-lg-10">
+        <div class="page-header">
+          <h1>
+            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Tasks
+          </h1>
+        </div>
+
+        <div class="page-content main-content row">
+          <div class="col-lg-8">
+            <h2> Outstanding </h2>
+
+            <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+            <!-- TODO: Figure out what day we want as "today" -->
+            <br>
+            <h2> Due today (April 20) </h2>
+
+            <p class="task-item"><input id="checkbox-ask-availability" type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+            <p class="task-item"><input type="checkbox"></input> Pick up quiz materials from CopyTech <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+            <p class="task-item"><input type="checkbox"></input> Remind students that Quiz 1 is coming up in two weeks <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            
+            <br>
+            <h2> Due tomorrow (April 21) </h2>
+
+            <p> Nothing! :D </p>
+            
+            <br>
+            <h2> Due April 22 </h2>
+
+            <p class="task-item"><input type="checkbox"></input> Send Quiz 1 beta to TAs for testing  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 13  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+
+          </div>
+          <div class="col-lg-3 panel sticky" id="sidebar">
+				  
+            <h2> Add new task </h2>
+
+            <!-- Task text -->
+            <div class="form-group">
+              <textarea class="form-control" rows="2" placeholder="Task to add"></textarea>
+            </div>
+
+            <!-- Date it's due -->
+            <div class="form-group">
+                <input type='text' class="form-control" placeholder="Due date" id="new_task_due_date"/>
+            </div>
+
+
+            <!-- Event dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                For event...
+                <span class="caret"></span>
+              </button>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">None</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Quiz 1</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Lecture 1</a></li>
+                <li><a href="#">Lecture 2</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Lab 1</a></li>
+                <li><a href="#">Lab 2</a></li>
+                <li><a href="#">Lab 3</a></li>
+                <li><a href="#">Lab 4</a></li>
+                <li><a href="#">Lab 5</a></li>
+              </ul>
+            </div>
+
+            <br />
+
+            <button type="button" class="btn btn-default" style="float: right">Create</button>
+
+		  </div>
+          <!-- Margin column -->
+          <div class="col-lg-1">
+          </div>
+
+
+
+        </div> <!-- class=page-content -->
+
+
   	</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
 
@@ -61,3 +232,5 @@
 </body>
 
 </html>
+
+<!-- TODO(GR5): Make checkboxes + hamburger button work -->
