@@ -1,16 +1,12 @@
 body {
 	margin: 0;
 	padding: 0;
-}
-
-p {
 	font-family: 'Roboto', sans-serif;
 	font-size: 18px;
 }
 
-a {
-	font-family: 'Roboto', sans-serif;
-	font-size: 18px;
+label {
+	font-weight: normal;
 }
 
 .welcome-container {
@@ -72,7 +68,6 @@ Modifying the width of list items on the Notes and Feedback page
   position: relative;
   top: 0; }
 
-
 /* Task page CSS */
 
 /* Puts the hamburger in the right place horizontally. */
@@ -84,3 +79,30 @@ Modifying the width of list items on the Notes and Feedback page
 .task-item > .glyphicon-menu-hamburger {
 	float: right;
 }
+
+/*To allow the modal to scroll*/
+.modal {
+	overflow:auto;
+}
+
+ /* Menubar styling */
+ .menu-link > span {
+   margin-right: 8px;
+ }
+
+/* Availabilities page styling */
+.listed-item-availability {
+	width: 50%;
+}
+
+ .lecture-event {
+ 	background-color: green;
+ }
+
+ .quiz-event {
+ 	background-color: purple;
+ }
+
+ .lab-event {
+ 	background-color: blue;
+ }

@@ -2,45 +2,47 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<title>Cosmic</title>
+	<meta charset="utf-8">
+	<title>Cosmic</title>
 
-<!-- Load style sheets -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Load style sheets -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
-<link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
+	<link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
 
-<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
- <link rel="stylesheet" href="css/mainLayout.css">
+	<link rel="stylesheet" href="css/mainLayout.css">
 
-<!-- Use mobile-aware viewport -->
-<meta name="viewport" content=
-  "width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Use mobile-aware viewport -->
+	<meta name="viewport" content=
+	"width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Load any supplemental Javascript libraries here -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+	<!-- Load any supplemental Javascript libraries here -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 
 <body>
+
 	<script>
 		$(document).ready(function() {
 			// From http://www.bootply.com/100983
 			/* smooth scrolling sections */
 			$('a[href*=\\#]:not([href=\\#])').click(function() {
 				if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-				  var target = $(this.hash);
-				  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-				  if (target.length) {
-					$('html,body').animate({
-					  scrollTop: target.offset().top - 50
-					}, 1000);
-					return false;
-				  }
+					var target = $(this.hash);
+					target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+					if (target.length) {
+						$('html,body').animate({
+							scrollTop: target.offset().top - 50
+						}, 1000);
+						return false;
+					}
 				}
 			});
 
@@ -48,37 +50,104 @@
 			var stickySidebar = $('.sticky');
 
 			if (stickySidebar.length > 0) { 
-			  var stickyHeight = stickySidebar.height(),
-				  sidebarTop = stickySidebar.offset().top;
+				var stickyHeight = stickySidebar.height(),
+				sidebarTop = stickySidebar.offset().top;
 			}
 
 			// on scroll move the sidebar
 			$(window).scroll(function () {
-			  if (stickySidebar.length > 0) { 
-				var scrollTop = $(window).scrollTop();
+				if (stickySidebar.length > 0) { 
+					var scrollTop = $(window).scrollTop();
 
-				if (sidebarTop < scrollTop) {
-				  stickySidebar.css('top', scrollTop - sidebarTop);
+					if (sidebarTop < scrollTop) {
+						stickySidebar.css('top', scrollTop - sidebarTop);
 
-				  // stop the sticky sidebar at the footer to avoid overlapping
-				  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-					  stickyStop = $('.main-content').offset().top + $('.main-content').height();
-				  if (stickyStop < sidebarBottom) {
-					var stopPosition = $('.main-content').height() - stickyHeight;
-					stickySidebar.css('top', stopPosition);
+				  		// stop the sticky sidebar at the footer to avoid overlapping
+				  		var sidebarBottom = stickySidebar.offset().top + stickyHeight,
+				  		stickyStop = $('#main-content').offset().top + $('#main-content').height();
+				  		if (stickyStop < sidebarBottom) {
+				  			var stopPosition = $('#main-content').height() - stickyHeight;
+				  			stickySidebar.css('top', stopPosition);
+				  		}
+				  	}
+				  	else {
+				  		stickySidebar.css('top', '0');
+				  	} 
 				  }
-				}
-				else {
-				  stickySidebar.css('top', '0');
-				} 
-			  }
-			});
+				});
 
 			$(window).resize(function () {
-			  if (stickySidebar.length > 0) { 
-				stickyHeight = stickySidebar.height();
-			  }
+				if (stickySidebar.length > 0) { 
+					stickyHeight = stickySidebar.height();
+				}
 			});
+
+		});
+
+		// Display request new feedback form
+		$(document).on('click', ".glyphicon-plus", function(evt)
+		{
+			$('#request-feedback').get(0).reset();
+			$('#request-feedback-modal').modal('toggle');
+
+		});
+
+		// Display request new feedback form
+		$(document).on('click', "#back-to-request-feedback", function(evt)
+		{
+			$('#request-feedback-modal').modal('toggle');
+
+		});
+
+		// Display preview of new feedback form and email
+		$(document).on('click', "#preview-feedback", function(evt)
+		{
+			$('#request-feedback-modal').modal('toggle');
+			var inc_satisfied = $('#inc_satisfied').prop('checked');
+			var inc_positives = $('#inc_positives').prop('checked');
+			var inc_negatives = $('#inc_negatives').prop('checked');
+			var inc_general = $('#inc_general').prop('checked');
+
+			var send_now = $("#when_radio_now").prop('checked');
+
+			$("#additional_info_loc").empty();
+			$('#request-feedback-form').get(0).reset();
+
+			$('#preview-feedback-modal').modal('toggle');
+			if (! inc_satisfied) {
+				$("#satisfied").hide();
+			} else {
+				$("#satisfied").show();
+			}
+			if (! inc_positives) {
+				$("#positives").hide();
+			} else {
+				$("#positives").show();
+			}
+			if (! inc_negatives) {
+				$("#negatives").hide();
+			} else {
+				$("#negatives").show();
+			}
+			if (! inc_general) {
+				$("#general_comments").hide();
+			} else {
+				$("#general_comments").show();
+			}
+
+			var additional_info = $("#additional_info").val();
+
+			if(additional_info.length > 0) {
+				$("#additional_info_loc").text(additional_info);
+				$("#additional_info_loc").append($("<br/>"));
+				$("#additional_info_loc").append($("<br/>"));
+			}
+
+			if (send_now) {
+				$("#send-button").text("Send");
+			} else {
+				$("#send-button").text("Schedule");
+			}
 
 		});
 	</script>
@@ -92,86 +161,230 @@
 			</div>
 			<div class="col-lg-2">
 				<div class="row">
-  				<a href="login.html">Logout</a>
-  			</div>
+					<a href="login.html">Logout</a>
+				</div>
 				<div class="row">
-  				<a href="settings.html">Settings</a>
-  			</div>
+					<a href="settings.html">Settings</a>
+				</div>
 			</div>
 		</div>
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
-  		</div>
-  		<div class="col-lg-8">
-			<div class="page-header">
-				<h1>
-					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Feedback <small>(because you're a narcissist...)</small>
-				</h1>
 			</div>
-			
-			<h2 id="gen">General</h2>
-			<ul id="gen_feedback" style="font-size:20px;" >
-				<li>I really wish you would wear shoes when lecturing... I really wish you would wear shoes when lecturing I really wish you would wear shoes when lecturing I really wish you would wear shoes when lecturing I really wish you would wear shoes when lecturing</li>
-				<li>What's that fancy ring you wear around your neck?</li>
-				<li>I like your face.</li>
-				<br><a data-toggle="collapse" data-target="#gen_feedback" style="cursor:pointer"> See more... </a>
-			</ul>
-			
-			<div><br>
-				<h2 id="lecs">
-					Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-							<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-				</h2>
-				<br>
-				<div class="list-group">
-					<a href="#" class="list-group-item listed-item">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<a href="#" class="list-group-item listed-item">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<a href="#" class="list-group-item listed-item">Lecture 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<br><a href="#"> See more... </a>
+			<div class="col-lg-8" id="main-content">
+
+				<div class="page-header">
+					<h1>
+						<span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Feedback <small>(because you're a narcissist...)</small>
+					</h1>
 				</div>
-			</div>
-			
-			<br>
-			<div>
-				<h2 id="quizzes">
-					Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-							<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-				</h2>
-				<br>
-				<div class="list-group">
-					<a href="#" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-plus"></span></a>
-					<br><a href="#"> See more... </a>
+
+				<!-- Request feedback modal -->
+				<div class="modal fade" id="request-feedback-modal" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal Content -->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h3 class="modal-title">Request Feedback</h3>
+							</div>
+							<div class="modal-body">
+								<form id="request-feedback">
+									<label for="when_radio"><b>When to send feedback form:</b></label>
+									<fieldset class="form-group" id="when_radio">
+										<div class="form-check">
+											<label class="form-check-label">
+												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_now" value="now" checked>
+												Now
+											</label>
+										</div>
+										<div class="form-check">
+											<label class="form-check-label">
+												<input type="radio" class="form-check-input" name="when_radio" id="when_radio_later" value="later">
+												<input type="number" class="form-inline" id="num_days" placeholder="2" style="width: 40px;"> days after event
+											</label>
+										</div>
+									</fieldset>
+									<div class="row">
+										<div class="col-xs-4">
+											<label for="questions_checkboxes"><b>Questions:</b></label>
+											<fieldset class="form-group" id="questions_checkboxes">
+												<div class="form-check">
+													<label class="form-check-label">
+														<input id="inc_satisfied" class="form-check-input" type="checkbox" value="" checked>
+														Satisfied (Y/N)
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input id="inc_positives" class="form-check-input" type="checkbox" value="" checked>
+														Postives (open)
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input id="inc_negatives" class="form-check-input" type="checkbox" value="" checked>
+														Negatives (open)
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input id="inc_general" class="form-check-input" type="checkbox" value="" checked>
+														General Comments (open)
+													</label>
+												</div>
+											</fieldset>
+										</div>
+										<div class="col-xs-8">
+											<div class="form-group">
+												<label for="additional_info"><b>Additional Information</b></label>
+												<textarea class="form-control" id="additional_info" rows="3"></textarea>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button id="preview-feedback" type="button" class="btn btn-primary">Preview</button>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			
-			<br>
-			<div>
-				<h2 id="labs">
-					Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-							<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-				</h2>
-				<br>
-				<div class="list-group">
-					<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					<br><a href="#"> See more... </a>
+
+				<!-- Preview feedback request modal -->
+				<div class="modal fade" id="preview-feedback-modal" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal Content -->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h3 class="modal-title">Request Feedback Preview</h3>
+							</div>
+							<div class="modal-body">
+								<div id="request-feedback-email">
+									<h4>Email Preview</h4>
+									From: Professor Bilbo
+									<br/>
+									To: Students
+									<br/>
+									Subject: Quiz 1 Feedback
+									<br/><br/>
+									Dear Students,
+									<br/><br/>
+									Please fill out <a>this form</a> to tell me what you thought of Quiz 1.
+									I value your opinions and want to continually improve the class.
+									<br/><br/>
+									<span id="additional_info_loc"></span>
+									Thank you,
+									<br/>
+									Professor Bilbo
+								</div>
+								<hr>
+								<form id="request-feedback-form">
+									<h4>Form Preview</h4>
+									<span id="satisfied">
+										<label for="satisfied_radio"><b>Were you satisfied with Quiz 1:</b></label>
+										<fieldset class="form-group" id="satisfied_radio">
+											<div class="form-check">
+												<label class="form-check-label">
+													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_yes" value="yes">
+													Yes
+												</label>
+											</div>
+											<div class="form-check">
+												<label class="form-check-label">
+													<input type="radio" class="form-check-input" name="satisfied_radio" id="satisfied_radio_no" value="no">
+													No
+												</label>
+											</div>
+										</fieldset>
+									</span>
+									<div class="form-group" id="positives">
+										<label for="positives_textarea"><b>Positives</b></label>
+										<textarea class="form-control" id="positives_textarea" rows="2" value=""></textarea>
+									</div>
+									<div class="form-group" id="negatives">
+										<label for="negatives_textarea"><b>Negatives</b></label>
+										<textarea class="form-control" id="negatives_textarea" rows="2" value=""></textarea>
+									</div>
+									<div class="form-group" id="general_comments">
+										<label for="general_textarea"><b>General Comments</b></label>
+										<textarea class="form-control" id="general_textarea" rows="2" value=""></textarea>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="back-to-request-feedback">Back</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal" id="send-button">Send</button>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
+
+				<h2 id="gen">General</h2>
+				<ul id="gen_feedback">
+					<li>I really wish you would wear shoes when lecturing... I really wish you would wear shoes when lecturing I really wish you would wear shoes when lecturing I really wish you would wear shoes when lecturing I really wish you would wear shoes when lecturing</li>
+					<li>What's that fancy ring you wear around your neck?</li>
+					<li>I like your face.</li>
+					<br><a data-toggle="collapse" data-target="#gen_feedback" style="cursor:pointer"> See more... </a>
+				</ul>
+
+				<div><br>
+					<h2 id="lecs">
+						Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+					</h2>
+					<br>
+					<div class="list-group">
+						<a href="#" class="list-group-item listed-item">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+						<a href="#" class="list-group-item listed-item">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+						<a href="#" class="list-group-item listed-item">Lecture 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+						<br><a href="#"> See more... </a>
+					</div>
+				</div>
+
+				<br>
+				<div>
+					<h2 id="quizzes">
+						Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+					</h2>
+					<br>
+					<div class="list-group">
+						<a href="#" class="list-group-item listed-item">Quiz 1 <span class="pull-right glyphicon glyphicon-plus"></span></a>
+						<br><a href="#"> See more... </a>
+					</div>
+				</div>
+
+				<br>
+				<div>
+					<h2 id="labs">
+						Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+					</h2>
+					<br>
+					<div class="list-group">
+						<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+						<br><a href="#"> See more... </a>
+					</div>
+				</div>
 				
-  		</div>
-  		<div class="col-lg-2">
-			<br><br><br><br><br>
-			<ul class="nav nav-stacked events-press-cta panel sticky" id="sidebar">
-			  <li><a href="#gen">General</a></li>
-			  <li><a href="#lecs">Lectures</a></li>
-			  <li><a href="#quizzes">Quizzes</a></li>
-			  <li><a href="#labs">Labs</a></li>
-			</ul>
-  		</div>
-  	</div> <!-- class="row" -->
+			</div>
+			<div class="col-lg-2">
+				<br><br><br><br><br>
+				<ul class="nav nav-stacked events-press-cta panel sticky" id="sidebar">
+					<li><a href="#gen">General</a></li>
+					<li><a href="#lecs">Lectures</a></li>
+					<li><a href="#quizzes">Quizzes</a></li>
+					<li><a href="#labs">Labs</a></li>
+				</ul>
+			</div>
+		</div> <!-- class="row" -->
 	</div> <!-- class="container" -->
   
-  <script src="js/load-menubar.js"></script>
-
+  <script id="load-menubar-script" src="js/load-menubar.js" link="feedback.html"></script>
 </body>
 
 </html>
