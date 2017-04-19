@@ -81,12 +81,17 @@
 	
 
   <script>
-    // Remove asking for TA availability task
-    // when checkbox next to it is clicked
-    // TODO(GR5): Apply to all checkboxes on page
-    $(document).on('click', "#checkbox-ask-availability", function(evt) {
-      $(this).parent().remove();
+    // Remove a task
+    $(document).on('click', ":checkbox", function(evt) {
+      $(this).parent().fadeOut(
+        400,
+        function() {
+          // Remove dom element
+          $(this).remove();
+        }
+      );
     });
+    // TODO(GR5): Make it undo-able
 
     // Make new task dropdown actually display the selected event
     // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
