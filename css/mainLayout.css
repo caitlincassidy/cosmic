@@ -42,18 +42,30 @@ label {
 }
 
 .main-header {
-	background-color: #2e3396;
+	background-color: #43448c;
+	height: 150%;
 	margin-bottom: 5%;
 }
 
-.main-header a {
+a#login.btn {
 	color: white;
+	margin-top: 10%;
+	border: white;
 }
 
 .main-header h1 {
 	font-family: 'Cairo', sans-serif;
 	font-weight: bold;
 	font-size: 50px;
+	color: white;
+}
+
+.nav-pills a {
+  color: #43448c;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+	background-color: #43448c;
 	color: white;
 }
 
@@ -143,4 +155,12 @@ Modifying the width of list items on the Notes and Feedback page
 
 .btn-group.toggle {
 	margin-top: 5%;
+}
+
+.btn-primary {
+	background-color: #43448c !important;
+}
+
+.btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
+	background-color: #1a1a3a !important;
 }
