@@ -2,61 +2,254 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<title>Cosmic</title>
+  <meta charset="utf-8">
+  <title>Cosmic</title>
 
-<!-- Load style sheets -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Load style sheets -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
-<link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css">
+  <link rel="styleheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css">
 
-<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
- <link rel="stylesheet" href="css/mainLayout.css">
+  <link rel="stylesheet" href="css/mainLayout.css">
 
-<!-- Use mobile-aware viewport -->
-<meta name="viewport" content=
+  <!-- Use mobile-aware viewport -->
+  <meta name="viewport" content=
   "width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Load any supplemental Javascript libraries here -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+  <!-- Load any supplemental Javascript libraries here -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Include Date Range Picker -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+  <!-- Custom javascript -->
+  <script src="js/load-new-event-modal.js" defer></script>
 
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div class="row main-header">
-			<div class="col-lg-2">
-			</div>
-			<div class="col-lg-8">
-				<h1> C&nbsp;O&nbsp;S&nbsp;M&nbsp;I&nbsp;C </h1>
-			</div>
-			<div class="col-lg-2">
-				<div class="row">
-  				<a href="login.html">Logout</a>
-  			</div>
-				<div class="row">
-  				<a href="settings.html">Settings</a>
-  			</div>
-			</div>
-		</div>
-  	<div class="row">
-  		<div class="col-lg-2" id="menubar">
-  		</div>
-  		<div class="col-lg-8">
-  			<h1>
-          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
-        </h1>  
-  		</div>
-  		<div class="col-lg-2">
-  		</div>
-  	</div> <!-- class="row" -->
-	</div> <!-- class="container" -->
 
-  <script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
+  <script type="text/javascript">
+
+    // Toggle the display of availability results
+    // for the review session form
+    $(document).on('click', '#review-session-item', function() {
+      if ($('#review-session-results').length == 0) {
+        // Currently, no results are displayed
+        // Add HTML to display them
+
+        // Who filled out the form
+        var peopleTypesString = `
+        <div id="people-types">
+          <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
+          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
+          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
+        </div>
+        `;    
+        var peopleTypes = $.parseHTML(peopleTypesString);
+
+        // Times with colors indicating how many people are available
+        // TODO(@Becky): Make the colors + fonts correct with the rest of the page
+        // See https://docs.google.com/spreadsheets/d/1JJ1zOtqbRdkwyiZrcodbDxq-wx4hQzkr3sBdXDPLQP8/edit#gid=0
+        var results = $.parseHTML(`<img src="img/availability-results.jpg"></img>`);
+
+        // Key for what the colors mean
+        var key = $.parseHTML(`<img src="img/availability-key.jpg"></img>`);
+
+        // Overall setup
+        var overallDivs = `
+        <div class="row" id="review-session-results">
+          <br />
+          <div class="col-lg-2" id="results-1"></div>
+          <div class="col-lg-2" id="results-2"></div>
+          <div class="col-lg-8" id="results-3"></div>
+        </div>
+        `;
+
+        // Widen div
+        $("#review-session-item").css("width", "100%");
+
+        // Append to page
+        $("#review-session-item").append($.parseHTML(overallDivs));
+        $("#results-1").append(peopleTypes);
+        $("#results-2").append(key);
+        $("#results-3").append(results);
+
+      } else {
+        // Results are currently shown, so remove them
+        $('#review-session-results').remove();
+        
+        // Reset width
+        $("#review-session-item").css("width", "");
+      }
+
+    });
+
+    $(document).on('click', "#new-event-btn", function(evt) {
+      $('#event-info-form').get(0).reset();
+      $("#change-event-modal-title").text("New Event");
+      $("#create-event-btn").text("Create");
+      $('#new-event-modal').modal('toggle');
+      $("#new_event_date").val(moment().format("YYYY-MM-DD"));
+      $("#new_event_start_time").val("13:00");
+      $("#new_event_end_time").val("14:00");
+    });
+
+    $(document).on('click', "#new-survey-btn", function(evt) {
+      $('#request-availability-form').get(0).reset();
+      $("#availabilities_dates").daterangepicker({
+        "applyClass": "btn-primary",
+        "startDate": moment().startOf("week").add(1,"week").format("MM/DD/YYYY"),
+        "endDate": moment().endOf("week").add(1,"week").format("MM/DD/YYYY"),
+      });
+      $('#new-survey-modal').modal('toggle');
+      $("#availabilities_start_time").val("17:00");
+      $("#availabilities_end_time").val("22:00");
+    });
+
+  </script>
+
+  <div class="container-fluid">
+    <div class="row main-header">
+     <div class="col-lg-2">
+     </div>
+     <div class="col-lg-8">
+      <h1> C&nbsp;O&nbsp;S&nbsp;M&nbsp;I&nbsp;C </h1>
+    </div>
+    <div class="col-lg-2">
+      <div class="row">
+        <a href="login.html">Logout</a>
+      </div>
+      <div class="row">
+        <a href="settings.html">Settings</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2" id="menubar">
+    </div>
+    <div class="col-lg-10">
+      <!-- New event modal -->
+      <div class="modal fade" id="new-event-modal" role="dialog"></div>
+      <div class="modal fade" id="new-survey-modal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal Content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3 class="modal-title">Request Availabilities</h3>
+            </div>
+            <div class="modal-body">
+              <form id="request-availability-form">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <label for="availability_name"><b>Title:</b></label>
+                    <input class="form-control" type="text" value="" id="availability_name">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-4">
+                    <label for="recipients_checkboxes"><b>Who to ask:</b></label>
+                    <fieldset class="form-group" id="recipients_checkboxes">
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input id="inc_tas" class="form-check-input" type="checkbox" value="" checked>
+                          TAs
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input id="inc_las" class="form-check-input" type="checkbox" value="">
+                          LAs
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input id="inc_students" class="form-check-input" type="checkbox" value="">
+                          Students
+                        </label>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div class="col-xs-8">
+                    <div class="row">
+                      <label for="availabilities_dates" class="col-xs-4 col-form-label"><b>Dates:</b></label>
+                      <div class="col-xs-8">
+                        <input type="text" class="form-control" id="availabilities_dates" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label for="availabilities_start_time" class="col-xs-4 col-form-label"><b>Start Time:</b></label>
+                      <div class="col-xs-8">
+                        <input class="form-control" type="time" value="" id="availabilities_start_time">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label for="availabilities_end_time" class="col-xs-4 col-form-label"><b>End Time:</b></label>
+                      <div class="col-xs-8">
+                        <input class="form-control" type="time" value="" id="availabilities_end_time">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="additional_info"><b>Additional Information</b></label>
+                      <textarea class="form-control" id="additional_info" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h1>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Availabilities
+      </h1>  
+
+      <div class="col-lg-10">
+
+        <!-- Links so that they appear clickable -->
+        <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <!-- TODO: only make this appear after they've created the new survey? -->
+        <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+
+      </div>
+
+
+      <div class="col-lg-1"> <!-- column for buttons -->
+        <button type="button" class="btn btn-default" id="new-survey-btn">New Survey</button> </p>
+
+        <button type="button" class="btn btn-default" id="new-event-btn">New Event</button> </p>
+      </div>
+
+      <div class="col-lg-1"> <!-- margin -->
+      </div>
+
+
+    </div>
+
+  </div> <!-- class="row" -->
+</div> <!-- class="container" -->
+
+<script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
 </body>
 
 </html>
