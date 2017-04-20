@@ -103,6 +103,10 @@
       $("#new_event_end_time").val("14:00");
     });
 
+    $(document).on('click', "#create-event-btn", function(evt) {
+      $('#new-event-modal').modal('toggle');
+    })
+
     $(document).on('click', "#new-survey-btn", function(evt) {
       $('#request-availability-form').get(0).reset();
       $("#availabilities_dates").daterangepicker({
