@@ -16,6 +16,7 @@ label {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   width: 98%;
+  color: white;
 }
 
 .welcome-title {
@@ -25,13 +26,11 @@ label {
 .welcome-title h1 {
 	font-size: 80px;
 	font-weight: bold;
-	color: white;
 	font-family: 'Cairo', sans-serif;
 }
 
 .welcome-title h2 {
 	font-size: 30px;
-	color: white;
 	font-family: 'Gentium Basic', serif;
 }
 
@@ -39,6 +38,13 @@ label {
 	font-family: 'Cairo', sans-serif;
 	font-weight: bold;
 	font-size: 20px;
+}
+
+.welcome-container input {
+	width: 20%; 
+	margin: 0 auto;
+	text-align: center;
+	font-family: 'Cairo', sans-serif;
 }
 
 .main-header {
