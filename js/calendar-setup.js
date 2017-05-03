@@ -35,62 +35,20 @@ var open_event = function(event) {
 	$('#event-modal').modal('toggle');
 }
 
-// Pre-Populated Events
-var lecture1 = {
-	title: "Lecture 1",
-	start: moment("04/12/2017 13:00").format(),
-	end: moment("04/12/2017 14:00").format(),
-	className: "lecture-event",
-	eventType: "Lecture",
-}
-var lecture2 = {
-	title: "Lecture 2",
-	start: moment("04/14/2017 13:00").format(),
-	end: moment("04/14/2017 14:00").format(),
-	className: "lecture-event",
-	eventType: "Lecture",
-}
 
-var quiz1 = {
-	title: "Quiz 1",
-	start: moment("04/28/2017 13:00").format(),
-	end: moment("04/28/2017 14:00").format(),
-	className: "quiz-event",
-	eventType: "Quiz"
-}
-
-var lab1 = {
-	title: "Lab 1",
-	start: moment("04/26/2017 13:00").format(),
-	end: moment("04/26/2017 14:00").format(),
-	className: "lab-event",
-	eventType: "Lab"
-}
 
 // necessary to cleanly update event
 var current_event = null;
 
-var sampleEvents = [
-	lecture1,
-	lecture2,
-	quiz1,
-	lab1
-];
-
 var calendarView = function() {
+	var sampleEvents = JSON.parse(window.localStorage.getItem("events"));
+	
 	$('#calendar').fullCalendar('destroy');
 	$('#calendar').fullCalendar({
 		// put your options and callbacks here
 		header: {
 	    left: 'prev, next, today, title',
-	    right: 'month, agendaWeek, agendaFiveDay, agendaDay'
-	  },
-	  views: {
-	    agendaFiveDay: {
-	        type: 'agenda',
-	        duration: { days: 5 },
-	        buttonText: '5 Day'
-	    }
+	    right: 'month, agendaWeek, agendaDay'
 	  },
 	  defaultView: 'month',
 	  editable: true,
@@ -108,19 +66,14 @@ var calendarView = function() {
 };
 
 var listView = function() {
+	var sampleEvents = JSON.parse(window.localStorage.getItem("events"));
+
 	$('#calendar').fullCalendar('destroy');
 	$('#calendar').fullCalendar({
     // put your options and callbacks here
     header: {
       left: 'prev, next, today, title',
-      right: 'listMonth, listWeek, listFiveDay, listDay'
-    },
-    views: {
-      listFiveDay: {
-          type: 'list',
-          duration: { days: 5 },
-          buttonText: '5 Day'
-      }
+      right: 'listMonth, listWeek, listDay'
     },
     defaultView: 'listMonth',
     editable: true,

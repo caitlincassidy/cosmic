@@ -37,6 +37,12 @@ $(document).on('click', "#create-event-btn", function(evt)
 
 		$('#calendar').fullCalendar(action, event);
 		current_event = null;
+
+		// save new event to local storage
+		var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+		savedEvents.push(event);
+		window.localStorage.setItem("events", JSON.stringify(savedEvents));
+		
 		$('#new-event-modal').modal('toggle');
 	}
 });
