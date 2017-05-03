@@ -2,20 +2,20 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<title>Welcome to Cosmic</title>
+	<meta charset="utf-8">
+	<title>Welcome to Cosmic</title>
 
-<!-- Load style sheets -->
-<link rel="stylesheet" href=
-  "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Load style sheets -->
+	<link rel="stylesheet" href=
+	"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
- <link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
- <link rel="stylesheet" href="css/mainLayout.css">
+	<link rel="stylesheet" href="css/mainLayout.css">
 
-<!-- Use mobile-aware viewport -->
-<meta name="viewport" content=
-  "width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Use mobile-aware viewport -->
+	<meta name="viewport" content=
+	"width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Load any supplemental Javascript libraries here -->
 <script src=
@@ -25,22 +25,25 @@
 <!-- Custom scripts -->
 <script src="js/load-event-data.js"></script>
 
-
 </head>
 
 <body>
 	<div class="container-fluid">
 		<div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
-		  <img src='img/galaxy.jpg' style='width:100%;height:100%' alt='[]' />
+			<img src='img/galaxy.jpg' style='width:100%;height:100%' alt='[]' />
 		</div>
 		<div class="welcome-container">
 			<div class="row welcome-title">
-  		<h1> C&ensp;O&ensp;S&ensp;M&ensp;I&ensp;C </h1>
-  		<h2> class management that's out of this world </h2>
+				<h1> C&ensp;O&ensp;S&ensp;M&ensp;I&ensp;C </h1>
+				<h2> class management that's out of this world </h2>
 			</div>
+			<br/>
+			<!-- In a real implementation would actually check against something -->
+			<!-- For this assignment, not allowed a backend, so just dummy code for visuals -->
+			<input class="form-control" type="text" value="" id="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+			<input class="form-control" type="password" value="" id="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
 			<br>
-			<br>
-			<a class="btn btn-default" href="index.html" style="z-index:1"> ENTER </a>
+			<a class="btn btn-default" href="index.html" style="z-index:1"> LOG IN </a>
 		</div>
 	</div> <!-- class="container" -->
 </body>
