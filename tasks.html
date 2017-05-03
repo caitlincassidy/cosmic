@@ -54,10 +54,10 @@
     `;
 
     var taskDiv = $.parseHTML(taskDivString);
-    var textElt = $('<p/>',
-    {
-      text: task.text,
-    });
+    var textElt = document.createElement('p');
+    textElt.text = task.text;
+    //textElt.textContent = task.text;
+
     //var textElt = $('<p>' + task.text + '</p>');
     console.log($(textElt));
     textElt.prepend($('<input/>', {
