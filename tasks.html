@@ -108,7 +108,56 @@
         }
       );
 
+      // TODO: Do you think it'd be helpful to give some visual indication you can click on the pencil -- ie, when your mouse is over the pencil, it gets bigger or changes color or something?
+
       // When pencil button is clicked, make it editable
+      $('.glyphicon-pencil').click(function() {
+        var pElement = $(this).parent();
+        var pText = pElement.text();
+
+        // Remove everything from the p
+        pElement.empty();
+
+        // Make paragraph into a text box
+        var textBox = document.createElement("input");
+        textBox.type="text";
+        $(textBox).val(pText);
+        $(textBox).css("width", "60%");
+        $(textBox).css("margin-right", "15px");
+        pElement.append(textBox);
+
+        // Show box w/ due date
+        var dueDateBox = document.createElement("input");
+        dueDateBox.type = "text";
+        $(dueDateBox).css("width", "25%");
+
+        $(dueDateBox).daterangepicker({
+          "applyClass": "btn-primary",
+          "singleDatePicker": true,
+          "startDate": moment().endOf("week").format("MM/DD/YYYY"),
+        });
+        pElement.append(dueDateBox);
+
+        // Add a save button
+        // TODO: It's slightly not centered
+        var saveButton = $('<button/>',
+          {
+            type: "button",
+            text: "Save",
+            class: "btn btn-default",
+            id: "save",
+          });
+        $(saveButton).css("float", "right");
+        pElement.append(saveButton);
+
+        // Add click handler to save button
+        $(document).on("click", "#save", function(evt) {
+          console.log("aslkdfjsa");
+        })
+
+      });
+
+      // TODO: figure out how to animate it if they change the due date bc it has to move sections
     })
 
     
@@ -140,6 +189,7 @@
         "singleDatePicker": true,
         "startDate": moment().endOf("week").format("MM/DD/YYYY"),
       });
+
     });
 
     // Make new task dropdown actually display the selected event
@@ -172,14 +222,14 @@
           <div class="col-lg-8">
             <h2> Outstanding </h2>
 
-            <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-pencil"></span></p>
+            <p class="task-item"><input type="checkbox"></input>Email John about reserving space for final exam <span class="glyphicon glyphicon-pencil"></span></p>
             <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-pencil"></span></p>
 
             <!-- TODO: Figure out what day we want as "today" -->
             <br>
             <h2> Due today (April 20) </h2>
 
-            <p class="task-item"><input id="checkbox-ask-availability" type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-pencil"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-pencil"></span></p>
 
             <p class="task-item"><input type="checkbox"></input> Pick up quiz materials from CopyTech <span class="glyphicon glyphicon-pencil"></span></p>
 
