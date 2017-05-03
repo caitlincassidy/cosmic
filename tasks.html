@@ -83,6 +83,45 @@
 	
 
   <script>
+
+    $(document).ready(function() {
+      
+      // Upon hover, display pencil and turn background different
+      $('.task-item').hover(
+        // Called on mouseenter
+        function() {
+          // Color light gray
+          // TODO(@Becky): pick good accent color
+          $(this).css('background-color', " #eac0f7");
+          // Make pencil appear
+          $(this).find("span").css("visibility", "visible");
+
+          //$(this).find("span").show();
+        },
+        // Called on mouseleave
+        function() {
+          // Reset background color
+          $(this).css('background-color', "");
+          // Make pencil disappear
+          $(this).find("span").css("visibility", "hidden");
+          //$(this).find("span").hide();
+        }
+      );
+
+      // When pencil button is clicked, make it editable
+    })
+
+    
+    
+
+    /*
+    $(document).on('mousemove', ".task-item", function(evt) {
+      console.log("moving");
+      $(this).css("background-color", "red");
+      // TODO: need to change the color back
+    })
+*/
+
     // Remove a task
     $(document).on('click', ":checkbox", function(evt) {
       $(this).parent().fadeOut(
@@ -133,18 +172,18 @@
           <div class="col-lg-8">
             <h2> Outstanding </h2>
 
-            <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-            <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-pencil"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-pencil"></span></p>
 
             <!-- TODO: Figure out what day we want as "today" -->
             <br>
             <h2> Due today (April 20) </h2>
 
-            <p class="task-item"><input id="checkbox-ask-availability" type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input id="checkbox-ask-availability" type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-pencil"></span></p>
 
-            <p class="task-item"><input type="checkbox"></input> Pick up quiz materials from CopyTech <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Pick up quiz materials from CopyTech <span class="glyphicon glyphicon-pencil"></span></p>
 
-            <p class="task-item"><input type="checkbox"></input> Remind students that Quiz 1 is coming up in two weeks <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Remind students that Quiz 1 is coming up in two weeks <span class="glyphicon glyphicon-pencil"></span></p>
             
             <br>
             <h2> Due tomorrow (April 21) </h2>
@@ -154,11 +193,11 @@
             <br>
             <h2> Due April 22 </h2>
 
-            <p class="task-item"><input type="checkbox"></input> Send Quiz 1 beta to TAs for testing  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Send Quiz 1 beta to TAs for testing  <span class="glyphicon glyphicon-pencil"></span></p>
 
-            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 13  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 13  <span class="glyphicon glyphicon-pencil"></span></p>
 
-            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-pencil"></span></p>
 
 
           </div>
