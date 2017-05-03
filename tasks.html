@@ -44,12 +44,49 @@
 
   // Add a new task to the page under the correct heading
   var addTask = function(task) {
-    console.log("adding task");
-    console.log(task);
-    .format("MM/DD/YYYY")
+    console.log(task.text);
+
+    var taskDivString = `
+      <div class="row task-item">
+        <div class="col-xs-9 text"></div>
+        <div class="col-xs-3 due"></div>
+      </div>
+    `;
+
+    var taskDiv = $.parseHTML(taskDivString);
+    var textElt = $('<p/>',
+    {
+      text: task.text,
+    });
+    //var textElt = $('<p>' + task.text + '</p>');
+    console.log($(textElt));
+    textElt.prepend($('<input/>', {
+      type: "checkbox",
+    }));
+    var dueDate = moment(task.due).format("MM/DD/YYYY");
+    var dueElt = $('<p>' + dueDate + '</p>');
+
+
+    ($(taskDiv).children()[0]).append(textElt);
+    ($(taskDiv).children()[1]).append(dueElt);
+
+    $("#outstanding").after(taskDiv);
+
+
+    //taskElt.append($('<span/>', {
+    //  class: "glyphicon glyphicon-pencil",
+    //}));
+
+    // TODO: find the right place to append it
+    // probably depends on how we want to animate it
+    // and depends on local storage
+
+    // Make this new task hover-able
+    //addHoverHandlers();
   }
 
   $(document).ready(function() {
+    console.log("document is ready");
     // Load tasks from storage and display them
     var sampleTasks = JSON.parse(window.localStorage.getItem("tasks"));
     sampleTasks.forEach(function(task) {
@@ -153,7 +190,7 @@
 
         <div class="page-content main-content row">
           <div class="col-lg-8">
-            <h2> Outstanding </h2>
+            <h2 id="outstanding"> Outstanding </h2>
 
             <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-menu-hamburger"></span></p>
             <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-menu-hamburger"></span></p>
