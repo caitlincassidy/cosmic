@@ -86,18 +86,12 @@ Modifying the width of list items on the Notes and Feedback page
 
 /* Task page CSS */
 
-/* Puts the hamburger in the right place horizontally. */
 .task-item {
 	width: 75%;
 	padding: 5px;
 	border-radius: 10px;
+	cursor: default;
 }
-
-/*
-.task-item:hover {
-	background-color: yellow;
-}
-*/
 
 /* todo: align vertically center */
 .task-item > .glyphicon-pencil {
