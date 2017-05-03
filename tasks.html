@@ -114,7 +114,16 @@
         }
       );
 
-      // TODO: Do you think it'd be helpful to give some visual indication you can click on the pencil -- eg, when your mouse is over the pencil, it gets bigger or changes color or something?
+      // Affordance for clicking on the pencil:
+      // Mouse turns into a pointer
+      $('.glyphicon-pencil').hover(
+        function() { // Called on mouseenter
+          $(this).css("cursor", "pointer");
+        },
+        function() { // Called on mouseleave
+          $(this).css("cursor", "");
+        }
+      );
 
       // When pencil button is clicked, make task editable
       $('.glyphicon-pencil').click(function() {
