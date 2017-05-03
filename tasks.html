@@ -103,13 +103,13 @@
       });
     });
 
-    // Make new task dropdown actually display the selected event
+    // Make new task dropdown display the selected event
     // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
     $(document).on('click', ".dropdown-menu li a", function() {
-      $(".btn:first-child").text($(this).text());
-      $(".btn:first-child").val($(this).text());
+      $("#event-name").text($(this).text());
+      $("#event-name").val($(this).text());
       // Keeps the caret down displayed
-      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+      $('#event-name').html($(this).text() + ' <span class="caret"></span>');
     });
 
   </script>
@@ -179,12 +179,12 @@
 
             <!-- Event dropdown -->
             <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                For event...
+              <button class="btn btn-default dropdown-toggle" type="button" id="event-name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Event Name
                 <span class="caret"></span>
               </button>
 
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <ul class="dropdown-menu" aria-labelledby="event-name">
                 <li><a href="#">None</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#">Quiz 1</a></li>
