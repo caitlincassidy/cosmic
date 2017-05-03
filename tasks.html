@@ -84,42 +84,48 @@
 
   <script>
 
-    var addHoverHandlers = function() {
-       // Upon hover, display pencil and turn background different
-      $('.task-item').hover(
-        // Called on mouseenter
-        function() {
-          console.log("we got a hover people");
+    $(document).ready(function() {
+      addHoverHandlers();
 
+      $("#new_task_due_date").daterangepicker({
+        "applyClass": "btn-primary",
+        "singleDatePicker": true,
+        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
+      });
+    });
+
+    // Function to attach hover handlers to tasks
+    // and click handlers to pencils
+    var addHoverHandlers = function() {
+       // Upon hover, display pencil and change background color
+      $('.task-item').hover(
+        function() { // Called on mouseenter
           // Color light gray
           // TODO(@Becky): pick good accent color
           $(this).css('background-color', " #eac0f7");
           // Make pencil appear
           $(this).find("span").css("visibility", "visible");
-
-          //$(this).find("span").show();
         },
-        // Called on mouseleave
-        function() {
+        function() { // Called on mouseleave
           // Reset background color
           $(this).css('background-color', "");
           // Make pencil disappear
           $(this).find("span").css("visibility", "hidden");
-          //$(this).find("span").hide();
         }
       );
 
-      // TODO: Do you think it'd be helpful to give some visual indication you can click on the pencil -- ie, when your mouse is over the pencil, it gets bigger or changes color or something?
+      // TODO: Do you think it'd be helpful to give some visual indication you can click on the pencil -- eg, when your mouse is over the pencil, it gets bigger or changes color or something?
 
-      // When pencil button is clicked, make it editable
+      // When pencil button is clicked, make task editable
       $('.glyphicon-pencil').click(function() {
+        // Save p element before 'this' is removed
         var pElement = $(this).parent();
         var pText = pElement.text();
 
         // Remove everything from the p
         pElement.empty();
 
-        // Make paragraph into a text box
+        // Make task into a text box
         var textBox = document.createElement("input");
         textBox.type="text";
         textBox.id = "new-task-text";
@@ -128,7 +134,7 @@
         $(textBox).css("margin-right", "15px");
         pElement.append(textBox);
 
-        // Show box w/ due date
+        // Add box with due date and datepicker ability
         var dueDateBox = document.createElement("input");
         dueDateBox.type = "text";
         $(dueDateBox).css("width", "25%");
@@ -152,64 +158,47 @@
         );
         $(saveButton).css("float", "right");
         pElement.append(saveButton);
-
-
-
       });
     }
 
-    $(document).ready(function() {
-       addHoverHandlers();
 
+    // Add click handler to save button for when
+    // someone edits a task then saves it
+    $(document).on("click", "#save", function(evt) {
+      // Create the new task
+      var taskElt = $('<p/>',
+        {
+          class: "task-item",
+          text: $("#new-task-text").val(),
+        }
 
-      // Add click handler to save button
-        $(document).on("click", "#save", function(evt) {
-          console.log("aslkdfjsa");
-          // Make it back into a p w/ checkbox and pencil thing
-/*
-          var taskString = `
+      );
+      taskElt.prepend($('<input/>', {
+        type: "checkbox",
+      }));
+      taskElt.append($('<span/>', {
+        class: "glyphicon glyphicon-pencil",
+      }));
 
-          <p class="task-item"><input type="checkbox"></input> <span class="glyphicon glyphicon-pencil"></span></p>
-          `;
-          var taskElt = $.parseHTML(taskString);
-          $(taskElt).text($("#new-task-text").val());
-          $("#outstanding").after(taskElt);
-*/
-          var taskElt = $('<p/>',
-            {
-              class: "task-item",
-            }
+      // TODO: find the right place to append it
+      // probably depends on how we want to animate it
+      // and depends on local storage
+      $("#outstanding").after(taskElt);
 
-          );
+      // Make this new task hover-able
+      addHoverHandlers();
 
-          $(taskElt).text($("#new-task-text").val());
+      // Remove the text boxes used for editing
+      $(this).parent().remove();
 
-          taskElt.prepend($('<input/>', {
-            type: "checkbox",
-          }));
-          taskElt.append($('<span/>', {
-            class: "glyphicon glyphicon-pencil",
-          }));
-
-          // TODO: find the right place to append it
-          $("#outstanding").after(taskElt);
-
-          // Make this new task hover-able
-          addHoverHandlers();
-
-          // Remove the text box stuff
-          $(this).parent().remove();
-
-          // TODO: figure out how to animate it if they change the due date bc it has to move sections
-
-          // TODO: I think this will need to use local storage?
-        })
-
-    })
+      // TODO: figure out how to animate it if they change the due date bc it has to move sections
+      // TODO: Maybe need to use local storage
+    });
 
     
 
     // Remove a task
+    // TODO(GR5): Make it undo-able
     $(document).on('click', ":checkbox", function(evt) {
       $(this).parent().fadeOut(
         400,
@@ -219,18 +208,9 @@
         }
       );
     });
-          // TODO(GR5): Make it undo-able
 
-    $(document).ready(function() {
-      $("#new_task_due_date").daterangepicker({
-        "applyClass": "btn-primary",
-        "singleDatePicker": true,
-        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
-      });
 
-    });
-
-    // Make new task dropdown actually display the selected event
+    // Make new task dropdown display the selected event
     // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
     $(document).on('click', ".dropdown-menu li a", function() {
       $(".btn:first-child").text($(this).text());
