@@ -1,0 +1,61 @@
+// Pre-Populated Tasks
+
+// Outstanding
+var task1 = {
+  task: "Email John about reserving space for final exam",
+  due: moment("04/30/2017").format(),
+}
+
+var task2 = {
+  task: "Make the beta for Quiz 1",
+  due: moment("05/01/2017").format(),
+}
+
+// Due today
+var task3 = {
+  task: "Ask TAs when they're available to host a Quiz 1 review session",
+  due: moment("05/03/2017").format(),
+}
+
+var task4 = {
+  task: "Pick up quiz materials from CopyTech",
+  due: moment("05/03/2017").format(),
+}
+
+var task5 = {
+  task: "Remind students that Quiz 1 is coming up in two weeks",
+  due: moment("05/03/2017").format(),
+}
+
+// Due later
+var task6 = {
+  task: "Send Quiz 1 beta to TAs for testing",
+  due: moment("05/04/2017").format(),
+}
+
+var task7 = {
+  task: "Review notes for Lecture 13",
+  due: moment("05/08/2017").format(),
+}
+
+var task8 = {
+  task: "Review notes for Lecture 14",
+  due: moment("05/15/2017").format(),
+}
+
+
+// TODO: add more filler tasks
+
+var tasks = [
+  task1,
+  task2,
+  task3,
+  task4,
+  task5,
+  task6,
+  task7,
+  task8,
+];
+
+// save data to local storage
+window.localStorage.setItem("tasks", JSON.stringify(tasks));

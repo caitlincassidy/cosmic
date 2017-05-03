@@ -32,12 +32,34 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
   <!-- Custom scripts -->
+  <script src="js/load-task-data.js"></script>
   <script src="js/load-header.js" defer></script>
 
 
 </head>
 
 <body>
+
+<script>
+
+  // Add a new task to the page under the correct heading
+  var addTask = function(task) {
+    console.log("adding task");
+    console.log(task);
+    .format("MM/DD/YYYY")
+  }
+
+  $(document).ready(function() {
+    // Load tasks from storage and display them
+    var sampleTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    sampleTasks.forEach(function(task) {
+      addTask(task);
+    });
+  })
+
+
+</script>
+
 <script>
 	$(document).ready(function() {
 		
