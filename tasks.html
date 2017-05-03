@@ -84,12 +84,13 @@
 
   <script>
 
-    $(document).ready(function() {
-      
-      // Upon hover, display pencil and turn background different
+    var addHoverHandlers = function() {
+       // Upon hover, display pencil and turn background different
       $('.task-item').hover(
         // Called on mouseenter
         function() {
+          console.log("we got a hover people");
+
           // Color light gray
           // TODO(@Becky): pick good accent color
           $(this).css('background-color', " #eac0f7");
@@ -121,6 +122,7 @@
         // Make paragraph into a text box
         var textBox = document.createElement("input");
         textBox.type="text";
+        textBox.id = "new-task-text";
         $(textBox).val(pText);
         $(textBox).css("width", "60%");
         $(textBox).css("margin-right", "15px");
@@ -146,30 +148,66 @@
             text: "Save",
             class: "btn btn-default",
             id: "save",
-          });
+          }
+        );
         $(saveButton).css("float", "right");
         pElement.append(saveButton);
 
-        // Add click handler to save button
-        $(document).on("click", "#save", function(evt) {
-          console.log("aslkdfjsa");
-        })
+
 
       });
+    }
 
-      // TODO: figure out how to animate it if they change the due date bc it has to move sections
-    })
+    $(document).ready(function() {
+       addHoverHandlers();
 
-    
-    
 
-    /*
-    $(document).on('mousemove', ".task-item", function(evt) {
-      console.log("moving");
-      $(this).css("background-color", "red");
-      // TODO: need to change the color back
-    })
+      // Add click handler to save button
+        $(document).on("click", "#save", function(evt) {
+          console.log("aslkdfjsa");
+          // Make it back into a p w/ checkbox and pencil thing
+/*
+          var taskString = `
+
+          <p class="task-item"><input type="checkbox"></input> <span class="glyphicon glyphicon-pencil"></span></p>
+          `;
+          var taskElt = $.parseHTML(taskString);
+          $(taskElt).text($("#new-task-text").val());
+          $("#outstanding").after(taskElt);
 */
+          var taskElt = $('<p/>',
+            {
+              class: "task-item",
+            }
+
+          );
+
+          $(taskElt).text($("#new-task-text").val());
+
+          taskElt.prepend($('<input/>', {
+            type: "checkbox",
+          }));
+          taskElt.append($('<span/>', {
+            class: "glyphicon glyphicon-pencil",
+          }));
+
+          // TODO: find the right place to append it
+          $("#outstanding").after(taskElt);
+
+          // Make this new task hover-able
+          addHoverHandlers();
+
+          // Remove the text box stuff
+          $(this).parent().remove();
+
+          // TODO: figure out how to animate it if they change the due date bc it has to move sections
+
+          // TODO: I think this will need to use local storage?
+        })
+
+    })
+
+    
 
     // Remove a task
     $(document).on('click', ":checkbox", function(evt) {
@@ -220,7 +258,7 @@
 
         <div class="page-content main-content row">
           <div class="col-lg-8">
-            <h2> Outstanding </h2>
+            <h2 id="outstanding"> Outstanding </h2>
 
             <p class="task-item"><input type="checkbox"></input>Email John about reserving space for final exam <span class="glyphicon glyphicon-pencil"></span></p>
             <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-pencil"></span></p>
