@@ -94,7 +94,7 @@ Modifying the width of list items on the Notes and Feedback page
 
 /* Puts the hamburger in the right place horizontally. */
 .task-item {
-	width: 75%;
+	width: 85%;
 }
 
 /* todo: align vertically center */

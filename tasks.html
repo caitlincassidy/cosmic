@@ -43,34 +43,82 @@
 <script>
 
   // Add a new task to the page under the correct heading
-  var addTask = function(task) {
-    console.log(task.text);
-
+  var makeTaskDom = function(task) {
+    // Two columns, one for task text and one for due date
     var taskDivString = `
       <div class="row task-item">
         <div class="col-xs-9 text"></div>
         <div class="col-xs-3 due"></div>
       </div>
     `;
-
     var taskDiv = $.parseHTML(taskDivString);
-    var textElt = document.createElement('p');
-    textElt.text = task.text;
-    //textElt.textContent = task.text;
 
-    //var textElt = $('<p>' + task.text + '</p>');
-    console.log($(textElt));
-    textElt.prepend($('<input/>', {
+    // Store task information for later
+    $(taskDiv).data('task-json', task);
+
+    // Task text
+    var textElt = $('<p>', {
+                text: task.text,
+            });
+    var checkbox = $('<input/>', {
       type: "checkbox",
-    }));
-    var dueDate = moment(task.due).format("MM/DD/YYYY");
-    var dueElt = $('<p>' + dueDate + '</p>');
+    });
+    checkbox.css("margin-right", "10px");
+    textElt.prepend(checkbox);
+    textElt.appendTo($(taskDiv).children()[0]);
+
+    // Task due date
+    // Figure out what due date text to display
+    // Use mm/dd/yyyy format so it's only comparing days,
+    // not hours or minutes
+    var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
+    var dueDateText;
+    // Store all upcoming tasks so they can be sorted and displayed correctly later
+    var upcomingTasks = [];
+    if (daysUntilDue < 0) { // Task is outstanding
+      if (daysUntilDue == -1) { // Handle singular case
+        dueDateText = "1 day late";
+      } else {
+        dueDateText = Math.abs(daysUntilDue) + " days late";
+      }
+    } else if (daysUntilDue == 0) { // Task is due today
+      dueDateText = "Today";
+    } else { // Task is upcoming
+      upcomingTasks.push(task);
+      if (daysUntilDue == 1) {
+        dueDateText = "Tomorrow";
+      } else if (daysUntilDue <= 7) {
+        dueDateText = "In " + daysUntilDue + " days";
+      } else {
+        // If it's far enough in the future, just display the date
+        dueDateText = moment(task.due).format("MM/DD/YYYY");
+      }
+    }
+
+    var dueElt = $('<p>', {
+                text: dueDateText,
+            });
+    dueElt.appendTo($(taskDiv).children()[1]);
+
+    return taskDiv;
+
+    // TODO: Append to div
+    // Go through DOM utnil its date is earlier?
+    /*
+    var allTasks = $(document).find(".task-item");
+    console.log(allTasks);
+    var i = 0;
+    if (allTasks.length > 0) {
+
+    } else {
+
+    }
+    var lastEarlierRow = allTasks[0];
+    */
 
 
-    ($(taskDiv).children()[0]).append(textElt);
-    ($(taskDiv).children()[1]).append(dueElt);
-
-    $("#outstanding").after(taskDiv);
+    // TODO: Put it in the right place
+    //$("#outstanding").after(taskDiv);
 
 
     //taskElt.append($('<span/>', {
@@ -89,8 +137,16 @@
     console.log("document is ready");
     // Load tasks from storage and display them
     var sampleTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    // Sort latest to earliest so they're appended correctly
+    sampleTasks.sort(function(a, b) {
+      // Should return negative if a is later than b
+      return moment(b.due).diff(moment(a.due));
+    });
+    console.log(sampleTasks);
+
     sampleTasks.forEach(function(task) {
-      addTask(task);
+      var taskDom = makeTaskDom(task);
+      // TODO: Add it under correct heading
     });
   })
 
@@ -190,12 +246,18 @@
 
         <div class="page-content main-content row">
           <div class="col-lg-8">
-            <h2 id="outstanding"> Outstanding </h2>
 
+            <h3 id="outstanding"> Outstanding </h3>
+
+            <h3 id="due-today"> Due today </h3>
+
+            <h3 id="upcoming"> Upcoming </h3>
+
+
+            <!--
             <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-menu-hamburger"></span></p>
             <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
-            <!-- TODO: Figure out what day we want as "today" -->
             <br>
             <h2> Due today (April 20) </h2>
 
@@ -218,6 +280,8 @@
             <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 13  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
 
             <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
+
+          -->
 
 
           </div>
