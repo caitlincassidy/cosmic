@@ -41,6 +41,7 @@
 <body>
 
 <script>
+<<<<<<< HEAD
   ///////////////////
   // DOCUMENT.READY
   //
@@ -182,6 +183,156 @@
         headingId = "#upcoming";
       }
       $(headingId).after(taskDom);
+    });
+  }
+
+
+
+	
+
+
+    $(document).ready(function() {
+      addHoverHandlers();
+
+      $("#new_task_due_date").daterangepicker({
+        "applyClass": "btn-primary",
+        "singleDatePicker": true,
+        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
+      });
+    });
+
+    // Function to attach hover handlers to tasks
+    // and click handlers to pencils
+    var addHoverHandlers = function() {
+       // Upon hover, display pencil and change background color
+      $('.task-item').hover(
+        function() { // Called on mouseenter
+          // Color light gray
+          // TODO(@Becky): pick good accent color
+          $(this).css('background-color', " #eac0f7");
+          // Make pencil appear
+          $(this).find("span").css("visibility", "visible");
+        },
+        function() { // Called on mouseleave
+          // Reset background color
+          $(this).css('background-color', "");
+          // Make pencil disappear
+          $(this).find("span").css("visibility", "hidden");
+        }
+      );
+
+      // Affordance for clicking on the pencil:
+      // Mouse turns into a pointer
+      $('.glyphicon-pencil').hover(
+        function() { // Called on mouseenter
+          $(this).css("cursor", "pointer");
+        },
+        function() { // Called on mouseleave
+          $(this).css("cursor", "");
+        }
+      );
+
+      // When pencil button is clicked, make task editable
+      $('.glyphicon-pencil').click(function() {
+        // Save p element before 'this' is removed
+        var pElement = $(this).parent();
+        var pText = pElement.text();
+
+        // Remove everything from the p
+        pElement.empty();
+
+        // Make task into a text box
+        var textBox = document.createElement("input");
+        textBox.type="text";
+        textBox.id = "new-task-text";
+        $(textBox).val(pText);
+        $(textBox).css("width", "60%");
+        $(textBox).css("margin-right", "15px");
+        pElement.append(textBox);
+
+        // Add box with due date and datepicker ability
+        var dueDateBox = document.createElement("input");
+        dueDateBox.type = "text";
+        $(dueDateBox).css("width", "25%");
+
+        $(dueDateBox).daterangepicker({
+          "applyClass": "btn-primary",
+          "singleDatePicker": true,
+          "startDate": moment().endOf("week").format("MM/DD/YYYY"),
+        });
+        pElement.append(dueDateBox);
+
+        // Add a save button
+        // TODO: It's slightly not centered
+        var saveButton = $('<button/>',
+          {
+            type: "button",
+            text: "Save",
+            class: "btn btn-default",
+            id: "save",
+          }
+        );
+        $(saveButton).css("float", "right");
+        pElement.append(saveButton);
+      });
+    }
+
+
+    // Add click handler to save button for when
+    // someone edits a task then saves it
+    $(document).on("click", "#save", function(evt) {
+      // Create the new task
+      var taskElt = $('<p/>',
+        {
+          class: "task-item",
+          text: $("#new-task-text").val(),
+        }
+
+      );
+      taskElt.prepend($('<input/>', {
+        type: "checkbox",
+      }));
+      taskElt.append($('<span/>', {
+        class: "glyphicon glyphicon-pencil",
+      }));
+
+      // TODO: find the right place to append it
+      // probably depends on how we want to animate it
+      // and depends on local storage
+      $("#outstanding").after(taskElt);
+
+      // Make this new task hover-able
+      addHoverHandlers();
+
+      // Remove the text boxes used for editing
+      $(this).parent().remove();
+
+      // TODO: figure out how to animate it if they change the due date bc it has to move sections
+      // TODO: Maybe need to use local storage
+    });
+
+    
+
+    // Remove a task
+    // TODO(GR5): Make it undo-able
+    $(document).on('click', ":checkbox", function(evt) {
+      $(this).parent().fadeOut(
+        400,
+        function() {
+          // Remove dom element
+          $(this).remove();
+        }
+      );
+    });
+
+
+    // Make new task dropdown display the selected event
+    // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+    $(document).on('click', ".dropdown-menu li a", function() {
+      $(".btn:first-child").text($(this).text());
+      $(".btn:first-child").val($(this).text());
+      // Keeps the caret down displayed
+      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
     });
 
     // Make this new task hover-able
