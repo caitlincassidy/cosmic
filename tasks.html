@@ -109,12 +109,10 @@
     var taskDiv = $(this).parent().parent();
     var task = $(taskDiv).data('task-json');
 
+    // Give this div an ID so it can be removed later
+    taskDiv.attr("id", "editing-div");
     // Empty all column divs
-    // Do this by giving a temp ID to the task div
-    // TODO: Better way to do this?
-    taskDiv.attr("id", "temp");
-    $('#temp div').empty();
-    taskDiv.attr("id", "");
+    $('#editing-div div').empty();
 
     // Add text box to edit task text
     var textBox = $('<input>', {
@@ -151,27 +149,96 @@
     );
     $(saveButton).css("float", "right");
     saveButton.appendTo($(taskDiv).children()[2]);
+
+    // TODO: Remove the old task from local storage
+    // since when they save a task, it will be
+    // added to local storage
   });
 
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
+
+    // Create new task
+    // TODO: Add to local storage
     var task = {
       'text': $("#new-task-text").val(),
       'due': $('#new-task-due').val(),
     }
     var taskDom = makeTaskDom(task);
+    
+    // Remove div used for editing
+    $("#editing-div").remove();
+
+    // Find correct heading the task should be under
+    var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
+    var divId;
+    if (daysUntilDue < 0) {
+      divId = "#outstanding-contents";
+    } else if (daysUntilDue == 0) {
+      divId = "#due-today-contents";
+    } else {
+      divId = "#upcoming-contents";
+    }
+
+    // Find where within that heading the task should be
+    var allTasks = $(divId).children();
+    console.log(allTasks);
+    if (allTasks.length > 0) {
+      // Tasks are ordered earliest to latest
+      // Keep going through the tasks until we find one
+      // with a later deadline than this task
+      var i = 0;
+      var taskToCheck = $(allTasks[0]).data("task-json");
+      // isLater: boolean, true when new task is still later
+      // than the task we're checking
+      var isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
+
+      console.log("tasks:");
+      console.log(task);
+      console.log(taskToCheck);
+
+      while (i < allTasks.length && isLater) {
+        i++;
+        if (i == allTasks.length) {
+          break;
+        }
+        taskToCheck = $(allTasks[i]).data("task-json");
+        console.log(i);
+        console.log("tasks:");
+        console.log(task);
+        console.log(taskToCheck);
+
+        isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
+      }
+      
+      // Once while loop finishes, i is the index
+      // of task that is later than the new task,
+      // so the new task should go right before it
+      // (Unless i == allTasks.length, in which case
+      //  it should be at the end of the list)
+      if (i == allTasks.length) {
+        $(allTasks[i-1]).after(taskDom);
+      } else {
+        $(allTasks[0]).before(taskDom);
+      }
+
+    } else {
+      // No tasks currently under that heading, so just append it
+      $(divId).append(taskDom);
+    }
+
+    // Find correct spot within that div
 
     // TODO: find the right place to append it
     // probably depends on how we want to animate it
     // and depends on local storage
-    $("#outstanding").after(taskElt);
+   // $("#outstanding").after(taskElt);
 
-    // Remove the text boxes used for editing
-    $(this).parent().remove();
+
 
     // TODO: figure out how to animate it if they change the due date bc it has to move sections
-    // TODO: Maybe need to use local storage
   });
+
 
   ///////////////////
   // HELPER METHODS
@@ -260,10 +327,10 @@
   var displayPreDeterminedTasks = function() {
     // Load tasks from storage
     var sampleTasks = JSON.parse(window.localStorage.getItem("tasks"));
-    // Sort latest to earliest so they're appended correctly
+    // Sort earliest to latest so they're appended correctly
     sampleTasks.sort(function(a, b) {
-      // Should return negative if a is later than b
-      return moment(b.due).diff(moment(a.due));
+      // Should return positive if a is later than b
+      return moment(a.due).diff(moment(b.due));
     });
 
     // Add each task to the document
@@ -271,34 +338,16 @@
       var taskDom = makeTaskDom(task);
       // Add it under correct heading
       var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
-      var headingId;
+      var divId;
       if (daysUntilDue < 0) {
-        headingId = "#outstanding";
+        divId = "#outstanding-contents";
       } else if (daysUntilDue == 0) {
-        headingId = "#due-today";
+        divId = "#due-today-contents";
       } else {
-        headingId = "#upcoming";
+        divId = "#upcoming-contents";
       }
-      $(headingId).after(taskDom);
+      $(divId).append(taskDom);
     });
-  }
-
-  
-
-  var addNewTaskInCorrectPlace = function(task) {
-    // TODO
-    // Go through DOM utnil its date is earlier?
-    /*
-    var allTasks = $(document).find(".task-item");
-    console.log(allTasks);
-    var i = 0;
-    if (allTasks.length > 0) {
-
-    } else {
-
-    }
-    var lastEarlierRow = allTasks[0];
-    */
   }
 
   /**
@@ -364,10 +413,13 @@
           <div class="col-lg-8">
 
             <h3 id="outstanding"> Outstanding </h3>
+            <div id="outstanding-contents"></div>
 
             <h3 id="due-today"> Due today </h3>
+            <div id="due-today-contents"></div>
 
             <h3 id="upcoming"> Upcoming </h3>
+            <div id="upcoming-contents"></div>
 
           </div>
           <div class="col-lg-3 panel sticky" id="sidebar">
