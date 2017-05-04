@@ -46,7 +46,6 @@
   //
   $(document).ready(function() {
     displayPreDeterminedTasks();
-    addHoverHandlers();
     setupStickySidebar();
 
     $("#new_task_due_date").daterangepicker({
@@ -79,6 +78,99 @@
         $(this).remove();
       }
     );
+  });
+
+  // Hovering over a task item
+  $(document).on('mouseenter', '.task-item', function() {
+    // Color light gray
+    // TODO(@Becky): pick good accent color
+    $(this).css('background-color', " #eac0f7");
+    // Make pencil appear
+    $(this).find("span").css("visibility", "visible");
+  });
+  $(document).on('mouseleave', '.task-item', function() {
+      // Reset background color
+      $(this).css('background-color', "");
+      // Make pencil disappear
+      $(this).find("span").css("visibility", "hidden");
+  });
+
+  // Hovering over a pencil
+  // Give affordance for clicking on the pencil
+  $(document).on('mouseenter', '.glyphicon-pencil', function() {
+    $(this).css("cursor", "pointer");
+  })
+  $(document).on('mouseleave', '.glyphicon-pencil', function() {
+    $(this).css("cursor", "");
+  });
+
+  // When pencil button is clicked, make task editable
+  $(document).on('click', '.glyphicon-pencil', function() {
+    var taskDiv = $(this).parent().parent();
+    var task = $(taskDiv).data('task-json');
+
+    // Empty all column divs
+    // Do this by giving a temp ID to the task div
+    // TODO: Better way to do this?
+    taskDiv.attr("id", "temp");
+    $('#temp div').empty();
+    taskDiv.attr("id", "");
+
+    // Add text box to edit task text
+    var textBox = $('<input>', {
+      type: "text",
+      id: "new-task-text",
+      val: task.text,
+    });
+    $(textBox).css("width", "100%");
+    $(textBox).css("margin-right", "15px");
+    textBox.appendTo($(taskDiv).children()[0]);
+
+    // Add due date box to edit with datepicker ability
+    // TODO: slightly not centered
+    var dueDateBox = $('<input>', {
+      type: "text",
+      id: "new-task-due",
+    });
+    $(dueDateBox).css("width", "75%");
+    $(dueDateBox).daterangepicker({
+      "applyClass": "btn-primary",
+      "singleDatePicker": true,
+      "startDate": moment(task.due).format("MM/DD/YYYY"),
+    });
+    dueDateBox.appendTo($(taskDiv).children()[1]);
+
+    // Add a save button to save changes
+    var saveButton = $('<button/>',
+      {
+        type: "button",
+        text: "Save",
+        class: "btn btn-default",
+        id: "save",
+      }
+    );
+    $(saveButton).css("float", "right");
+    saveButton.appendTo($(taskDiv).children()[2]);
+  });
+
+  // When someone saves a task edit, update the display
+  $(document).on("click", "#save", function(evt) {
+    var task = {
+      'text': $("#new-task-text").val(),
+      'due': $('#new-task-due').val(),
+    }
+    var taskDom = makeTaskDom(task);
+
+    // TODO: find the right place to append it
+    // probably depends on how we want to animate it
+    // and depends on local storage
+    $("#outstanding").after(taskElt);
+
+    // Remove the text boxes used for editing
+    $(this).parent().remove();
+
+    // TODO: figure out how to animate it if they change the due date bc it has to move sections
+    // TODO: Maybe need to use local storage
   });
 
   ///////////////////
@@ -191,125 +283,6 @@
     });
   }
 
-
-
-
-    // Function to attach hover handlers to tasks
-    // and click handlers to pencils
-    var addHoverHandlers = function() {
-       // Upon hover, display pencil and change background color
-      $('.task-item').hover(
-        function() { // Called on mouseenter
-          // Color light gray
-          // TODO(@Becky): pick good accent color
-          $(this).css('background-color', " #eac0f7");
-          // Make pencil appear
-          $(this).find("span").css("visibility", "visible");
-        },
-        function() { // Called on mouseleave
-          // Reset background color
-          $(this).css('background-color', "");
-          // Make pencil disappear
-          $(this).find("span").css("visibility", "hidden");
-        }
-      );
-
-      // Affordance for clicking on the pencil:
-      // Mouse turns into a pointer
-      $('.glyphicon-pencil').hover(
-        function() { // Called on mouseenter
-          $(this).css("cursor", "pointer");
-        },
-        function() { // Called on mouseleave
-          $(this).css("cursor", "");
-        }
-      );
-
-      // When pencil button is clicked, make task editable
-      $('.glyphicon-pencil').click(function() {
-        // Save p element before 'this' is removed
-        var pElement = $(this).parent();
-        var pText = pElement.text();
-
-        // Remove everything from the p
-        pElement.empty();
-
-        // Make task into a text box
-        var textBox = document.createElement("input");
-        textBox.type="text";
-        textBox.id = "new-task-text";
-        $(textBox).val(pText);
-        $(textBox).css("width", "60%");
-        $(textBox).css("margin-right", "15px");
-        pElement.append(textBox);
-
-        // Add box with due date and datepicker ability
-        var dueDateBox = document.createElement("input");
-        dueDateBox.type = "text";
-        $(dueDateBox).css("width", "25%");
-
-        $(dueDateBox).daterangepicker({
-          "applyClass": "btn-primary",
-          "singleDatePicker": true,
-          "startDate": moment().endOf("week").format("MM/DD/YYYY"),
-        });
-        pElement.append(dueDateBox);
-
-        // Add a save button
-        // TODO: It's slightly not centered
-        var saveButton = $('<button/>',
-          {
-            type: "button",
-            text: "Save",
-            class: "btn btn-default",
-            id: "save",
-          }
-        );
-        $(saveButton).css("float", "right");
-        pElement.append(saveButton);
-      });
-    }
-
-
-    // Add click handler to save button for when
-    // someone edits a task then saves it
-    $(document).on("click", "#save", function(evt) {
-      // Create the new task
-      var taskElt = $('<p/>',
-        {
-          class: "task-item",
-          text: $("#new-task-text").val(),
-        }
-
-      );
-      taskElt.prepend($('<input/>', {
-        type: "checkbox",
-      }));
-      taskElt.append($('<span/>', {
-        class: "glyphicon glyphicon-pencil",
-      }));
-
-      // TODO: find the right place to append it
-      // probably depends on how we want to animate it
-      // and depends on local storage
-      $("#outstanding").after(taskElt);
-
-      // Make this new task hover-able
-      addHoverHandlers();
-
-      // Remove the text boxes used for editing
-      $(this).parent().remove();
-
-      // TODO: figure out how to animate it if they change the due date bc it has to move sections
-      // TODO: Maybe need to use local storage
-    });
-
-    
-
-
-
-    // Make this new task hover-able
-    //addHoverHandlers();
   
 
   var addNewTaskInCorrectPlace = function(task) {

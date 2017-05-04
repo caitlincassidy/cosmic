@@ -100,7 +100,7 @@ Modifying the width of list items on the Notes and Feedback page
 }
 
 /* todo: align vertically center */
-.task-item > .glyphicon-pencil {
+.task-item > .pencil > .glyphicon-pencil {
 	float: right;
 	visibility: hidden;
 	margin-right: 10px;
