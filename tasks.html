@@ -100,6 +100,7 @@
             });
     dueElt.appendTo($(taskDiv).children()[1]);
 
+
     return taskDiv;
 
     // TODO: Append to div
@@ -118,7 +119,6 @@
 
 
     // TODO: Put it in the right place
-    //$("#outstanding").after(taskDiv);
 
 
     //taskElt.append($('<span/>', {
@@ -146,7 +146,17 @@
 
     sampleTasks.forEach(function(task) {
       var taskDom = makeTaskDom(task);
-      // TODO: Add it under correct heading
+      // Add it under correct heading
+      var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
+      var headingId;
+      if (daysUntilDue < 0) {
+        headingId = "#outstanding";
+      } else if (daysUntilDue == 0) {
+        headingId = "#due-today";
+      } else {
+        headingId = "#upcoming";
+      }
+      $(headingId).after(taskDom);
     });
   })
 
