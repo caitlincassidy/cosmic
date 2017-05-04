@@ -46,32 +46,19 @@
   //
   $(document).ready(function() {
     displayPreDeterminedTasks();
+    addHoverHandlers();
     setupStickySidebar();
-  });
 
-  ///////////////////
-  // DOCUMENT METHODS
-  //
-
-  // Remove a task
-  $(document).on('click', ":checkbox", function(evt) {
-    $(this).parent().fadeOut(
-      400,
-      function() {
-        // Remove dom element
-        $(this).remove();
-      }
-    );
-  });
-        // TODO(GR5): Make it undo-able
-
-  $(document).ready(function() {
     $("#new_task_due_date").daterangepicker({
       "applyClass": "btn-primary",
       "singleDatePicker": true,
       "startDate": moment().format("MM/DD/YYYY"),
     });
   });
+
+  ///////////////////
+  // DOCUMENT METHODS
+  //
 
   // Make new task dropdown display the selected event
   // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
@@ -80,6 +67,18 @@
     $("#event-name").val($(this).text());
     // Keeps the caret down displayed
     $('#event-name').html($(this).text() + ' <span class="caret"></span>');
+  });
+  // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+
+  // Remove a task when the checkbox next to it is clicked
+  $(document).on('click', ":checkbox", function(evt) {
+    $(this).parent().parent().parent().fadeOut(
+      400,
+      function() {
+        // Remove dom element
+        $(this).remove();
+      }
+    );
   });
 
   ///////////////////
@@ -94,11 +93,12 @@
    * @returns a DOM object representing that task
    */
   var makeTaskDom = function(task) {
-    // Two columns, one for task text and one for due date
+    // Three columns for task text, due date, and pencil icon
     var taskDivString = `
       <div class="row task-item">
-        <div class="col-xs-9 text"></div>
+        <div class="col-xs-8 text"></div>
         <div class="col-xs-3 due"></div>
+        <div class="col-xs-1 pencil"></div>
       </div>
     `;
     var taskDiv = $.parseHTML(taskDivString);
@@ -151,6 +151,12 @@
     });
     dueElt.appendTo($(taskDiv).children()[1]);
 
+    // Add (hidden) pencil icon for editing
+    pencilElt = $('<span/>', {
+      class: "glyphicon glyphicon-pencil",
+    });
+    pencilElt.appendTo($(taskDiv).children()[2]);
+
     // Return the entire DOM object
     return taskDiv;
   }
@@ -187,18 +193,6 @@
 
 
 
-	
-
-
-    $(document).ready(function() {
-      addHoverHandlers();
-
-      $("#new_task_due_date").daterangepicker({
-        "applyClass": "btn-primary",
-        "singleDatePicker": true,
-        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
-      });
-    });
 
     // Function to attach hover handlers to tasks
     // and click handlers to pencils
@@ -312,27 +306,7 @@
 
     
 
-    // Remove a task
-    // TODO(GR5): Make it undo-able
-    $(document).on('click', ":checkbox", function(evt) {
-      $(this).parent().fadeOut(
-        400,
-        function() {
-          // Remove dom element
-          $(this).remove();
-        }
-      );
-    });
 
-
-    // Make new task dropdown display the selected event
-    // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
-    $(document).on('click', ".dropdown-menu li a", function() {
-      $(".btn:first-child").text($(this).text());
-      $(".btn:first-child").val($(this).text());
-      // Keeps the caret down displayed
-      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-    });
 
     // Make this new task hover-able
     //addHoverHandlers();
@@ -354,6 +328,10 @@
     */
   }
 
+  /**
+   * Sets up CSS and JS for keeping the 'add new task'
+   * form always displayed, even when scrolling.
+   */
 	var setupStickySidebar = function() {
     // From http://zurb.com/building-blocks/sticky-sidebar
   	var stickySidebar = $('.sticky');
