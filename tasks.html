@@ -32,7 +32,6 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
   <!-- Custom scripts -->
-  <script src="js/load-task-data.js"></script>
   <script src="js/load-header.js" defer></script>
 
 
@@ -158,12 +157,18 @@
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
     // Create new task
-    // TODO: Add to local storage
     var task = {
       'text': $("#new-task-text").val(),
       'due': $('#new-task-due').val(),
     }
     var taskDom = makeTaskDom(task);
+
+    // Add to local storage
+    // TODO: This doesn't work if I switch to another page
+    // then switch back to the tasks page
+    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    savedTasks.push(task);
+    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
     
     // Remove div used for editing
     $("#editing-div").remove();
@@ -329,6 +334,13 @@
       }
       $(divId).append(taskDom);
     });
+
+    // Add a placeholder under any headings that are empty
+    /*
+    if ($("#outstanding-contents").children().length == 0) {
+      $("outstanding-contents").append()
+    }
+    */
   }
 
   /**
