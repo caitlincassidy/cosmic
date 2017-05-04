@@ -157,7 +157,6 @@
 
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
-
     // Create new task
     // TODO: Add to local storage
     var task = {
@@ -180,9 +179,9 @@
       divId = "#upcoming-contents";
     }
 
-    // Find where within that heading the task should be
+    // Find all tasks within the heading the task should be
+    // in order to place this task in the right order
     var allTasks = $(divId).children();
-    console.log(allTasks);
     if (allTasks.length > 0) {
       // Tasks are ordered earliest to latest
       // Keep going through the tasks until we find one
@@ -192,22 +191,12 @@
       // isLater: boolean, true when new task is still later
       // than the task we're checking
       var isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
-
-      console.log("tasks:");
-      console.log(task);
-      console.log(taskToCheck);
-
       while (i < allTasks.length && isLater) {
         i++;
         if (i == allTasks.length) {
           break;
         }
         taskToCheck = $(allTasks[i]).data("task-json");
-        console.log(i);
-        console.log("tasks:");
-        console.log(task);
-        console.log(taskToCheck);
-
         isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
       }
       
@@ -223,20 +212,12 @@
       }
 
     } else {
-      // No tasks currently under that heading, so just append it
+      // No tasks currently under that heading,
+      // so just append it
       $(divId).append(taskDom);
     }
 
-    // Find correct spot within that div
-
-    // TODO: find the right place to append it
-    // probably depends on how we want to animate it
-    // and depends on local storage
-   // $("#outstanding").after(taskElt);
-
-
-
-    // TODO: figure out how to animate it if they change the due date bc it has to move sections
+    // TODO: Add animation for the moving between sections?
   });
 
 
