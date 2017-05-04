@@ -41,8 +41,58 @@
 <body>
 
 <script>
+  ///////////////////
+  // DOCUMENT.READY
+  //
+  $(document).ready(function() {
+    displayPreDeterminedTasks();
+    setupStickySidebar();
+  });
 
-  // Add a new task to the page under the correct heading
+  ///////////////////
+  // DOCUMENT METHODS
+  //
+
+  // Remove a task
+  $(document).on('click', ":checkbox", function(evt) {
+    $(this).parent().fadeOut(
+      400,
+      function() {
+        // Remove dom element
+        $(this).remove();
+      }
+    );
+  });
+        // TODO(GR5): Make it undo-able
+
+  $(document).ready(function() {
+    $("#new_task_due_date").daterangepicker({
+      "applyClass": "btn-primary",
+      "singleDatePicker": true,
+      "startDate": moment().format("MM/DD/YYYY"),
+    });
+  });
+
+  // Make new task dropdown display the selected event
+  // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+  $(document).on('click', ".dropdown-menu li a", function() {
+    $("#event-name").text($(this).text());
+    $("#event-name").val($(this).text());
+    // Keeps the caret down displayed
+    $('#event-name').html($(this).text() + ' <span class="caret"></span>');
+  });
+
+  ///////////////////
+  // HELPER METHODS
+  //
+
+  /**
+   * Creates a DOM element for a task.
+   *
+   * @param task a JSON object with 'text' and 'due' fields
+   *             representing a task.
+   * @returns a DOM object representing that task
+   */
   var makeTaskDom = function(task) {
     // Two columns, one for task text and one for due date
     var taskDivString = `
@@ -56,10 +106,10 @@
     // Store task information for later
     $(taskDiv).data('task-json', task);
 
-    // Task text
+    // Add task text and checkbox to first column
     var textElt = $('<p>', {
-                text: task.text,
-            });
+      text: task.text,
+    });
     var checkbox = $('<input/>', {
       type: "checkbox",
     });
@@ -67,83 +117,58 @@
     textElt.prepend(checkbox);
     textElt.appendTo($(taskDiv).children()[0]);
 
-    // Task due date
     // Figure out what due date text to display
     // Use mm/dd/yyyy format so it's only comparing days,
     // not hours or minutes
     var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
     var dueDateText;
-    // Store all upcoming tasks so they can be sorted and displayed correctly later
-    var upcomingTasks = [];
-    if (daysUntilDue < 0) { // Task is outstanding
+    if (daysUntilDue < 0) {
+      // Task is outstanding
       if (daysUntilDue == -1) { // Handle singular case
         dueDateText = "1 day late";
       } else {
         dueDateText = Math.abs(daysUntilDue) + " days late";
       }
-    } else if (daysUntilDue == 0) { // Task is due today
+    } else if (daysUntilDue == 0) {
+      // Task is due today
       dueDateText = "Today";
-    } else { // Task is upcoming
-      upcomingTasks.push(task);
+    } else {
+      // Task is upcoming
       if (daysUntilDue == 1) {
         dueDateText = "Tomorrow";
       } else if (daysUntilDue <= 7) {
         dueDateText = "In " + daysUntilDue + " days";
       } else {
-        // If it's far enough in the future, just display the date
+        // If it's far enough in the future,
+        // so just display the date
         dueDateText = moment(task.due).format("MM/DD/YYYY");
       }
     }
 
+    // Add due date text to second column
     var dueElt = $('<p>', {
-                text: dueDateText,
-            });
+      text: dueDateText,
+    });
     dueElt.appendTo($(taskDiv).children()[1]);
 
-
+    // Return the entire DOM object
     return taskDiv;
-
-    // TODO: Append to div
-    // Go through DOM utnil its date is earlier?
-    /*
-    var allTasks = $(document).find(".task-item");
-    console.log(allTasks);
-    var i = 0;
-    if (allTasks.length > 0) {
-
-    } else {
-
-    }
-    var lastEarlierRow = allTasks[0];
-    */
-
-
-    // TODO: Put it in the right place
-
-
-    //taskElt.append($('<span/>', {
-    //  class: "glyphicon glyphicon-pencil",
-    //}));
-
-    // TODO: find the right place to append it
-    // probably depends on how we want to animate it
-    // and depends on local storage
-
-    // Make this new task hover-able
-    //addHoverHandlers();
   }
 
-  $(document).ready(function() {
-    console.log("document is ready");
-    // Load tasks from storage and display them
+  /**
+   * Gets pre-determined tasks from storage and
+   * displays them.
+   */
+  var displayPreDeterminedTasks = function() {
+    // Load tasks from storage
     var sampleTasks = JSON.parse(window.localStorage.getItem("tasks"));
     // Sort latest to earliest so they're appended correctly
     sampleTasks.sort(function(a, b) {
       // Should return negative if a is later than b
       return moment(b.due).diff(moment(a.due));
     });
-    console.log(sampleTasks);
 
+    // Add each task to the document
     sampleTasks.forEach(function(task) {
       var taskDom = makeTaskDom(task);
       // Add it under correct heading
@@ -158,86 +183,66 @@
       }
       $(headingId).after(taskDom);
     });
-  })
 
+    // Make this new task hover-able
+    //addHoverHandlers();
+  }
+
+  var addNewTaskInCorrectPlace = function(task) {
+    // TODO
+    // Go through DOM utnil its date is earlier?
+    /*
+    var allTasks = $(document).find(".task-item");
+    console.log(allTasks);
+    var i = 0;
+    if (allTasks.length > 0) {
+
+    } else {
+
+    }
+    var lastEarlierRow = allTasks[0];
+    */
+  }
+
+	var setupStickySidebar = function() {
+    // From http://zurb.com/building-blocks/sticky-sidebar
+  	var stickySidebar = $('.sticky');
+
+  	if (stickySidebar.length > 0) { 
+  	  var stickyHeight = stickySidebar.height(),
+  		  sidebarTop = stickySidebar.offset().top;
+  	}
+
+  	// on scroll move the sidebar
+  	$(window).scroll(function () {
+  	  if (stickySidebar.length > 0) { 
+    		var scrollTop = $(window).scrollTop();
+
+    		if (sidebarTop < scrollTop) {
+    		  stickySidebar.css('top', scrollTop - sidebarTop);
+
+    		  // stop the sticky sidebar at the footer to avoid overlapping
+    		  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
+    			  stickyStop = $('.main-content').offset().top + $('.main-content').height();
+    		  if (stickyStop < sidebarBottom) {
+    			var stopPosition = $('.main-content').height() - stickyHeight;
+    			stickySidebar.css('top', stopPosition);
+    		  }
+    		}
+    		else {
+    		  stickySidebar.css('top', '0');
+    		} 
+	    }
+	  });
+
+  	$(window).resize(function () {
+  	  if (stickySidebar.length > 0) { 
+  		stickyHeight = stickySidebar.height();
+  	  }
+  	});	
+	};
 
 </script>
-
-<script>
-	$(document).ready(function() {
-		
-		
-// From http://zurb.com/building-blocks/sticky-sidebar
-	var stickySidebar = $('.sticky');
-
-	if (stickySidebar.length > 0) { 
-	  var stickyHeight = stickySidebar.height(),
-		  sidebarTop = stickySidebar.offset().top;
-	}
-
-	// on scroll move the sidebar
-	$(window).scroll(function () {
-	  if (stickySidebar.length > 0) { 
-		var scrollTop = $(window).scrollTop();
-
-		if (sidebarTop < scrollTop) {
-		  stickySidebar.css('top', scrollTop - sidebarTop);
-
-		  // stop the sticky sidebar at the footer to avoid overlapping
-		  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-			  stickyStop = $('.main-content').offset().top + $('.main-content').height();
-		  if (stickyStop < sidebarBottom) {
-			var stopPosition = $('.main-content').height() - stickyHeight;
-			stickySidebar.css('top', stopPosition);
-		  }
-		}
-		else {
-		  stickySidebar.css('top', '0');
-		} 
-	  }
-	});
-
-	$(window).resize(function () {
-	  if (stickySidebar.length > 0) { 
-		stickyHeight = stickySidebar.height();
-	  }
-	});	
-	
-	});
-</script>	
-	
-
-  <script>
-    // Remove a task
-    $(document).on('click', ":checkbox", function(evt) {
-      $(this).parent().fadeOut(
-        400,
-        function() {
-          // Remove dom element
-          $(this).remove();
-        }
-      );
-    });
-          // TODO(GR5): Make it undo-able
-
-    $(document).ready(function() {
-      $("#new_task_due_date").daterangepicker({
-        "applyClass": "btn-primary",
-        "singleDatePicker": true,
-        "startDate": moment().format("MM/DD/YYYY"),
-      });
-    });
-
-    // Make new task dropdown display the selected event
-    // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
-    $(document).on('click', ".dropdown-menu li a", function() {
-      $("#event-name").text($(this).text());
-      $("#event-name").val($(this).text());
-      // Keeps the caret down displayed
-      $('#event-name').html($(this).text() + ' <span class="caret"></span>');
-    });
-
-  </script>
 
 
 	<div class="container-fluid">
@@ -262,37 +267,6 @@
             <h3 id="due-today"> Due today </h3>
 
             <h3 id="upcoming"> Upcoming </h3>
-
-
-            <!--
-            <p class="task-item"><input type="checkbox"></input> Email John about reserving space for final exam <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-            <p class="task-item"><input type="checkbox"></input> Make the beta for Quiz 1 <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-            <br>
-            <h2> Due today (April 20) </h2>
-
-            <p class="task-item"><input id="checkbox-ask-availability" type="checkbox"></input> Ask TAs when they're available to host a Quiz 1 review session <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-            <p class="task-item"><input type="checkbox"></input> Pick up quiz materials from CopyTech <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-            <p class="task-item"><input type="checkbox"></input> Remind students that Quiz 1 is coming up in two weeks <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-            
-            <br>
-            <h2> Due tomorrow (April 21) </h2>
-
-            <p> Nothing! :D </p>
-            
-            <br>
-            <h2> Due April 22 </h2>
-
-            <p class="task-item"><input type="checkbox"></input> Send Quiz 1 beta to TAs for testing  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 13  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-            <p class="task-item"><input type="checkbox"></input> Review notes for Lecture 14  <span class="glyphicon glyphicon-menu-hamburger"></span></p>
-
-          -->
-
 
           </div>
           <div class="col-lg-3 panel sticky" id="sidebar">
@@ -355,5 +329,3 @@
 </body>
 
 </html>
-
-<!-- TODO(GR5): Make checkboxes + hamburger button work -->
