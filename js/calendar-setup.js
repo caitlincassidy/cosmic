@@ -42,7 +42,7 @@ var current_event = null;
 
 var calendarView = function() {
 	var sampleEvents = JSON.parse(window.localStorage.getItem("events"));
-	
+
 	$('#calendar').fullCalendar('destroy');
 	$('#calendar').fullCalendar({
 		// put your options and callbacks here
@@ -51,6 +51,8 @@ var calendarView = function() {
 	    right: 'month, agendaWeek, agendaDay'
 	  },
 	  defaultView: 'month',
+	  fixedWeekCount: false,
+	  contentHeight: 535,  // TODO: make it dynamically adjust to screen
 	  editable: true,
 	  eventStartEditable: true,
 	  events: sampleEvents,
@@ -76,6 +78,8 @@ var listView = function() {
       right: 'listMonth, listWeek, listDay'
     },
     defaultView: 'listMonth',
+    fixedWeekCount: false,
+    contentHeight: 550,  // TODO: make it dynamically adjust to screen
     editable: true,
     events: sampleEvents,
     displayEventEnd: true,
