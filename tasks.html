@@ -49,6 +49,14 @@
   // has clicked save
   var isEditingSomething = false;
 
+  // Placeholder message in case there aren't any tasks
+  // under a particular heading.
+  var PLACEHOLDER_MESSAGE_STRING = `
+    <div class="placeholder-message">
+      <p style="margin-left:30px"> Nothing! :D </p>
+    </div>
+  `;
+
   ///////////////////
   // DOCUMENT.READY
   //
@@ -136,6 +144,8 @@
     // Remove div used for editing
     $("#editing-div").remove();
     addNewTask(task);
+
+    checkEmptyHeaders();
   });
 
   // When someone creates a new task, update the display
@@ -249,7 +259,7 @@
 
     // Find all tasks within the heading the task should be
     // in order to place this task in the right order
-    var allTasks = $(divId).children();
+    var allTasks = $(divId).children(".task-item");
     if (allTasks.length > 0) {
       // Tasks are ordered earliest to latest
       // Keep going through the tasks until we find one
@@ -284,7 +294,9 @@
 
     } else {
       // No tasks currently under that heading,
-      // so just append it
+      // so just remove the placeholder messagae
+      // then add the task
+      $(divId).empty();
       $(divId).append(taskDom);
     }
 
@@ -396,12 +408,23 @@
       $(divId).append(taskDom);
     });
 
-    // Add a placeholder under any headings that are empty
-    /*
-    if ($("#outstanding-contents").children().length == 0) {
-      $("outstanding-contents").append()
-    }
-    */
+    checkEmptyHeaders();
+  }
+
+  /**
+   * Checks if there are any empty headings
+   * (eg no tasks under 'Upcoming') and adds a 
+   * placeholder message under the heading instead.
+   */
+  var checkEmptyHeaders = function() {
+    var divIds = ["#outstanding-contents", "#due-today-contents", "#upcoming-contents"];
+    divIds.forEach(function(divId) {
+      if ($(divId).children().length == 0) {
+        var placeholderMessage = $.parseHTML(PLACEHOLDER_MESSAGE_STRING);
+        $(divId).append($(placeholderMessage));
+      }
+    })
+
   }
 
   /**
