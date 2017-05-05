@@ -28,7 +28,7 @@ var newEventModalString =
 				<div class="row">
 					<label for="new_event_date" class="col-xs-3 col-form-label"><b>Date:</b></label>
 					<div class="col-xs-9">
-						<input class="form-control" type="date" value="" id="new_event_date">
+                		<input type='text' class="form-control" id="new_event_date"/>
 					</div>
 				</div>
 				<div class="row">

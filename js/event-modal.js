@@ -5,7 +5,7 @@ $(document).on('click', "#edit-event-btn", function(evt)
 	$('#new-event-modal').modal('toggle');
 	$("#new_event_type").val(current_event.eventType);
 	$("#new_event_name").val(current_event.title);
-	$("#new_event_date").val(moment(current_event.start).format("YYYY-MM-DD"));
+	$("#new_event_date").val(moment(current_event.start).format("MM/DD/YYYY"));
 	$("#new_event_start_time").val(moment(current_event.start).format("HH:mm"));
 	$("#new_event_end_time").val(moment(current_event.end).format("HH:mm"));
 	$("#create-event-btn").text("Update");
@@ -14,8 +14,9 @@ $(document).on('click', "#edit-event-btn", function(evt)
 
 $(document).on('click', "#create-event-btn", function(evt)
 {
-	var start = moment($("#new_event_date").val()+" " +$("#new_event_start_time").val());
-	var end = moment($("#new_event_date").val()+" " +$("#new_event_end_time").val());
+	var format_date = moment($("#new_event_date").val()).format("YYYY-MM-DD");
+	var start = moment(format_date+" " +$("#new_event_start_time").val());
+	var end = moment(format_date+" " +$("#new_event_end_time").val());
 	if (! $("#new_event_type").val()) {
 		alert("Must choose an event type");
 	} else if (! $("#new_event_name").val()) {
