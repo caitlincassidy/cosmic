@@ -57,6 +57,9 @@
     </div>
   `;
 
+  // Class for any task that has a strikethrough (indicating it's been checked off)
+  var STRIKETHROUGH_TASK_CLASS = 'is-strikethrough'
+
   ///////////////////
   // DOCUMENT.READY
   //
@@ -85,15 +88,39 @@
   });
   // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
 
-  // Remove a task when the checkbox next to it is clicked
+  // Strikeout a task when the checkbox next to it is clicked
   $(document).on('click', ":checkbox", function(evt) {
-    $(this).parent().parent().parent().fadeOut(
-      400,
-      function() {
-        // Remove dom element
-        $(this).remove();
-      }
-    );
+    // Add a strikeout to date
+    var rowDiv = $(this).parent().parent().parent();
+    var dateDiv = $(rowDiv).children()[1];
+    var dateParagraph = $(dateDiv).children()[0];
+    console.log(dateParagraph); 
+    $(dateParagraph).wrap("<strike>");
+    // Add a strikeout to task
+    $(this).parent().wrap("<strike>");
+
+    // Move to bottom of list
+    var contentDiv = $(this).parent().parent().parent().parent().parent();
+    var allStrikethroughTasks = $(contentDiv).children(".task-item." + STRIKETHROUGH_TASK_CLASS);
+
+    if (allStrikethroughTasks.length > 0) {
+      // There's already strikethrough tasks:
+      // add this one to the top of them
+      $(allStrikethroughTasks[0]).before(rowDiv);
+    } else {
+      // Find the bottom of the list of tasks under
+      // this heading and put it there
+      var allTasks = $(contentDiv).children(".task-item");
+      $(allTasks[allTasks.length-1]).after(rowDiv);
+    }
+
+    // Remove task from local storage
+    removeFromLocalStorage($(rowDiv).data('task-json'));
+
+    // Add strikeout class
+    // (Add it at the end so it's not counted in
+    // allStrikethroughTasks)
+    rowDiv.addClass(STRIKETHROUGH_TASK_CLASS);
   });
 
   // Hovering over a task item
@@ -221,16 +248,7 @@
     // Remove the old task from local storage
     // since when they save a task, it will be
     // added to local storage
-    // Assumes there are no tasks with both the same text
-    // and the same due date
-    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
-    var foundElt = savedTasks.find(function(elt) {
-      return elt.text == task.text &&
-             moment(elt.due).diff(moment(task.due).format("MM/DD/YYYYY"), 'days') == 0;
-    });
-    var indexToDelete = savedTasks.indexOf(foundElt);
-    savedTasks.splice(indexToDelete, 1);
-    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
+    removeFromLocalStorage(task);
   }
 
   /**
@@ -427,6 +445,24 @@
 
   }
 
+  /** 
+   * Removes the given task from local storage.
+   *
+   * @param task a JSON object with 'text' and 'due' fields
+   */
+  var removeFromLocalStorage = function(task) {
+    // Assumes there are no tasks with both the same text
+    // and the same due date
+    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    var foundElt = savedTasks.find(function(elt) {
+      return elt.text == task.text &&
+             moment(elt.due).diff(moment(task.due).format("MM/DD/YYYYY"), 'days') == 0;
+    });
+    var indexToDelete = savedTasks.indexOf(foundElt);
+    savedTasks.splice(indexToDelete, 1);
+    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
+  }
+
   /**
    * Sets up CSS and JS for keeping the 'add new task'
    * form always displayed, even when scrolling.
@@ -496,7 +532,7 @@
             <h3 id="due-today" style="background-color:#eac0f7"> Due today </h3>
             <div id="due-today-contents"></div>
 
-            <h3 id="upcoming"> Upcoming </h3>
+            <h3 id="upcoming" style="background-color:#eac0f7"> Upcoming </h3>
             <div id="upcoming-contents"></div>
 
           </div>
