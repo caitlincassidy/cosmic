@@ -41,6 +41,15 @@
 
 <script>
   ///////////////////
+  // GLOBAL VARIABLES
+  //
+
+  // Set to true when user is currently editing a task
+  // Used to disable editing another task until user
+  // has clicked save
+  var isEditingSomething = false;
+
+  ///////////////////
   // DOCUMENT.READY
   //
   $(document).ready(function() {
@@ -81,11 +90,13 @@
 
   // Hovering over a task item
   $(document).on('mouseenter', '.task-item', function() {
-    // Color light gray
-    // TODO(@Becky): pick good accent color
-    $(this).css('background-color', " #eac0f7");
-    // Make pencil appear
-    $(this).find("span").css("visibility", "visible");
+    if (!isEditingSomething) {
+      // Color light gray
+      // TODO(@Becky): pick good accent color
+      $(this).css('background-color', " #eac0f7");
+      // Make pencil appear
+      $(this).find("span").css("visibility", "visible");
+    }
   });
   $(document).on('mouseleave', '.task-item', function() {
       // Reset background color
@@ -97,7 +108,9 @@
   // Hovering over a pencil
   // Give affordance for clicking on the pencil
   $(document).on('mouseenter', '.glyphicon-pencil', function() {
-    $(this).css("cursor", "pointer");
+    if (!isEditingSomething) {
+      $(this).css("cursor", "pointer");
+    }
   })
   $(document).on('mouseleave', '.glyphicon-pencil', function() {
     $(this).css("cursor", "");
@@ -105,6 +118,8 @@
 
   // When pencil button is clicked, make task editable
   $(document).on('click', '.glyphicon-pencil', function() {
+    isEditingSomething = true;
+
     var taskDiv = $(this).parent().parent();
     var task = $(taskDiv).data('task-json');
 
@@ -166,11 +181,10 @@
     window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
   });
 
-  // TODO: If someone clicks on another pencil 
-  // while in edit mode on something else it fucks up
-
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
+    isEditingSomething = false;
+
     // Create new task
     var task = {
       'text': $("#new-task-text").val(),
