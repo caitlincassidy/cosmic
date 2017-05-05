@@ -171,14 +171,12 @@
     // Assumes there are no tasks with both the same text
     // and the same due date
     var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
-    console.log("len before:" + savedTasks.length);
     var foundElt = savedTasks.find(function(elt) {
       return elt.text == task.text &&
              moment(elt.due).diff(moment(task.due).format("MM/DD/YYYYY"), 'days') == 0;
     });
     var indexToDelete = savedTasks.indexOf(foundElt);
     savedTasks.splice(indexToDelete, 1);
-    console.log("len after:" + savedTasks.length);
     window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
   });
 
@@ -186,14 +184,14 @@
   $(document).on("click", "#save", function(evt) {
     isEditingSomething = false;
 
-    // Remove div used for editing
-    $("#editing-div").remove();
-
     // Create new task
     var task = {
       'text': $("#new-task-text").val(),
       'due': $('#new-task-due').val(),
     }
+
+    // Remove div used for editing
+    $("#editing-div").remove();
     addNewTask(task);
   });
 
@@ -259,22 +257,20 @@
         taskToCheck = $(allTasks[i]).data("task-json");
         isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
       }
-
-      // TODO: There's a bug in this I think
-      // for outstanding heading, it always adds to the top
-      // for upcoming heading, it seems to like to add to the front sometimes
-      // but once you refresh the page, everything goes in the right order
       
       // Once while loop finishes, i is the index
       // of task that is later than the new task,
       // so the new task should go right before it
-      // (Unless i == allTasks.length, in which case
-      //  it should be at the end of the list)
-      if (i == allTasks.length) {
+      
+      // But if i == 0, then it should go at the beginning
+      // of the list and we can't use the i-1 trick
+
+      if (i != 0) {
         $(allTasks[i-1]).after(taskDom);
       } else {
         $(allTasks[0]).before(taskDom);
       }
+
 
     } else {
       // No tasks currently under that heading,
@@ -460,10 +456,11 @@
         <div class="page-content main-content row">
           <div class="col-lg-8">
 
-            <h3 id="outstanding"> Outstanding </h3>
+            <!-- TODO(@Becky): choose an actually good accent color -->
+            <h3 id="outstanding" style="background-color:#eac0f7"> Outstanding </h3>
             <div id="outstanding-contents"></div>
 
-            <h3 id="due-today"> Due today </h3>
+            <h3 id="due-today" style="background-color:#eac0f7"> Due today </h3>
             <div id="due-today-contents"></div>
 
             <h3 id="upcoming"> Upcoming </h3>
@@ -492,7 +489,7 @@
                 <span class="caret"></span>
               </button>
 
-              <!-- TODO: Add more options -->
+              <!-- TODO(@Becky): Add more options -->
               <ul class="dropdown-menu" aria-labelledby="event-name">
                 <li><a href="#">None</a></li>
                 <li role="separator" class="divider"></li>
