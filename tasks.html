@@ -117,11 +117,55 @@
   });
 
   // When pencil button is clicked, make task editable
-  // TODO: Make this a helper method
   $(document).on('click', '.glyphicon-pencil', function() {
+    // Using a helper method so the document methods
+    // section isn't super long
+    makeTaskEditable(this);
+  });
+
+  // When someone saves a task edit, update the display
+  $(document).on("click", "#save", function(evt) {
+    isEditingSomething = false;
+
+    // Create new task
+    var task = {
+      'text': $("#new-task-text").val(),
+      'due': $('#new-task-due').val(),
+    }
+
+    // Remove div used for editing
+    $("#editing-div").remove();
+    addNewTask(task);
+  });
+
+  // When someone creates a new task, update the display
+  $(document).on("click", "#create", function(evt) {
+    // TODO: We don't use the 'event name' field anymore
+    // should we still keep it?
+
+    // Create new task
+    var task = {
+      'text': $("#create-task-text").val(),
+      'due': $('#create-task-due-date').val(),
+    }
+    addNewTask(task);
+  });
+
+
+  ///////////////////
+  // HELPER METHODS
+  //
+
+  /**
+   * Used to change from from a normal task to an editable
+   * task. Based on which pencil was clicked.
+   *
+   * @param this the pencil that was clicked on.
+   */
+  var makeTaskEditable = function(pencilObj) {
     isEditingSomething = true;
 
-    var taskDiv = $(this).parent().parent();
+    var taskDiv = $(pencilObj).parent().parent();
     var task = $(taskDiv).data('task-json');
 
     // Give this div an ID so it can be removed later
@@ -140,7 +184,6 @@
     textBox.appendTo($(taskDiv).children()[0]);
 
     // Add due date box to edit with datepicker ability
-    // TODO: slightly not centered
     var dueDateBox = $('<input>', {
       type: "text",
       id: "new-task-due",
@@ -178,40 +221,7 @@
     var indexToDelete = savedTasks.indexOf(foundElt);
     savedTasks.splice(indexToDelete, 1);
     window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
-  });
-
-  // When someone saves a task edit, update the display
-  $(document).on("click", "#save", function(evt) {
-    isEditingSomething = false;
-
-    // Create new task
-    var task = {
-      'text': $("#new-task-text").val(),
-      'due': $('#new-task-due').val(),
-    }
-
-    // Remove div used for editing
-    $("#editing-div").remove();
-    addNewTask(task);
-  });
-
-  // When someone creates a new task, update the display
-  $(document).on("click", "#create", function(evt) {
-    // TODO: We don't use the 'event name' field anymore
-    // should we still keep it?
-
-    // Create new task
-    var task = {
-      'text': $("#create-task-text").val(),
-      'due': $('#create-task-due-date').val(),
-    }
-    addNewTask(task);
-  });
-
-
-  ///////////////////
-  // HELPER METHODS
-  //
+  }
 
   /**
    * Adds the given task to the DOM.
