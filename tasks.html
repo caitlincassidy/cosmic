@@ -56,7 +56,7 @@
     displayPreDeterminedTasks();
     setupStickySidebar();
 
-    $("#new_task_due_date").daterangepicker({
+    $("#create-task-due-date").daterangepicker({
       "applyClass": "btn-primary",
       "singleDatePicker": true,
       "startDate": moment().format("MM/DD/YYYY"),
@@ -117,6 +117,7 @@
   });
 
   // When pencil button is clicked, make task editable
+  // TODO: Make this a helper method
   $(document).on('click', '.glyphicon-pencil', function() {
     isEditingSomething = true;
 
@@ -185,20 +186,47 @@
   $(document).on("click", "#save", function(evt) {
     isEditingSomething = false;
 
+    // Remove div used for editing
+    $("#editing-div").remove();
+
     // Create new task
     var task = {
       'text': $("#new-task-text").val(),
       'due': $('#new-task-due').val(),
     }
+    addNewTask(task);
+  });
+
+  // When someone creates a new task, update the display
+  $(document).on("click", "#create", function(evt) {
+    // TODO: We don't use the 'event name' field anymore
+    // should we still keep it?
+
+    // Create new task
+    var task = {
+      'text': $("#create-task-text").val(),
+      'due': $('#create-task-due-date').val(),
+    }
+    addNewTask(task);
+  });
+
+
+  ///////////////////
+  // HELPER METHODS
+  //
+
+  /**
+   * Adds the given task to the DOM.
+   *
+   * @param task a JSON object with 'text' and 'due' fields.
+   */
+  var addNewTask = function(task) {
     var taskDom = makeTaskDom(task);
 
     // Add to local storage
     var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
     savedTasks.push(task);
     window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
-    
-    // Remove div used for editing
-    $("#editing-div").remove();
 
     // Find correct heading the task should be under
     var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
@@ -233,6 +261,9 @@
       }
 
       // TODO: There's a bug in this I think
+      // for outstanding heading, it always adds to the top
+      // for upcoming heading, it seems to like to add to the front sometimes
+      // but once you refresh the page, everything goes in the right order
       
       // Once while loop finishes, i is the index
       // of task that is later than the new task,
@@ -252,12 +283,7 @@
     }
 
     // TODO: Add animation for the moving between sections?
-  });
-
-
-  ///////////////////
-  // HELPER METHODS
-  //
+  }
 
   /**
    * Creates a DOM element for a task.
@@ -450,12 +476,12 @@
 
             <!-- Task text -->
             <div class="form-group">
-              <textarea class="form-control" rows="2" placeholder="Task to add"></textarea>
+              <textarea class="form-control" rows="2" id="create-task-text" placeholder="Task to add"></textarea>
             </div>
 
             <!-- Date it's due -->
             <div class="form-group">
-                <input type='text' class="form-control" placeholder="Due date" id="new_task_due_date"/>
+                <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
             </div>
 
 
@@ -485,7 +511,7 @@
 
             <br />
 
-            <button type="button" class="btn btn-default" style="float: right">Create</button>
+            <button type="button" class="btn btn-default" style="float: right" id="create">Create</button>
 
 		  </div>
           <!-- Margin column -->
