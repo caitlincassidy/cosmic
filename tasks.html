@@ -149,10 +149,25 @@
     $(saveButton).css("float", "right");
     saveButton.appendTo($(taskDiv).children()[2]);
 
-    // TODO: Remove the old task from local storage
+    // Remove the old task from local storage
     // since when they save a task, it will be
     // added to local storage
+    // Assumes there are no tasks with both the same text
+    // and the same due date
+    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    console.log("len before:" + savedTasks.length);
+    var foundElt = savedTasks.find(function(elt) {
+      return elt.text == task.text &&
+             moment(elt.due).diff(moment(task.due).format("MM/DD/YYYYY"), 'days') == 0;
+    });
+    var indexToDelete = savedTasks.indexOf(foundElt);
+    savedTasks.splice(indexToDelete, 1);
+    console.log("len after:" + savedTasks.length);
+    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
   });
+
+  // TODO: If someone clicks on another pencil 
+  // while in edit mode on something else it fucks up
 
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
@@ -164,8 +179,6 @@
     var taskDom = makeTaskDom(task);
 
     // Add to local storage
-    // TODO: This doesn't work if I switch to another page
-    // then switch back to the tasks page
     var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
     savedTasks.push(task);
     window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
@@ -204,6 +217,8 @@
         taskToCheck = $(allTasks[i]).data("task-json");
         isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
       }
+
+      // TODO: There's a bug in this I think
       
       // Once while loop finishes, i is the index
       // of task that is later than the new task,
