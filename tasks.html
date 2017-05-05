@@ -90,37 +90,13 @@
 
   // Strikeout a task when the checkbox next to it is clicked
   $(document).on('click', ":checkbox", function(evt) {
-    // Add a strikeout to date
-    var rowDiv = $(this).parent().parent().parent();
-    var dateDiv = $(rowDiv).children()[1];
-    var dateParagraph = $(dateDiv).children()[0];
-    console.log(dateParagraph); 
-    $(dateParagraph).wrap("<strike>");
-    // Add a strikeout to task
-    $(this).parent().wrap("<strike>");
-
-    // Move to bottom of list
-    var contentDiv = $(this).parent().parent().parent().parent().parent();
-    var allStrikethroughTasks = $(contentDiv).children(".task-item." + STRIKETHROUGH_TASK_CLASS);
-
-    if (allStrikethroughTasks.length > 0) {
-      // There's already strikethrough tasks:
-      // add this one to the top of them
-      $(allStrikethroughTasks[0]).before(rowDiv);
+    if ($(this).is(':checked')) {
+      console.log("checked");
+      strikethroughTask(this);
     } else {
-      // Find the bottom of the list of tasks under
-      // this heading and put it there
-      var allTasks = $(contentDiv).children(".task-item");
-      $(allTasks[allTasks.length-1]).after(rowDiv);
+      console.log("not checked");
+      unstrikethroughTask(this);
     }
-
-    // Remove task from local storage
-    removeFromLocalStorage($(rowDiv).data('task-json'));
-
-    // Add strikeout class
-    // (Add it at the end so it's not counted in
-    // allStrikethroughTasks)
-    rowDiv.addClass(STRIKETHROUGH_TASK_CLASS);
   });
 
   // Hovering over a task item
@@ -193,6 +169,69 @@
   // HELPER METHODS
   //
 
+  var strikethroughTask = function(checkboxObj) {
+    // Add a strikeout to date
+    var rowDiv = $(checkboxObj).parent().parent().parent();
+    var dateDiv = $(rowDiv).children()[1];
+    var dateParagraph = $(dateDiv).children()[0];
+    $(dateParagraph).wrap("<strike>");
+    // Add a strikeout to task
+    $(checkboxObj).parent().wrap("<strike>");
+
+    // Move to bottom of list
+    var contentDiv = $(checkboxObj).parent().parent().parent().parent().parent();
+    var allStrikethroughTasks = $(contentDiv).children(".task-item." + STRIKETHROUGH_TASK_CLASS);
+
+    if (allStrikethroughTasks.length > 0) {
+      // There's already strikethrough tasks:
+      // add this one to the top of them
+      $(allStrikethroughTasks[0]).before(rowDiv);
+    } else {
+      // Find the bottom of the list of tasks under
+      // this heading and put it there
+      var allTasks = $(contentDiv).children(".task-item");
+      $(allTasks[allTasks.length-1]).after(rowDiv);
+    }
+
+    // Remove task from local storage
+    removeFromLocalStorage($(rowDiv).data('task-json'));
+
+    // Add strikeout class
+    // (Add it at the end so it's not counted in
+    // allStrikethroughTasks)
+    rowDiv.addClass(STRIKETHROUGH_TASK_CLASS);
+  }
+
+  var unstrikethroughTask = function(checkboxObj) {
+    // Just use 'add new task' and delete this row
+    var rowDiv = $(checkboxObj).parent().parent().parent().parent();
+    var task = $(rowDiv).data('task-json');
+    addNewTask(task);
+    $(rowDiv).remove();
+
+/*
+
+    // Remove strikethrough from date
+    var rowDiv = $(checkboxObj).parent().parent().parent().parent(); // Extra .parent because <strike> tag is there
+    var dateDiv = $(rowDiv).children()[1];
+    var dateParagraph = $(dateDiv).children()[0];
+    $(dateParagraph).contents().unwrap();
+
+    // Remove strikethrough from task
+    $(checkboxObj).parent().parent().contents().unwrap();
+
+    // Move it to correct place within list
+    var listToGoThrough = xxx;
+    var i = findPlaceInList(listToGoThrough, task);
+
+    // Add to local storage
+    addToLocalStorage($(rowDiv).data('task-json'));
+
+    // Remove strikethrough class
+    rowDiv.removeClass(STRIKETHROUGH_TASK_CLASS);
+  }
+  */
+
   /**
    * Used to change from from a normal task to an editable
    * task. Based on which pencil was clicked.
@@ -260,9 +299,7 @@
     var taskDom = makeTaskDom(task);
 
     // Add to local storage
-    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
-    savedTasks.push(task);
-    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
+    addToLocalStorage(task);
 
     // Find correct heading the task should be under
     var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
@@ -274,6 +311,7 @@
     } else {
       divId = "#upcoming-contents";
     }
+    // TODO: Will probably have to deal with strikethrough tasks
 
     // Find all tasks within the heading the task should be
     // in order to place this task in the right order
@@ -443,6 +481,17 @@
       }
     })
 
+  }
+
+  /** 
+   * Adds the given task from local storage.
+   *
+   * @param task a JSON object with 'text' and 'due' fields
+   */
+  var addToLocalStorage = function(task) {
+    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    savedTasks.push(task);
+    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
   }
 
   /** 
