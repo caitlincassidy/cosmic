@@ -10,6 +10,8 @@ $(document).on('click', "#edit-event-btn", function(evt)
 	$("#new_event_end_time").val(moment(current_event.end).format("HH:mm"));
 	$("#create-event-btn").text("Update");
 	$("#change-event-modal-title").text("Edit Event");
+
+	// TODO: update local storage here
 });
 
 $(document).on('click', "#create-event-btn", function(evt)
@@ -49,11 +51,13 @@ $(document).on('click', "#create-event-btn", function(evt)
 
 $(document).on('click', "#delete-event-btn", function(evt)
 {
+	// remove event from local storage
+	var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+	savedEvents = savedEvents.filter(function(e) { return e.title !== current_event.title });  //again, assuming no events have the same name
+	window.localStorage.setItem("events", JSON.stringify(savedEvents));
+
 	$('#calendar').fullCalendar( 'removeEvents' , function(event) {
 		return event === current_event;
 	});
 	current_event = null;
-
-	// get rid of weird blue dots
-	$('.fc-list-item-marker').remove();
 });
