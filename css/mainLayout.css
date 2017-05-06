@@ -197,3 +197,14 @@ a {
 	background-color: #52a89b !important;
 	border-color: #52a89b !important;
 }
+
+.availability-table {
+	width:80%; 
+	margin: 5px auto;
+}
+
+.availability-table table, th, td {
+	border: 1px solid black;
+	text-align: center;
+	border-collapse: collapse;
+}
