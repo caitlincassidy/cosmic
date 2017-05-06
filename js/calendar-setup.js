@@ -35,14 +35,10 @@ var open_event = function(event) {
 	$('#event-modal').modal('toggle');
 }
 
-
-
 // necessary to cleanly update event
 var current_event = null;
 
 var calendarView = function() {
-	var sampleEvents = JSON.parse(window.localStorage.getItem("events"));
-
 	$('#calendar').fullCalendar('destroy');
 	$('#calendar').fullCalendar({
 		// put your options and callbacks here
@@ -50,12 +46,42 @@ var calendarView = function() {
 	    left: 'prev, next, today, title',
 	    right: 'month, agendaWeek, agendaDay'
 	  },
+	  lazyFetching: false,  // This allows the events function to be called when the view switches
 	  defaultView: 'month',
+	  events: function(start, end, timezone, callback) {
+	  	var events = JSON.parse(window.localStorage.getItem("events"));
+	  	var filters = JSON.parse(window.localStorage.getItem("filters"));
+	  	if (filters) {
+	  		events = events.filter(function(e) { return filters.indexOf(e.eventType) < 0; });
+	  	}
+	  	callback(events);
+	  },
 	  fixedWeekCount: false,
 	  contentHeight: 535,  // TODO: make it dynamically adjust to screen
 	  editable: true,
 	  eventStartEditable: true,
-	  events: sampleEvents,
+	  eventDrop: function(event, dayDelta, minuteDelta) {
+	  	// save new event to local storage
+	  	var eventTitle = event.title;  // TODO: put id's here? Or just assume there won't be events with the same title?
+			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+			// remove old event
+			savedEvents = savedEvents.filter(function(e) { return e.title !== eventTitle; });
+			console.log(savedEvents);
+			// add updated event
+			savedEvents.push(event);
+			window.localStorage.setItem("events", JSON.stringify(savedEvents));
+	  },
+	  eventResize: function(event, dayDelta, minuteDelta) {
+	  	// save new event to local storage
+	  	var eventTitle = event.title;  // TODO: put id's here? Or just assume there won't be events with the same title?
+			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+			// remove old event
+			savedEvents = savedEvents.filter(function(e) { return e.title !== eventTitle; });
+			console.log(savedEvents);
+			// add updated event
+			savedEvents.push(event);
+			window.localStorage.setItem("events", JSON.stringify(savedEvents));
+	  },
 		displayEventEnd: true,
 		dayClick: new_event,
 		eventClick: open_event,
@@ -81,7 +107,15 @@ var listView = function() {
     fixedWeekCount: false,
     contentHeight: 550,  // TODO: make it dynamically adjust to screen
     editable: true,
-    events: sampleEvents,
+    lazyFetching: false,  // This allows the events function to be called when the view switches
+    events: function(start, end, timezone, callback) {
+	  	var events = JSON.parse(window.localStorage.getItem("events"));
+	  	var filters = JSON.parse(window.localStorage.getItem("filters"));
+	  	if (filters) {
+	  		events = events.filter(function(e) { return filters.indexOf(e.eventType) < 0; });
+	  	}
+	  	callback(events);
+	  },
     displayEventEnd: true,
     dayClick: new_event,
     eventClick: open_event,
@@ -96,6 +130,10 @@ var listView = function() {
     	jsEvent.currentTarget.childNodes.forEach(function(child) {
     		child.style.color = 'white';
     	});
+    },
+    eventAfterAllRender: function( view ) { 
+    	// get rid of weird blue dots
+			$('.fc-list-item-marker').remove();
     }
   });
 
@@ -103,9 +141,6 @@ var listView = function() {
 	$('.fc-listMonth-button').text('Month');
 	$('.fc-listWeek-button').text('Week');
 	$('.fc-listDay-button').text('Day');
-
-	// get rid of weird blue dots
-	$('.fc-list-item-marker').remove();
 };
 
 var filterEvents = function() {
@@ -123,7 +158,7 @@ var toggleView = function(target) {
 		listView();
 	else
 		calendarView();
-	filterEvents();
+	filterEvents();  // might be able to remove this once we figure out the filtering issues
 };
 
 $(document).on('click', '#add-event-btn', function() {
