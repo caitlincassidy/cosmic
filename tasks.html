@@ -79,7 +79,6 @@
   //
 
   // Make new task dropdown display the selected event
-  // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
   $(document).on('click', ".dropdown-menu li a", function() {
     $("#event-name").text($(this).text());
     $("#event-name").val($(this).text());
@@ -91,10 +90,8 @@
   // Strikeout a task when the checkbox next to it is clicked
   $(document).on('click', ":checkbox", function(evt) {
     if ($(this).is(':checked')) {
-      console.log("checked");
       strikethroughTask(this);
     } else {
-      console.log("not checked");
       unstrikethroughTask(this);
     }
   });
@@ -117,8 +114,8 @@
   });
 
   // Hovering over a pencil
-  // Give affordance for clicking on the pencil
   $(document).on('mouseenter', '.glyphicon-pencil', function() {
+    // Give affordance for clicking on the pencil
     if (!isEditingSomething) {
       $(this).css("cursor", "pointer");
     }
@@ -146,8 +143,8 @@
 
     // Remove div used for editing
     $("#editing-div").remove();
-    addNewTask(task);
 
+    addNewTask(task);
     checkEmptyHeaders();
   });
 
@@ -169,6 +166,14 @@
   // HELPER METHODS
   //
 
+  /**
+   * Transform a task into one that's checked off and
+   * has a strikethrough.
+   *
+   * @param checkboxObj checkbox DOM element that was clicked
+   *           and that is associated with the task that
+   *           should be struck through.
+   */
   var strikethroughTask = function(checkboxObj) {
     // Add a strikeout to date
     var rowDiv = $(checkboxObj).parent().parent().parent();
@@ -178,10 +183,9 @@
     // Add a strikeout to task
     $(checkboxObj).parent().wrap("<strike>");
 
-    // Move to bottom of list
+    // Move task to bottom of list
     var contentDiv = $(checkboxObj).parent().parent().parent().parent().parent();
     var allStrikethroughTasks = $(contentDiv).children(".task-item." + STRIKETHROUGH_TASK_CLASS);
-
     if (allStrikethroughTasks.length > 0) {
       // There's already strikethrough tasks:
       // add this one to the top of them
@@ -196,9 +200,9 @@
     // Remove task from local storage
     removeFromLocalStorage($(rowDiv).data('task-json'));
 
-    // Reset background color
+    // Remove hovering css things (since to click checkbox,
+    // the mouse will be hovering over task)
     $(rowDiv).css('background-color', "");
-    // Make pencil disappear
     $(rowDiv).find("span").css("visibility", "hidden");
 
     // Add strikeout class
@@ -207,42 +211,28 @@
     rowDiv.addClass(STRIKETHROUGH_TASK_CLASS);
   }
 
+  /**
+   * Transform a task that was checked off and struck through
+   * into a non-struck-through task.
+   *
+   * @param checkboxObj checkbox DOM element that was unclicked
+   *           and that is associated with the task that
+   *           should be struck through.
+   */
   var unstrikethroughTask = function(checkboxObj) {
     // Just use 'add new task' and delete this row
     var rowDiv = $(checkboxObj).parent().parent().parent().parent();
     var task = $(rowDiv).data('task-json');
     addNewTask(task);
     $(rowDiv).remove();
-
-/*
-
-    // Remove strikethrough from date
-    var rowDiv = $(checkboxObj).parent().parent().parent().parent(); // Extra .parent because <strike> tag is there
-    var dateDiv = $(rowDiv).children()[1];
-    var dateParagraph = $(dateDiv).children()[0];
-    $(dateParagraph).contents().unwrap();
-
-    // Remove strikethrough from task
-    $(checkboxObj).parent().parent().contents().unwrap();
-
-    // Move it to correct place within list
-    var listToGoThrough = xxx;
-    var i = findPlaceInList(listToGoThrough, task);
-
-    // Add to local storage
-    addToLocalStorage($(rowDiv).data('task-json'));
-
-    // Remove strikethrough class
-    rowDiv.removeClass(STRIKETHROUGH_TASK_CLASS);
-    */
   }
   
-
   /**
-   * Used to change from from a normal task to an editable
-   * task. Based on which pencil was clicked.
+   * Transforms a normal task to an editable task.
    *
-   * @param this the pencil that was clicked on.
+   * @param pencilObj the pencil that was clicked on and is
+   *          associated with the task that should be
+   *          made editable.
    */
   var makeTaskEditable = function(pencilObj) {
     isEditingSomething = true;
@@ -302,10 +292,11 @@
    * @param task a JSON object with 'text' and 'due' fields.
    */
   var addNewTask = function(task) {
-    var taskDom = makeTaskDom(task);
-
     // Add to local storage
     addToLocalStorage(task);
+
+    // Create the task DOM
+    var taskDom = makeTaskDom(task);
 
     // Find correct heading the task should be under
     var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
@@ -317,11 +308,11 @@
     } else {
       divId = "#upcoming-contents";
     }
-    // TODO: Will probably have to deal with strikethrough tasks
 
     // Find all tasks within the heading for this new task
     // in order to place this task in the right order
-    // Ignore strikethrough tasks
+    // (tasks should be ordered earliest to latest in the list)
+    // Ignore strikethrough tasks when determining order
     var allTasks = $(divId).children(".task-item:not(." + STRIKETHROUGH_TASK_CLASS +")");
     if (allTasks.length > 0) {
       // Tasks are ordered earliest to latest
@@ -361,7 +352,8 @@
 
       var strikethroughTasks = $(divId).children("." + STRIKETHROUGH_TASK_CLASS);
       if (strikethroughTasks.length > 0) {
-        // Put new task at the top of the list
+        // Put new task at the top of the list,
+        // before the strikethrough tasks
         $(strikethroughTasks[0]).before(taskDom);
       } else {     
       // No tasks currently under that heading,
@@ -380,7 +372,6 @@
    * Creates a DOM element for a task.
    *
    * @param task a JSON object with 'text' and 'due' fields
-   *             representing a task.
    * @returns a DOM object representing that task
    */
   var makeTaskDom = function(task) {
@@ -394,7 +385,7 @@
     `;
     var taskDiv = $.parseHTML(taskDivString);
 
-    // Store task information for later
+    // Store task information to be used for editing
     $(taskDiv).data('task-json', task);
 
     // Add task text and checkbox to first column
@@ -431,7 +422,7 @@
         dueDateText = "In " + daysUntilDue + " days";
       } else {
         // If it's far enough in the future,
-        // so just display the date
+        // just display the date
         dueDateText = moment(task.due).format("MM/DD/YYYY");
       }
     }
@@ -442,7 +433,7 @@
     });
     dueElt.appendTo($(taskDiv).children()[1]);
 
-    // Add (hidden) pencil icon for editing
+    // Add (hidden) pencil icon for editing to third column
     pencilElt = $('<span/>', {
       class: "glyphicon glyphicon-pencil",
     });
@@ -481,6 +472,7 @@
       $(divId).append(taskDom);
     });
 
+    // Fill in any headers that are empty
     checkEmptyHeaders();
   }
 
@@ -496,8 +488,7 @@
         var placeholderMessage = $.parseHTML(PLACEHOLDER_MESSAGE_STRING);
         $(divId).append($(placeholderMessage));
       }
-    })
-
+    });
   }
 
   /** 
