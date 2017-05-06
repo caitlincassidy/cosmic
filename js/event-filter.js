@@ -10,13 +10,9 @@ var filterChangeHandler = function(evt, eventType, eventClassName) {
 		}
 
 		// re-render previously filtered event
-		// sooo, when the view changes, the filtered events are not rendered, so there's nothing to show
-		//$('.'+eventClassName).show();
 		var events = JSON.parse(window.localStorage.getItem("events"));
 		events = events.filter(function(e) { return e.eventType === eventType; });
-		console.log($('#calendar').fullCalendar( 'clientEvents'));
 		$('#calendar').fullCalendar( 'renderEvents', events);
-		//$('#calendar').fullCalendar( 'rerenderEvents');
 	}
 	else {
 		// add filter to local storage
@@ -29,20 +25,8 @@ var filterChangeHandler = function(evt, eventType, eventClassName) {
 			window.localStorage.setItem("filters", '["'+eventType+'"]');
 
 		// hide filtered events
-		//$(eventClassSelector).remove();
 		$('#calendar').fullCalendar('removeEvents', function(event) { return event.eventType === eventType; });
 	}
-};
-
-// Only renders the events that are not filtered
-var renderFilteredView = function() {
-	var events = JSON.parse(window.localStorage.getItem("events"));
-	var filters = JSON.parse(window.localStorage.getItem("filters"));
-	console.log(filters);
-	filteredEvents = events.filter(function(e) { return filters.indexOf(e.eventType) >= 0; });
-	filteredEvents.forEach(function(event) {
-		$('.'+event.className).hide();
-	});
 };
 
 $(document).on('change', '#lecture-event-filter', function(evt) {

@@ -66,7 +66,6 @@ var calendarView = function() {
 			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
 			// remove old event
 			savedEvents = savedEvents.filter(function(e) { return e.title !== eventTitle; });
-			console.log(savedEvents);
 			// add updated event
 			savedEvents.push(event);
 			window.localStorage.setItem("events", JSON.stringify(savedEvents));
@@ -77,7 +76,6 @@ var calendarView = function() {
 			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
 			// remove old event
 			savedEvents = savedEvents.filter(function(e) { return e.title !== eventTitle; });
-			console.log(savedEvents);
 			// add updated event
 			savedEvents.push(event);
 			window.localStorage.setItem("events", JSON.stringify(savedEvents));
@@ -158,7 +156,6 @@ var toggleView = function(target) {
 		listView();
 	else
 		calendarView();
-	filterEvents();  // might be able to remove this once we figure out the filtering issues
 };
 
 $(document).on('click', '#add-event-btn', function() {
