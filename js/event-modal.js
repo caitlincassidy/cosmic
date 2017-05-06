@@ -10,8 +10,6 @@ $(document).on('click', "#edit-event-btn", function(evt)
 	$("#new_event_end_time").val(moment(current_event.end).format("HH:mm"));
 	$("#create-event-btn").text("Update");
 	$("#change-event-modal-title").text("Edit Event");
-
-	// TODO: update local storage here
 });
 
 $(document).on('click', "#create-event-btn", function(evt)
@@ -30,6 +28,10 @@ $(document).on('click', "#create-event-btn", function(evt)
 		if (current_event) {
 			action = 'updateEvent';
 			event = current_event;
+			// remove event from local storage if it already exists
+			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+			savedEvents = savedEvents.filter(function(e) { return e.title !== event.title });  //again, assuming no events have the same name
+			window.localStorage.setItem("events", JSON.stringify(savedEvents));
 		}
 		event.title = $("#new_event_name").val();
 		event.start = start.format();
@@ -37,13 +39,13 @@ $(document).on('click', "#create-event-btn", function(evt)
 		event.className = $("#new_event_type").val().toLowerCase() + "-event";
 		event.eventType = $("#new_event_type").val();
 
-		$('#calendar').fullCalendar(action, event);
-		current_event = null;
-
 		// save new event to local storage
 		var savedEvents = JSON.parse(window.localStorage.getItem("events"));
 		savedEvents.push(event);
 		window.localStorage.setItem("events", JSON.stringify(savedEvents));
+
+		$('#calendar').fullCalendar(action, event);
+		current_event = null;
 		
 		$('#new-event-modal').modal('toggle');
 	}
