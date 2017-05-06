@@ -99,8 +99,8 @@
     }
   });
 
-  // Hovering over a task item
-  $(document).on('mouseenter', '.task-item', function() {
+  // Hovering over a task item that isn't strikethrough
+  $(document).on('mouseenter', '.task-item:not(.' + STRIKETHROUGH_TASK_CLASS +')', function() {
     if (!isEditingSomething) {
       // Color light gray
       // TODO(@Becky): pick good accent color
@@ -109,7 +109,7 @@
       $(this).find("span").css("visibility", "visible");
     }
   });
-  $(document).on('mouseleave', '.task-item', function() {
+  $(document).on('mouseleave', '.task-item:not(.' + STRIKETHROUGH_TASK_CLASS +')', function() {
       // Reset background color
       $(this).css('background-color', "");
       // Make pencil disappear
@@ -196,6 +196,11 @@
     // Remove task from local storage
     removeFromLocalStorage($(rowDiv).data('task-json'));
 
+    // Reset background color
+    $(rowDiv).css('background-color', "");
+    // Make pencil disappear
+    $(rowDiv).find("span").css("visibility", "hidden");
+
     // Add strikeout class
     // (Add it at the end so it's not counted in
     // allStrikethroughTasks)
@@ -229,8 +234,9 @@
 
     // Remove strikethrough class
     rowDiv.removeClass(STRIKETHROUGH_TASK_CLASS);
+    */
   }
-  */
+  
 
   /**
    * Used to change from from a normal task to an editable
@@ -313,9 +319,10 @@
     }
     // TODO: Will probably have to deal with strikethrough tasks
 
-    // Find all tasks within the heading the task should be
+    // Find all tasks within the heading for this new task
     // in order to place this task in the right order
-    var allTasks = $(divId).children(".task-item");
+    // Ignore strikethrough tasks
+    var allTasks = $(divId).children(".task-item:not(." + STRIKETHROUGH_TASK_CLASS +")");
     if (allTasks.length > 0) {
       // Tasks are ordered earliest to latest
       // Keep going through the tasks until we find one
@@ -349,11 +356,21 @@
 
 
     } else {
+      // There's either no tasks under that heading
+      // or only strikethrough tasks
+
+      var strikethroughTasks = $(divId).children("." + STRIKETHROUGH_TASK_CLASS);
+      if (strikethroughTasks.length > 0) {
+        // Put new task at the top of the list
+        $(strikethroughTasks[0]).before(taskDom);
+      } else {     
       // No tasks currently under that heading,
       // so just remove the placeholder messagae
       // then add the task
       $(divId).empty();
       $(divId).append(taskDom);
+      }
+
     }
 
     // TODO: Add animation for the moving between sections?
