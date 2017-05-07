@@ -41,6 +41,29 @@
 	<script src="js/load-event-modal.js" defer></script>
 	<script src="js/event-modal.js" defer></script>
 
+<!-- Code Review GR5 (by Isaac)
+1. I'd try to include a time picker instead of having the user manually type in the time. It's
+   not obvious how to put in the time, and because the user is allowed to type freely, if they enter
+   something incorrect there's no error detection. I think the simplest way would be to have a time picker.
+2. Similar to 1., I think using a calendar date picker would be really handy when creating dates, at least 
+   from the "Create Event" button on the right side
+3. Maybe have a confirmation "Are you sure?" dialog when deleting an event. Because Delete is not very dis-
+   tinguishable from "close", and it's right next to it, people might be prone to accidentally deleting
+   something. You could also make the Delete buttons red and farther away (pull-left for example?) if you 
+   don't want the dialog.
+4. Right now, you can put something as starting and ending at the same time (e.g., 11:00 and 11:00)
+5. There's no error detection if you click "Create" without filling in the start and end times.
+6. I don't think this is super important, and I wouldn't worry about it if it's a pain in the ass to fix,
+   but switching between Calendar view and List view resets the timeframe to "Month", even if you were on
+   "Week" or "Day". It happens both ways.
+7. BUG - when toggling the "Lab" filter button, the labs go away but only come back upon a refresh of the page
+8. BUG - when toggling the "Lecture" filter button, the first pre-populated Lecture disappears and comes back,
+   but the second one (Lecture 4) only reappears on refresh, similar to 7. Moving them around to different dates
+   keeps the same behavior
+
+I'm gonna call it at that - you might find more bugs when you're fixing these, but I don't wanna inundate you with stuffs.
+
+-->
 </head>
 
 <body>
