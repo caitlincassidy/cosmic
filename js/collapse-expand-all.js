@@ -1,27 +1,36 @@
 $(document).ready(function() {
-	// Expand all for lectures
+    // Expand General
+    $("#expand_gen").click(function() {
+        $("#general").collapse('show');
+    })
+    // Collapse General
+    $("#collapse_gen").click(function() {
+        $("#general").collapse('hide');
+    })
+    
+	// Expand all lectures
 	$("#expand_all_lec").click(function() {
 		$(".lec_col").collapse('show');
 	});
-	// Collapse all for lectures
+	// Collapse all lectures
 	$("#collapse_all_lec").click(function() {
 		$(".lec_col").collapse('hide');
 	});
 
-	// Expand all for quizzes
+	// Expand all quizzes
 	$("#expand_all_quiz").click(function() {
 		$(".quiz_col").collapse('show');
 	});
-	// Collapse all for quizzes
+	// Collapse all quizzes
 	$("#collapse_all_quiz").click(function() {
 		$(".quiz_col").collapse('hide');
 	});
 
-	// Expand all for labs
+	// Expand all labs
 	$("#expand_all_lab").click(function() {
 		$(".lab_col").collapse('show');
 	});
-	// Collapse all for labs
+	// Collapse all labs
 	$("#collapse_all_lab").click(function() {
 		$(".lab_col").collapse('hide');
 	});
