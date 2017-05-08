@@ -5,8 +5,21 @@ body {
 	font-size: 18px;
 }
 
+h2 {
+	font-family: 'Roboto', sans-serif;
+	font-size: 24px;
+}
+
 label {
 	font-weight: normal;
+}
+
+.welcome-background {
+}
+
+.image-overlay {
+	background-color: rgba(39, 39, 103, 0.1);
+	z-index: 2;
 }
 
 .welcome-container {
@@ -17,21 +30,28 @@ label {
   transform: translateX(-50%) translateY(-50%);
   width: 98%;
   color: white;
+  z-index: 3;
 }
 
 .welcome-title {
-	background-color: rgba(168,99,99,0.5);
+	z-index: 2;
+	/*background-color: rgba(207,209,211,0.5);*/
+	background-color: rgba(245,122,114,0.3);
+	/*border: 3px solid #5329C9;*/
+	border-top: 3px solid #f7f7f7;
+	border-bottom: 3px solid #f7f7f7;
 }
 
 .welcome-title h1 {
-	font-size: 80px;
-	font-weight: bold;
+	font-size: 150px;
 	font-family: 'Cairo', sans-serif;
+  color: #f7f7f7;
 }
 
 .welcome-title h2 {
-	font-size: 30px;
+	font-size: 38px;
 	font-family: 'Gentium Basic', serif;
+	color: #f7f7f7;
 }
 
 .welcome-container .btn {
@@ -118,30 +138,85 @@ label {
 	top: 50%;
 }
 
-.page-header {
-	margin-top: -1.5%;
+.title-header {
+	text-align: center;
+	position: relative;
+	top: 50%;
+	transform: translateY(20%);
 }
 
-a#login.btn {
-	color: white;
-	margin-top: 10%;
-	border: white;
+.page-title-header {
+	border-radius: 3px;
+	text-align: center; 
+	position: relative;
+	top: 50%;
+}
+
+hr {
+	border : 0;
+  height: 1px; 
+  background-image: linear-gradient(to right, rgba(255, 255, 255, .2), rgba(255, 255, 255, 1), rgba(255, 255, 255, .2));
+}
+
+.logout-btn-container {
+	position: relative;
+	top: 50%;
 }
 
 .main-header h1 {
 	font-family: 'Cairo', sans-serif;
 	font-weight: bold;
-	font-size: 50px;
 	color: white;
+}
+
+.title-header h1 {
+	font-size: 42px;
+}
+
+.page-title-header h2 {
+	font-size: 29.5px;
+	color: white;
+}
+
+.page-title-header span {
+	font-size: 29.5px;
+}
+
+.logout-btn-container {
+	text-align: center;
+	margin-top: 10%;
+}
+
+a#logout.btn {
+	color: white;
+	margin-top: 5%;
+	border: 2px solid white;
+}
+
+a#logout.btn:hover {
+	background-color: rgba(193, 189, 193, 0.5);
 }
 
 .nav-pills a {
-  color: #43448c;
+  color: #93327f;
 }
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
-	background-color: #43448c;
+	background-color: #93327f;
 	color: white;
+}
+
+.main-content {
+	margin-bottom: 1%;
+}
+
+.middle-content {
+	border-right: 1px solid #cfd1d3;
+	border-left: 1px solid #cfd1d3;
+}
+
+#menubar {
+	
 }
 
 /*
@@ -157,14 +232,18 @@ Modifying the width of list items on the Notes and Feedback page
 
 /* Task page CSS */
 
-/* Puts the hamburger in the right place horizontally. */
 .task-item {
-	width: 75%;
+	width: 100%;
+	padding: 5px;
+	border-radius: 10px;
+	cursor: default;
 }
 
 /* todo: align vertically center */
-.task-item > .glyphicon-menu-hamburger {
+.task-item > .pencil > .glyphicon-pencil {
 	float: right;
+	visibility: hidden;
+	margin-right: 10px;
 }
 
 /*To allow the modal to scroll*/
@@ -187,15 +266,15 @@ a {
 }
 
  .lecture-event {
- 	background-color: #5253a8;
+ 	background-color: #4536cd;
  }
 
  .quiz-event {
- 	background-color: #a85252;
+ 	background-color: #f45072;
  }
 
  .lab-event {
- 	background-color: #52a89b;
+ 	background-color: #ce4ad1; 
  }
 
 /* Events Page Styling */
@@ -216,7 +295,8 @@ a {
 }
 
 .event-filter-container {
-	margin-right: 2%;
+	margin-right: 1%;
+	margin-left: 1%;
 	border-top: thin solid #a8a9ad;
 }
 
@@ -236,29 +316,98 @@ a {
 	font-size: 16px;
 }
 
+.fc-button {
+	font-size: 0.9em !important;
+}
+
+.event-right-sidebar {
+	
+}
+
 .toggle-container {
-	margin-right: 2%;
+	margin-right: 1%;
+	margin-left: 1%;
 	margin-bottom: 5%;
 	text-align:center;
 }
 
 .btn-primary {
-	background-color: #43448c !important;
+	background-color: #93327f !important;
+}
+
+.btn-primary:hover {
+	background-color: #511c46!important;
 }
 
 .btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
-	background-color: #1a1a3a !important;
+	background-color: #e27fce!important;
 }
 
 .add-event-button-container {
 	border-top: thin solid #a8a9ad;
-	margin-right: 2%;
+	margin-right: 1%;
+	margin-left: 1%;
 	text-align: center;
 }
 
 #add-event-btn {
 	margin-bottom: 10%;
 	margin-top: 10%;
-	background-color: #52a89b !important;
-	border-color: #52a89b !important;
+	background-color: #4536cd !important;
+	border-color: #4536cd !important;
 }
+
+#add-event-btn:hover {
+	background-color: #231b6d !important;
+	border-color: #231b6d !important;
+}
+
+.ui-timepicker-container.ui-timepicker-standard {
+  z-index: 2000 !important; 
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+}
+
+#delete-event-btn {
+	background-color: #bc2040;
+	color: white;
+	float: left;
+}
+
+#delete-event-btn:hover {
+	background-color: #7f142a;
+}
+
+#confirm-delete-btn {
+	background-color: #bc2040 !important;
+	color: white;
+}
+
+#confirm-delete-btn:hover {
+	background-color: #7f142a !important;
+}
+
+.modalInputValidationMessage {
+	color: red;
+	font-size: 12px;
+}
+
+/* Calendar Day hover styling: might not be feasible....
+/*
+.fc-month-view .fc-day:hover{
+   background: rgba(191, 215, 252, 0.4);
+}
+
+/*Allow pointer-events through*/
+/*.fc-slats, /*horizontals*/
+/*.fc-content-skeleton, /*day numbers*/
+/*.fc-bgevent-skeleton /*events container*/{
+/*    pointer-events:none
+}*/
+
+/*Turn pointer events back on*/
+/*.fc-bgevent,
+.fc-event-container{
+    pointer-events:auto; /*events*/
+/*}*/

@@ -33,96 +33,575 @@
 
   <!-- Custom scripts -->
   <script src="js/load-header.js" defer></script>
-
-
+  
 </head>
 
 <body>
+
 <script>
-	$(document).ready(function() {
-		
-		
-// From http://zurb.com/building-blocks/sticky-sidebar
-	var stickySidebar = $('.sticky');
+  ///////////////////
+  // GLOBAL VARIABLES
+  //
 
-	if (stickySidebar.length > 0) { 
-	  var stickyHeight = stickySidebar.height(),
-		  sidebarTop = stickySidebar.offset().top;
-	}
+  // Set to true when user is currently editing a task
+  // Used to disable editing another task until user
+  // has clicked save
+  var isEditingSomething = false;
 
-	// on scroll move the sidebar
-	$(window).scroll(function () {
-	  if (stickySidebar.length > 0) { 
-		var scrollTop = $(window).scrollTop();
+  // Placeholder message in case there aren't any tasks
+  // under a particular heading.
+  var PLACEHOLDER_MESSAGE_STRING = `
+    <div class="placeholder-message">
+      <p style="margin-left:30px"> Nothing! :D </p>
+    </div>
+  `;
 
-		if (sidebarTop < scrollTop) {
-		  stickySidebar.css('top', scrollTop - sidebarTop);
+  // Class for any task that has a strikethrough (indicating it's been checked off)
+  var STRIKETHROUGH_TASK_CLASS = 'is-strikethrough'
 
-		  // stop the sticky sidebar at the footer to avoid overlapping
-		  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-			  stickyStop = $('.main-content').offset().top + $('.main-content').height();
-		  if (stickyStop < sidebarBottom) {
-			var stopPosition = $('.main-content').height() - stickyHeight;
-			stickySidebar.css('top', stopPosition);
-		  }
-		}
-		else {
-		  stickySidebar.css('top', '0');
-		} 
-	  }
-	});
+  ///////////////////
+  // DOCUMENT.READY
+  //
+  $(document).ready(function() {
+    displayPreDeterminedTasks();
+    setupStickySidebar();
 
-	$(window).resize(function () {
-	  if (stickySidebar.length > 0) { 
-		stickyHeight = stickySidebar.height();
-	  }
-	});	
-	
-	});
-</script>	
-	
+    $("#create-task-due-date").daterangepicker({
+      "applyClass": "btn-primary",
+      "singleDatePicker": true,
+      "startDate": moment().format("MM/DD/YYYY"),
+    });
+  });
 
-  <script>
-    // Remove a task
-    $(document).on('click', ":checkbox", function(evt) {
-      $(this).parent().fadeOut(
-        400,
-        function() {
-          // Remove dom element
-          $(this).remove();
+  ///////////////////
+  // DOCUMENT METHODS
+  //
+
+  // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+
+  // Strikeout a task when the checkbox next to it is clicked
+  $(document).on('click', ":checkbox", function(evt) {
+    if ($(this).is(':checked')) {
+      strikethroughTask(this);
+    } else {
+      unstrikethroughTask(this);
+    }
+  });
+
+  // Hovering over a task item that isn't strikethrough
+  $(document).on('mouseenter', '.task-item:not(.' + STRIKETHROUGH_TASK_CLASS +')', function() {
+    if (!isEditingSomething) {
+      // Color light gray
+      // TODO(@Becky): pick good accent color
+      $(this).css('background-color', " #eac0f7");
+      // Make pencil appear
+      $(this).find("span").css("visibility", "visible");
+    }
+  });
+  $(document).on('mouseleave', '.task-item:not(.' + STRIKETHROUGH_TASK_CLASS +')', function() {
+      // Reset background color
+      $(this).css('background-color', "");
+      // Make pencil disappear
+      $(this).find("span").css("visibility", "hidden");
+  });
+
+  // Hovering over a pencil
+  $(document).on('mouseenter', '.glyphicon-pencil', function() {
+    // Give affordance for clicking on the pencil
+    if (!isEditingSomething) {
+      $(this).css("cursor", "pointer");
+    }
+  })
+  $(document).on('mouseleave', '.glyphicon-pencil', function() {
+    $(this).css("cursor", "");
+  });
+
+  // When pencil button is clicked, make task editable
+  $(document).on('click', '.glyphicon-pencil', function() {
+    // Using a helper method so the document methods
+    // section isn't super long
+    makeTaskEditable(this);
+  });
+
+  // When someone saves a task edit, update the display
+  $(document).on("click", "#save", function(evt) {
+    // Validate that they didn't edit the task
+    // to have empty text
+    if ($("#edit-task-text").val().length == 0) {
+      // If there isn't already an alert displayed, make one
+      if (!($('#edit-task-alert')[0])) {
+        var errorText = `
+          <div class="alert alert-danger" id="edit-task-alert">
+            You cannot have an empty task.
+         </div>
+        `;
+        var errorDom = $.parseHTML(errorText);
+        $('#edit-task-text').after(errorDom);
+      }
+      return;
+    }
+
+    isEditingSomething = false;
+
+    // Create new task
+    var task = {
+      'text': $("#edit-task-text").val(),
+      'due': $('#edit-task-due').val(),
+    }
+
+    // Remove div used for editing
+    $("#editing-div").remove();
+
+    addNewTask(task);
+    checkEmptyHeaders();
+  });
+
+  // When someone creates a new task, update the display
+  $(document).on("click", "#create", function(evt) {
+    // Validate that they didn't create a task with empty text
+    if ($("#create-task-text").val().length == 0) {
+      // If there isn't already an alert displayed, make one
+      if (!($('#new-task-alert')[0])) {
+        var errorText = `
+          <div class="alert alert-danger" id="new-task-alert">
+            You cannot have an empty task.
+         </div>
+        `;
+        var errorDom = $.parseHTML(errorText);
+        $('#create-task-due-date').after(errorDom);
+      }
+      return;
+    }
+
+    // Create new task
+    var task = {
+      'text': $("#create-task-text").val(),
+      'due': $('#create-task-due-date').val(),
+    }
+    addNewTask(task);
+
+    // Return to default values
+    $("#create-task-text").val("");
+    $("#create-task-due-date").daterangepicker({
+      "applyClass": "btn-primary",
+      "singleDatePicker": true,
+      "startDate": moment().format("MM/DD/YYYY"),
+    });
+
+    // Remove the alert
+    $('#new-task-alert').remove();
+  });
+
+
+  ///////////////////
+  // HELPER METHODS
+  //
+
+  /**
+   * Transform a task into one that's checked off and
+   * has a strikethrough.
+   *
+   * @param checkboxObj checkbox DOM element that was clicked
+   *           and that is associated with the task that
+   *           should be struck through.
+   */
+  var strikethroughTask = function(checkboxObj) {
+    // Add a strikeout to date
+    var rowDiv = $(checkboxObj).parent().parent().parent();
+    var dateDiv = $(rowDiv).children()[1];
+    var dateParagraph = $(dateDiv).children()[0];
+    $(dateParagraph).wrap("<strike>");
+    // Add a strikeout to task
+    $(checkboxObj).parent().wrap("<strike>");
+
+    // Move task to bottom of list
+    var contentDiv = $(checkboxObj).parent().parent().parent().parent().parent();
+    var allStrikethroughTasks = $(contentDiv).children(".task-item." + STRIKETHROUGH_TASK_CLASS);
+    if (allStrikethroughTasks.length > 0) {
+      // There's already strikethrough tasks:
+      // add this one to the top of them
+      $(allStrikethroughTasks[0]).before(rowDiv);
+    } else {
+      // Find the bottom of the list of tasks under
+      // this heading and put it there
+      var allTasks = $(contentDiv).children(".task-item");
+      $(allTasks[allTasks.length-1]).after(rowDiv);
+    }
+
+    // Remove task from local storage
+    removeFromLocalStorage($(rowDiv).data('task-json'));
+
+    // Remove hovering css things (since to click checkbox,
+    // the mouse will be hovering over task)
+    $(rowDiv).css('background-color', "");
+    $(rowDiv).find("span").css("visibility", "hidden");
+
+    // Add strikeout class
+    // (Add it at the end so it's not counted in
+    // allStrikethroughTasks)
+    rowDiv.addClass(STRIKETHROUGH_TASK_CLASS);
+  }
+
+  /**
+   * Transform a task that was checked off and struck through
+   * into a non-struck-through task.
+   *
+   * @param checkboxObj checkbox DOM element that was unclicked
+   *           and that is associated with the task that
+   *           should be struck through.
+   */
+  var unstrikethroughTask = function(checkboxObj) {
+    // Just use 'add new task' and delete this row
+    var rowDiv = $(checkboxObj).parent().parent().parent().parent();
+    var task = $(rowDiv).data('task-json');
+    addNewTask(task);
+    $(rowDiv).remove();
+  }
+  
+  /**
+   * Transforms a normal task to an editable task.
+   *
+   * @param pencilObj the pencil that was clicked on and is
+   *          associated with the task that should be
+   *          made editable.
+   */
+  var makeTaskEditable = function(pencilObj) {
+    isEditingSomething = true;
+
+    var taskDiv = $(pencilObj).parent().parent();
+    var task = $(taskDiv).data('task-json');
+
+    // Give this div an ID so it can be removed later
+    taskDiv.attr("id", "editing-div");
+    // Empty all column divs
+    $('#editing-div div').empty();
+
+    // Add text box to edit task text
+    var textBox = $('<input>', {
+      type: "text",
+      id: "edit-task-text",
+      val: task.text,
+    });
+    $(textBox).css("width", "100%");
+    $(textBox).css("margin-right", "15px");
+    textBox.appendTo($(taskDiv).children()[0]);
+
+    // Add due date box to edit with datepicker ability
+    var dueDateBox = $('<input>', {
+      type: "text",
+      id: "edit-task-due",
+    });
+    $(dueDateBox).css("width", "75%");
+    $(dueDateBox).daterangepicker({
+      "applyClass": "btn-primary",
+      "singleDatePicker": true,
+      "startDate": moment(task.due).format("MM/DD/YYYY"),
+    });
+    dueDateBox.appendTo($(taskDiv).children()[1]);
+
+    // Add a save button to save changes
+    var saveButton = $('<button/>',
+      {
+        type: "button",
+        text: "Save",
+        class: "btn btn-default",
+        id: "save",
+      }
+    );
+    $(saveButton).css("float", "right");
+    saveButton.appendTo($(taskDiv).children()[2]);
+
+    // Remove the old task from local storage
+    // since when they save a task, it will be
+    // added to local storage
+    removeFromLocalStorage(task);
+  }
+
+  /**
+   * Adds the given task to the DOM.
+   *
+   * @param task a JSON object with 'text' and 'due' fields.
+   */
+  var addNewTask = function(task) {
+    // Add to local storage
+    addToLocalStorage(task);
+
+    // Create the task DOM
+    var taskDom = makeTaskDom(task);
+
+    // Find correct heading the task should be under
+    var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
+    var divId;
+    if (daysUntilDue < 0) {
+      divId = "#outstanding-contents";
+    } else if (daysUntilDue == 0) {
+      divId = "#due-today-contents";
+    } else {
+      divId = "#upcoming-contents";
+    }
+
+    // Find all tasks within the heading for this new task
+    // in order to place this task in the right order
+    // (tasks should be ordered earliest to latest in the list)
+    // Ignore strikethrough tasks when determining order
+    var allTasks = $(divId).children(".task-item:not(." + STRIKETHROUGH_TASK_CLASS +")");
+    if (allTasks.length > 0) {
+      // Tasks are ordered earliest to latest
+      // Keep going through the tasks until we find one
+      // with a later deadline than this task
+      var i = 0;
+      var taskToCheck = $(allTasks[0]).data("task-json");
+      // isLater: boolean, true when new task is still later
+      // than the task we're checking
+      var isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
+      while (i < allTasks.length && isLater) {
+        i++;
+        if (i == allTasks.length) {
+          break;
         }
-      );
-    });
-          // TODO(GR5): Make it undo-able
+        taskToCheck = $(allTasks[i]).data("task-json");
+        isLater = moment(task.due).isAfter(moment(taskToCheck.due).format("MM/DD/YYYY"), 'days');
+      }
+      
+      // Once while loop finishes, i is the index
+      // of task that is later than the new task,
+      // so the new task should go right before it
+      
+      // But if i == 0, then it should go at the beginning
+      // of the list and we can't use the i-1 trick
 
-    $(document).ready(function() {
-      $("#new_task_due_date").daterangepicker({
-        "applyClass": "btn-primary",
-        "singleDatePicker": true,
-        "startDate": moment().endOf("week").format("MM/DD/YYYY"),
-      });
+      if (i != 0) {
+        $(allTasks[i-1]).after(taskDom);
+      } else {
+        $(allTasks[0]).before(taskDom);
+      }
+
+
+    } else {
+      // There's either no tasks under that heading
+      // or only strikethrough tasks
+
+      var strikethroughTasks = $(divId).children("." + STRIKETHROUGH_TASK_CLASS);
+      if (strikethroughTasks.length > 0) {
+        // Put new task at the top of the list,
+        // before the strikethrough tasks
+        $(strikethroughTasks[0]).before(taskDom);
+      } else {     
+      // No tasks currently under that heading,
+      // so just remove the placeholder messagae
+      // then add the task
+      $(divId).empty();
+      $(divId).append(taskDom);
+      }
+
+    }
+
+    // TODO: Add animation for the moving between sections?
+  }
+
+  /**
+   * Creates a DOM element for a task.
+   *
+   * @param task a JSON object with 'text' and 'due' fields
+   * @returns a DOM object representing that task
+   */
+  var makeTaskDom = function(task) {
+    // Three columns for task text, due date, and pencil icon
+    var taskDivString = `
+      <div class="row task-item">
+        <div class="col-xs-8 text"></div>
+        <div class="col-xs-3 due"></div>
+        <div class="col-xs-1 pencil"></div>
+      </div>
+    `;
+    var taskDiv = $.parseHTML(taskDivString);
+
+    // Store task information to be used for editing
+    $(taskDiv).data('task-json', task);
+
+    // Add task text and checkbox to first column
+    var textElt = $('<p>', {
+      text: task.text,
+    });
+    var checkbox = $('<input/>', {
+      type: "checkbox",
+    });
+    checkbox.css("margin-right", "10px");
+    textElt.prepend(checkbox);
+    textElt.appendTo($(taskDiv).children()[0]);
+
+    // Figure out what due date text to display
+    // Use mm/dd/yyyy format so it's only comparing days,
+    // not hours or minutes
+    var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
+    var dueDateText;
+    if (daysUntilDue < 0) {
+      // Task is outstanding
+      if (daysUntilDue == -1) { // Handle singular case
+        dueDateText = "1 day late";
+      } else {
+        dueDateText = Math.abs(daysUntilDue) + " days late";
+      }
+    } else if (daysUntilDue == 0) {
+      // Task is due today
+      dueDateText = "Today";
+    } else {
+      // Task is upcoming
+      if (daysUntilDue == 1) {
+        dueDateText = "Tomorrow";
+      } else if (daysUntilDue <= 7) {
+        dueDateText = "In " + daysUntilDue + " days";
+      } else {
+        // If it's far enough in the future,
+        // just display the date
+        dueDateText = moment(task.due).format("MM/DD/YYYY");
+      }
+    }
+
+    // Add due date text to second column
+    var dueElt = $('<p>', {
+      text: dueDateText,
+    });
+    dueElt.appendTo($(taskDiv).children()[1]);
+
+    // Add (hidden) pencil icon for editing to third column
+    pencilElt = $('<span/>', {
+      class: "glyphicon glyphicon-pencil",
+    });
+    pencilElt.appendTo($(taskDiv).children()[2]);
+
+    // Return the entire DOM object
+    return taskDiv;
+  }
+
+  /**
+   * Gets pre-determined tasks from storage and
+   * displays them.
+   */
+  var displayPreDeterminedTasks = function() {
+    // Load tasks from storage
+    var sampleTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    // Sort earliest to latest so they're appended correctly
+    sampleTasks.sort(function(a, b) {
+      // Should return positive if a is later than b
+      return moment(a.due).diff(moment(b.due));
     });
 
-    // Make new task dropdown actually display the selected event
-    // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
-    $(document).on('click', ".dropdown-menu li a", function() {
-      $(".btn:first-child").text($(this).text());
-      $(".btn:first-child").val($(this).text());
-      // Keeps the caret down displayed
-      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+    // Add each task to the document
+    sampleTasks.forEach(function(task) {
+      var taskDom = makeTaskDom(task);
+      // Add it under correct heading
+      var daysUntilDue = moment(task.due).diff(moment().format("MM/DD/YYYY"), 'days');
+      var divId;
+      if (daysUntilDue < 0) {
+        divId = "#outstanding-contents";
+      } else if (daysUntilDue == 0) {
+        divId = "#due-today-contents";
+      } else {
+        divId = "#upcoming-contents";
+      }
+      $(divId).append(taskDom);
     });
 
-  </script>
+    // Fill in any headers that are empty
+    checkEmptyHeaders();
+  }
+
+  /**
+   * Checks if there are any empty headings
+   * (eg no tasks under 'Upcoming') and adds a 
+   * placeholder message under the heading instead.
+   */
+  var checkEmptyHeaders = function() {
+    var divIds = ["#outstanding-contents", "#due-today-contents", "#upcoming-contents"];
+    divIds.forEach(function(divId) {
+      if ($(divId).children().length == 0) {
+        var placeholderMessage = $.parseHTML(PLACEHOLDER_MESSAGE_STRING);
+        $(divId).append($(placeholderMessage));
+      }
+    });
+  }
+
+  /** 
+   * Adds the given task from local storage.
+   *
+   * @param task a JSON object with 'text' and 'due' fields
+   */
+  var addToLocalStorage = function(task) {
+    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    savedTasks.push(task);
+    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
+  }
+
+  /** 
+   * Removes the given task from local storage.
+   *
+   * @param task a JSON object with 'text' and 'due' fields
+   */
+  var removeFromLocalStorage = function(task) {
+    // Assumes there are no tasks with both the same text
+    // and the same due date
+    var savedTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    var foundElt = savedTasks.find(function(elt) {
+      return elt.text == task.text &&
+             moment(elt.due).diff(moment(task.due).format("MM/DD/YYYYY"), 'days') == 0;
+    });
+    var indexToDelete = savedTasks.indexOf(foundElt);
+    savedTasks.splice(indexToDelete, 1);
+    window.localStorage.setItem("tasks", JSON.stringify(savedTasks));
+  }
+
+  /**
+   * Sets up CSS and JS for keeping the 'add new task'
+   * form always displayed, even when scrolling.
+   */
+	var setupStickySidebar = function() {
+    // From http://zurb.com/building-blocks/sticky-sidebar
+  	var stickySidebar = $('.sticky');
+
+  	if (stickySidebar.length > 0) { 
+  	  var stickyHeight = stickySidebar.height(),
+  		  sidebarTop = stickySidebar.offset().top;
+  	}
+
+  	// on scroll move the sidebar
+  	$(window).scroll(function () {
+  	  if (stickySidebar.length > 0) { 
+    		var scrollTop = $(window).scrollTop();
+
+    		if (sidebarTop < scrollTop) {
+    		  stickySidebar.css('top', scrollTop - sidebarTop);
+
+    		  // stop the sticky sidebar at the footer to avoid overlapping
+    		  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
+    			  stickyStop = $('.main-content').offset().top + $('.main-content').height();
+    		  if (stickyStop < sidebarBottom) {
+    			var stopPosition = $('.main-content').height() - stickyHeight;
+    			stickySidebar.css('top', stopPosition);
+    		  }
+    		}
+    		else {
+    		  stickySidebar.css('top', '0');
+    		} 
+	    }
+	  });
+
+  	$(window).resize(function () {
+  	  if (stickySidebar.length > 0) { 
+  		stickyHeight = stickySidebar.height();
+  	  }
+  	});	
+	};
+
+</script>
 
 
 	<div class="container-fluid">
 		<div class="row main-header">
-      <div class="col-lg-2"></div>
     </div>
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
   		</div>
-
       <div class="col-lg-8 page-content main-content">
 
         <!-- TODO(@Becky): choose an actually good accent color -->
@@ -161,5 +640,3 @@
 </body>
 
 </html>
-
-<!-- TODO(GR5): Make checkboxes + hamburger button work -->

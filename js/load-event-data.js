@@ -14,10 +14,34 @@ var lecture2 = {
 	eventType: "Lecture",
 }
 
+var lecture3 = {
+	title: "Lecture 3",
+	start: moment("05/02/2017 13:00").format(),
+	end: moment("05/02/2017 14:00").format(),
+	className: "lecture-event",
+	eventType: "Lecture"
+}
+
+var lecture4 = {
+	title: "Lecture 4",
+	start: moment("05/04/2017 13:00").format(),
+	end: moment("05/04/2017 14:00").format(),
+	className: "lecture-event",
+	eventType: "Lecture"
+}
+
 var quiz1 = {
 	title: "Quiz 1",
 	start: moment("04/28/2017 13:00").format(),
 	end: moment("04/28/2017 14:00").format(),
+	className: "quiz-event",
+	eventType: "Quiz"
+}
+
+var quiz2 = {
+	title: "Quiz 2",
+	start: moment("05/11/2017 19:00").format(),
+	end: moment("05/11/2017 21:00").format(),
 	className: "quiz-event",
 	eventType: "Quiz"
 }
@@ -35,7 +59,10 @@ var lab1 = {
 var events = [
 	lecture1,
 	lecture2,
+	lecture3,
+	lecture4,
 	quiz1,
+	quiz2,
 	lab1
 ];
 
