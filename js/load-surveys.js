@@ -8,13 +8,176 @@ var data = {
 	end_date: moment("2017-02-20"),
 	start_time: moment("2017-02-16 05:00 PM"), // use first date to make it a valid moment
 	end_time: moment("2017-02-16 09:00 PM"),
-	// results: {
-	// 	2017-02-16: {
-	// 		available: ["Caitlin", "Rachel", "Isaac"],
-	// 		unavailable: ["Becky"]
-	// 	}
-	// }
-
+	results: { // indexed by time as shown on cal then list in order of days
+		"5:00 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+		"5:30 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}], 
+		"6:00 PM": [
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+		"6:30 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+		"7:00 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+		"7:30 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+		"8:00 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+		"8:30 PM": [
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Caitlin", "Isaac"],
+			unavailable: ["Becky", "Rachel"]
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac", "Becky"],
+			unavailable: []
+		},
+		{
+			available: ["Caitlin", "Rachel", "Isaac"],
+			unavailable: ["Becky"]
+		},
+		{
+			available: ["Rachel"],
+			unavailable: ["Becky", "Isaac", "Caitlin"]
+		}],
+	}
 }
 
 console.log(data);
@@ -62,20 +225,33 @@ if (data.students_asked) {
 	$("#"+data.id+"-students").prop('disabled', true);
 }
 
-
+// create availabilities table
 var avail_table = $.parseHTML(`<table id="`+data.id+`-avail-table" class="availability-table"></table>`);
 $("#"+data.id+"-avail-results").append(avail_table);
 var avail_table = $("#"+data.id+"-avail-table");
 
-var table_height = data.end_time.diff(data.start_time, 'hours')+1; // plus 1 for header
+var table_height = 2*data.end_time.diff(data.start_time, 'hours')+1; // plus 1 for header
 var table_width = data.end_date.diff(data.start_date, 'days')+2; // plus 2 b/c 1 for header, 1 to get last day
-console.log(table_height);
-console.log(table_width);
+
+var get_cutoffs = function(results) {
+	var avail_numbers = [];
+	Object.keys(results).forEach(function(time) {
+		results[time].forEach(function(avail) {
+			avail_numbers.push(avail["available"].length);
+		});
+	});
+	
+	avail_numbers = avail_numbers.sort();
+	console.log(avail_numbers);
+	return {best: avail_numbers[avail_numbers.length-1], mid: avail_numbers[avail_numbers.length/2]};
+}
+
+console.log(get_cutoffs(data.results));
 
 // adapted from my code for candy crush
 // make the table headers
 var table_row = $("<tr>");
- table_row.append($("<th>"));
+table_row.append($("<th>"));
 for (var col = 0; col < table_width-1; col++) {
 	var cell = $("<th>");
   	cell.css('width', "calc(50%px/"+table_width+")"); // Make them all the same width
@@ -84,24 +260,33 @@ for (var col = 0; col < table_width-1; col++) {
  	table_row.append(cell);
  }
  avail_table.append(table_row);
-  // Make the table
-  for (var row = 1; row < table_height; row++) {
-  	var table_row = $("<tr>");
-  	for (var col = 0; col < table_width; col++) {
-  		var cell;
-  		if (col == 0 ) {
-  			cell = $("<th>");
-  			var time = moment(data.start_time).add(row-1, 'hour').format("LT"); // clone to not mutate date
+
+var color_cutoffs = get_cutoffs(data.results);
+// Make the table
+for (var row = 1; row < table_height; row++) {
+	var table_row = $("<tr>");
+	for (var col = 0; col < table_width; col++) {
+		var cell;
+		var time = moment(data.start_time).add((row-1)*30, 'minute').format("LT"); // clone to not mutate date
+		if (col == 0 ) {
+			cell = $("<th>");
  			cell.text(time); // row is indexed from 1
-  		} else {
-	  		cell = $("<td>");
-	  		var col_letter = String.fromCharCode(97 + col); // Translate index to letter
-	  		cell.text(col_letter + (row+1)); // row is indexed from 1
+ 		} else {
+ 			cell = $("<td>");
+	  		var avail_num = data.results[time][col-1]["available"].length;
+	  		if (avail_num == color_cutoffs["best"]) {
+	  			cell.css('background-color', 'green');
+	  		} else if (avail_num >= color_cutoffs["mid"]) {
+	  			cell.css('background-color', 'yellow');
+	  		} else {
+	  			cell.css('background-color', 'red');
+	  		}
+	  		cell.text(avail_num); // row is indexed from 1
 	  	}
 	  	cell.css('width', "calc(50%px/"+table_width+")"); // Make them all the same width
-  		table_row.append(cell);
-  	}
-  	avail_table.append(table_row);
-  }
+	  	table_row.append(cell);
+	  }
+	  avail_table.append(table_row);
+	}
 
-  avail_table.find('tr').eq(3).find('td').eq(2).css('background-color', "red");
+	// avail_table.find('tr').eq(3).find('td').eq(2).css('background-color', "red");
