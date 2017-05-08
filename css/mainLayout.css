@@ -112,7 +112,14 @@ Modifying the width of list items on the Notes and Feedback page
 	border-radius: 10px;
 	cursor: default;
 }
+/*
 
+.note-item > .pencil > .glyphicon-pencil {
+	float: right;
+	visibility: hidden;
+	margin-right: 10px;
+}
+*/
 
 /*To allow the modal to scroll*/
 .modal {

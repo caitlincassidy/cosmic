@@ -60,7 +60,16 @@
 
 	$(document).ready(function() {
        displayPreDeterminedNotes();
+        loadGeneralNotes();
         // TODO: Need to load in notes for events created in Events page
+        
+        $("#success-alert").hide();
+        $("#save_gen").click(function showAlert() {
+            $("#success-alert").alert();
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert").slideUp(500);
+            });   
+        });
 	});
     
 // Hovering over a task item that isn't strikethrough
@@ -70,14 +79,14 @@
 //      console.log($(this)[0].parentNode);
       $(this).css('background-color', " #eac0f7");
       // Make pencil appear
-//      console.log($(this).find("div"));
-      $(this).find(".pen").css("visibility", "visible");
+//      console.log($(this).find(".glyphicon-pencil"));
+      $(this).find(".glyphicon-pencil").css("visibility", "visible");
   });
   $(document).on('mouseleave', '.text', function() {
       // Reset background color
       $(this).css('background-color', "");
       // Make pencil disappear
-      $(this).find(".pen").css("visibility", "hidden");
+      $(this).find(".glyphicon-pencil").css("visibility", "hidden");
   });
 
   // Hovering over a pencil
@@ -169,7 +178,7 @@
     $(divId).append(noteDom);
   }
   
-    
+  // When someone saves a Note edit    
   $(document).on("click", "#save", function(evt) {
     isEditingSomething = false;
 
@@ -186,6 +195,34 @@
 
     addNewNote(note);
 //    checkEmptyHeaders();
+  });
+    
+  // When someone clicks save on the General Notes area
+  $(document).on("click", "#save_gen", function(evt) {
+    isEditingSomething = false;
+    var content = $("#general").val();
+      console.log(content);
+    // Create new note
+    var note = {
+      'text': content,
+      'title': "General",
+      'noteType': "General",
+      'className': "general-note"
+    }
+
+    // Remove div used for editing
+//    $("#editing-div").remove();
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    var foundElt = savedNotes.find(function(elt) {
+      return elt.title == "General";
+    });
+    var indexToDelete = savedNotes.indexOf(foundElt);
+    if (indexToDelete != -1) {
+        savedNotes.splice(indexToDelete, 1);
+        window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+    }
+    
+    addNewNote(note);
   });
     
   /**
@@ -270,6 +307,20 @@
     checkEmptyHeaders();
   };
     
+var loadGeneralNotes = function() {
+    function findGeneral (note) {
+        return note.noteType == "General";
+    }
+    
+    var generalNote = JSON.parse(window.localStorage.getItem("notes")).find(findGeneral);
+    
+    // If the user hasn't submitted any General notes yet
+    if (typeof generalNote != 'undefined') {
+        console.log(generalNote);
+        $("#general").val(generalNote.text);
+    } 
+}
+    
     
   var checkEmptyHeaders = function() {
     var divIds = ["#lecs", "#quizzes", "#labs"];
@@ -310,6 +361,7 @@
     savedNotes.splice(indexToDelete, 1);
     window.localStorage.setItem("notes", JSON.stringify(savedNotes));
   }
+  
 </script>
 	
 	
@@ -326,6 +378,10 @@
 				<h1>
 					<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Notes
 				</h1>
+                <div class="alert alert-success" id="success-alert">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong> Note saved </strong>
+                </div>
 			</div>
 			
 			<div class="form-group">
@@ -335,6 +391,7 @@
                 <button type="button" class="btn btn-default" id="collapse_gen"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse </button>
 				</h2>
 				<textarea id="general" type="textarea" class="form-control input-lg collapse in" placeholder="Type your notes here before you forget them..."></textarea>
+                <button type="button" text="Save" class="btn btn-primary" id="save_gen" style="float:right"> Save </button>
 				<br>
 			</div>
 			<div>
