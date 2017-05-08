@@ -1,11 +1,11 @@
 $(document).ready(function() {
     // Expand General
     $("#expand_gen").click(function() {
-        $("#general").collapse('show');
+        $(".gen_col").collapse('show');
     })
     // Collapse General
     $("#collapse_gen").click(function() {
-        $("#general").collapse('hide');
+        $(".gen_col").collapse('hide');
     })
     
 	// Expand all lectures
