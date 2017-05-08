@@ -73,6 +73,7 @@ var calendarView = function() {
 	  	callback(events);
 	  },
 	  fixedWeekCount: false,
+	  scrollTime: '09:00:00',
 	  contentHeight: 535,  // TODO: make it dynamically adjust to screen
 	  editable: true,
 	  eventStartEditable: true,
