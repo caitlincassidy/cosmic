@@ -8,7 +8,7 @@ var data = {
 	end_date: moment("2017-02-20"),
 	start_time: moment("2017-02-16 05:00 PM"), // use first date to make it a valid moment
 	end_time: moment("2017-02-16 09:00 PM"),
-	results: { // indexed by time as shown on cal then list in order of days
+	ta_results: { // indexed by time as shown on cal then list in order of days
 		"5:00 PM": [
 		{
 			available: ["Caitlin", "Rachel", "Isaac"],
@@ -177,7 +177,178 @@ var data = {
 			available: ["Rachel"],
 			unavailable: ["Becky", "Isaac", "Caitlin"]
 		}],
-	}
+	},
+	la_results: { // indexed by time as shown on cal then list in order of days
+		"5:00 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+		"5:30 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}], 
+		"6:00 PM": [
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+		"6:30 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+		"7:00 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+		"7:30 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+		"8:00 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+		"8:30 PM": [
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Ricky", "Louis"],
+			unavailable: ["Ben", "Laura"]
+		},
+		{
+			available: ["Ricky", "Laura", "Louis", "Ben"],
+			unavailable: []
+		},
+		{
+			available: ["Ricky", "Laura", "Louis"],
+			unavailable: ["Ben"]
+		},
+		{
+			available: ["Laura"],
+			unavailable: ["Ben", "Louis", "Ricky"]
+		}],
+	},
+	student_results: {},
 }
 
 console.log(data);
@@ -233,11 +404,16 @@ var avail_table = $("#"+data.id+"-avail-table");
 var table_height = 2*data.end_time.diff(data.start_time, 'hours')+1; // plus 1 for header
 var table_width = data.end_date.diff(data.start_date, 'days')+2; // plus 2 b/c 1 for header, 1 to get last day
 
-var get_cutoffs = function(results) {
+var get_cutoffs = function(groups) {
+	if (groups.length == 0) return {best: 1, mid:1};
 	var avail_numbers = [];
-	Object.keys(results).forEach(function(time) {
-		results[time].forEach(function(avail) {
-			avail_numbers.push(avail["available"].length);
+	Object.keys(groups[0]).forEach(function(time) {
+		groups[0][time].forEach(function(avail, day_index) {
+			var total_avail = 0;
+			groups.forEach(function(person_type) {
+				total_avail += person_type[time][day_index]["available"].length;
+			})
+			avail_numbers.push(total_avail);
 		});
 	});
 	
@@ -246,7 +422,19 @@ var get_cutoffs = function(results) {
 	return {best: avail_numbers[avail_numbers.length-1], mid: avail_numbers[avail_numbers.length/2]};
 }
 
-console.log(get_cutoffs(data.results));
+var get_relevant_groups = function() {
+	var groups = []
+	if ($("#"+data.id+"-students").prop('checked')) {
+		groups.push(data.student_results);
+	}
+	if ($("#"+data.id+"-tas").prop('checked')) {
+		groups.push(data.ta_results);
+	}
+	if ($("#"+data.id+"-las").prop('checked')) {
+		groups.push(data.la_results);
+	}
+	return groups;
+}
 
 // adapted from my code for candy crush
 // make the table headers
@@ -261,7 +449,8 @@ for (var col = 0; col < table_width-1; col++) {
  }
  avail_table.append(table_row);
 
-var color_cutoffs = get_cutoffs(data.results);
+var relevant_groups = get_relevant_groups();
+var color_cutoffs = get_cutoffs(relevant_groups);
 // Make the table
 for (var row = 1; row < table_height; row++) {
 	var table_row = $("<tr>");
@@ -273,7 +462,10 @@ for (var row = 1; row < table_height; row++) {
  			cell.text(time); // row is indexed from 1
  		} else {
  			cell = $("<td>");
-	  		var avail_num = data.results[time][col-1]["available"].length;
+ 			var avail_num = 0;
+ 			relevant_groups.forEach(function(group) {
+ 				avail_num += group[time][col-1]["available"].length;
+ 			});
 	  		if (avail_num == color_cutoffs["best"]) {
 	  			cell.css('background-color', 'green');
 	  		} else if (avail_num >= color_cutoffs["mid"]) {
