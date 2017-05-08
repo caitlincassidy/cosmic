@@ -57,7 +57,9 @@ $(document).on('click', "#create-event-btn", function(evt)
 
 		$('#calendar').fullCalendar(action, event);
 		current_event = null;
-		
+        
+		addNoteFromEvent();
+        
 		$('#new-event-modal').modal('toggle');
 	}
 });
@@ -79,6 +81,9 @@ $(document).on('click', "#confirm-delete-btn", function(evt)
 		return event === current_event;
 	});
 	current_event = null;
+    
+    removeNoteFromEvent();
+    
 	$('#confirm-delete-event-modal').modal('toggle');
 });
 /* End Event Deletion Handling */
@@ -150,3 +155,95 @@ var validateInputs = function(start, end) {
 	else if ($("#new_event_end_time").val())
 		$('#endTimeError').remove();
 };
+
+
+/***********************************************************************************
+****************************** Notes Stuff *****************************************
+************************************************************************************/
+
+  // Bring in all Notes from Events local storage
+  var addNoteFromEvent = function() {
+      var events = JSON.parse(window.localStorage.getItem("events"));
+      var notes = JSON.parse(window.localStorage.getItem("notes"));
+      
+      // If there are missing notes
+      if (events.length > notes.length) {
+          
+          events.forEach(function(event) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a note corresponding to the event
+              var noteExists = false;
+              notes.forEach(function(note) {
+                  if (note.title == event.title){
+                      noteExists = true;
+                  }
+              })
+              // If an event doesn't have a note yet
+            if (!noteExists) {
+                var newNote = {
+                    'text': "** You have not made any notes yet! **",
+                    'title': event.title,
+                    'noteType': event.eventType,
+                    'className': event.className.split('-')[0]+'-note'
+                }
+                console.log(newNote);
+                addToLocalStorage(newNote);
+                  // Need to create a note json object by parsing event
+                  // Need to append it to proper header
+              }
+          })
+      }
+  }
+  
+    // There are too many notes, and at least one needs to be deleted.    
+    var removeNoteFromEvent = function() {
+        var events = JSON.parse(window.localStorage.getItem("events"));
+        var notes = JSON.parse(window.localStorage.getItem("notes"));
+        
+        if (notes.length > events.length){
+          notes.forEach(function(note) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a note corresponding to the event
+              var eventExists = false;
+              events.forEach(function(event) {
+                  if (note.title == event.title){
+                      eventExists = true;
+                  }
+              })
+              // If an event no longer exists, the note must be deleted
+            if (!eventExists) {
+                removeFromLocalStorage(note);
+              }
+          })
+      }
+  }
+    
+    
+  /** 
+   * Adds the given note from local storage.
+   *
+   * @param note a JSON object with 'text' and 'due' fields
+   */
+  var addToLocalStorage = function(note) {
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    savedNotes.push(note);
+    window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+  }
+
+  /** 
+   * Removes the given note from local storage.
+   *
+   * @param note a JSON object with a 'text' fields
+   */
+  var removeFromLocalStorage = function(note) {
+    // Assumes there are no notes with both the same text
+    // and the same due date
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    var foundElt = savedNotes.find(function(elt) {
+      return elt.text == note.text;
+    });
+    var indexToDelete = savedNotes.indexOf(foundElt);
+    savedNotes.splice(indexToDelete, 1);
+    window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+  }
+  

@@ -12,11 +12,32 @@ var lecture2 = {
 	text: ""
 }
 
+var lecture3 = {
+	title: "Lecture 3",
+	className: "lecture-note",
+	noteType: "Lecture",
+    text: "Blegh"
+}
+
+var lecture4 = {
+	title: "Lecture 4",
+	className: "lecture-note",
+	noteType: "Lecture",
+    text: "This is lecture 4"
+}
+
 var quiz1 = {
 	title: "Quiz 1",
 	className: "quiz-note",
 	noteType: "Quiz",
 	text: "Students felt adequately prepared, according to feedback."
+}
+
+var quiz2 = {
+	title: "Quiz 2",
+	className: "quiz-note",
+	noteType: "Quiz",
+    text: "The quiz was hard."
 }
 
 var lab1 = {
@@ -26,20 +47,13 @@ var lab1 = {
 	text: "The readme needs to be clearer - a lot of confused Piazza posts."
 }
 
-
-var general = {
-	title: "General",
-	className: "general-note",
-	noteType: "General",
-	text: "I don't get paid enough for this..."
-}
-
-// TODO: add more filler events
-
 var notes = [
 	lecture1,
 	lecture2,
+	lecture3,
+	lecture4,
 	quiz1,
+	quiz2,
 	lab1
 ];
 
