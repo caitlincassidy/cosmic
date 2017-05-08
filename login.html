@@ -10,6 +10,7 @@
 	"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 	<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
 
 	<link rel="stylesheet" href="css/mainLayout.css">
 
@@ -32,21 +33,23 @@
 
 <body>
 	<div class="container-fluid">
-		<div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
-			<img src='img/galaxy.jpg' style='width:100%;height:100%' alt='[]' />
+		<div class="welcome-background" style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
+			<img src='img/galaxy-2.jpg' style='width:100%;height:100%' alt='[]' />
+		</div>
+		<div class="image-overlay" style='position:absolute;z-index:1;left:0;top:0;width:100%;height:100%'>
 		</div>
 		<div class="welcome-container">
 			<div class="row welcome-title">
 				<h1> C&ensp;O&ensp;S&ensp;M&ensp;I&ensp;C </h1>
-				<h2> class management that's out of this world </h2>
+				<h2> {&ensp;class management that's out of this world&ensp;} </h2>
 			</div>
-			<br/>
+			<br/><br>
 			<!-- In a real implementation would actually check against something -->
 			<!-- For this assignment, not allowed a backend, so just dummy code for visuals -->
-			<input class="form-control" type="text" value="" id="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
-			<input class="form-control" type="password" value="" id="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+			<input class="form-control login" type="text" value="" id="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+			<input class="form-control login" type="password" value="" id="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
 			<br>
-			<a class="btn btn-default" href="index.html" style="z-index:1"> LOG IN </a>
+			<a class="btn btn-default login" href="index.html" style="z-index:1"> LOG IN </a>
 		</div>
 	</div> <!-- class="container" -->
 </body>
