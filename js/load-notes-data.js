@@ -26,6 +26,14 @@ var lab1 = {
 	text: "The readme needs to be clearer - a lot of confused Piazza posts."
 }
 
+
+var general = {
+	title: "General",
+	className: "general-note",
+	noteType: "General",
+	text: "I don't get paid enough for this..."
+}
+
 // TODO: add more filler events
 
 var notes = [

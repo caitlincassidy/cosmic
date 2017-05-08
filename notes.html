@@ -45,6 +45,7 @@
   // has clicked save
   var isEditingSomething = false;
     
+  // Placeholder variables for storing the currently-edited note data    
   var editingTitle;
   var editingNoteType;
   var editingClassName;
@@ -58,22 +59,25 @@
   `;
 
 	$(document).ready(function() {
-       displayPreDeterminedNotes(); 
+       displayPreDeterminedNotes();
+        // TODO: Need to load in notes for events created in Events page
 	});
     
 // Hovering over a task item that isn't strikethrough
   $(document).on('mouseenter', '.text', function() {
       // Color light gray
       // TODO(@Becky): pick good accent color
+//      console.log($(this)[0].parentNode);
       $(this).css('background-color', " #eac0f7");
       // Make pencil appear
-      $(this).find("span").css("visibility", "visible");
+//      console.log($(this).find("div"));
+      $(this).find(".pen").css("visibility", "visible");
   });
   $(document).on('mouseleave', '.text', function() {
       // Reset background color
       $(this).css('background-color', "");
       // Make pencil disappear
-      $(this).find("span").css("visibility", "hidden");
+      $(this).find(".pen").css("visibility", "hidden");
   });
 
   // Hovering over a pencil
@@ -230,7 +234,7 @@
     textElt.appendTo(textChild);
       
     // Add (hidden) pencil icon for editing to third column
-    pencilElt = $('<span/>', {
+    pencilElt = $('<span>', {
       class: "glyphicon glyphicon-pencil",
     });
     pencilElt.appendTo(pencilChild);
@@ -330,7 +334,7 @@
                 <button type="button" class="btn btn-default" id="expand_gen"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand </button>
                 <button type="button" class="btn btn-default" id="collapse_gen"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse </button>
 				</h2>
-				<textarea id="general" type="textarea" class="form-control input-lg collapse" placeholder="Type your notes here before you forget them..."></textarea>
+				<textarea id="general" type="textarea" class="form-control input-lg collapse in" placeholder="Type your notes here before you forget them..."></textarea>
 				<br>
 			</div>
 			<div>
