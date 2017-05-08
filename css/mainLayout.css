@@ -47,10 +47,75 @@ label {
 	font-family: 'Cairo', sans-serif;
 }
 
+.btn.btn-default.login {
+	background-color: rgba(39, 39, 103, 0.2);
+	color: white;
+	font-weight: bold;
+	font-size: 24px;
+	border: 2px solid white;
+}
+
+.btn.btn-default.login:hover {
+	background-color: rgba(39, 39, 103, 0.5);
+}
+
+.form-control.login {
+	font-size: 24px;
+	font-family: 'Gentium Basic', serif;
+}
+
+/* Becky's Color Palletes */
+
+/* light blue: #A3DFF7; */
+/* blue: #3C769C; */
+/* dark blue: #28334F; */
+/* dark pink: #9E1E2D; */
+/* light-pink orange: #C9563B*/
+/* plum: #4A111A*/
+
+/* pink: F57D7C; */
+/* dark blue: #301683; */
+/* purple-y blue: 462A90; */
+/* light blue: 5B42D2*/
+/* light purple:B14BCB*/
+
+/* purple: 56195C; */
+/* dark pink: C67282; */
+/* dark purple: 2F1D4D; */
+/* off-white: FFF3FF; */
+/* very dark purple 0F0214*/
+/* plum: 643140  */
+
+/* pink: f45072; */
+/* bright blue: 4536cd; */
+/* light purple: ce4ad1; */
+/* blue purple: 6d32c0; */
+/* dark blue: 272767; */
+/* dark purple: 511c46;*/
+
+/* Right sidebar CSS */
+.right-sidebar {
+	background-color: #FFF3FF;
+}
+
 .main-header {
-	background-color: #43448c;
-	height: 150%;
-	margin-bottom: 5%;
+	margin-bottom: 0%;
+	background-image: url("../img/galaxy-2.jpg");
+	background-position: right bottom;
+}
+
+.title-header {
+	text-align: center;
+	position: relative;
+	top: 50%;
+	transform: translateY(20%);
+}
+
+.page-title-header {
+	border-radius: 3px;
+	text-align: center; 
+	position: relative;
+	top: 50%;
 }
 
 .page-header {
