@@ -33,16 +33,7 @@
 
   <!-- Custom scripts -->
   <script src="js/load-header.js" defer></script>
-
-<!-- Code Review GR5 (by Isaac)
-1. I'd make it so that someone can't edit the Task text to be an empty string (give a Bootstrap error or something: https://www.w3schools.com/bootstrap/bootstrap_alerts.asp)
-2. Upon pressing the "Create" button, probably best to reset everything no? (i.e., clear the text box, reset the dropdown menu, and set the date to today)
-3. Maybe make the "Create" button a bootstrap primary button? Or do something that makes it stand out?
-4. Similar to 1., make it so that a user can't create a Task with an empty string?
-5. As we discussed, perhaps get rid of the "Event Name" dropdown?
-6. Capitalize all words in "Create new task" perhaps?]
-
--->
+  
 </head>
 
 <body>
@@ -86,13 +77,6 @@
   // DOCUMENT METHODS
   //
 
-  // Make new task dropdown display the selected event
-  $(document).on('click', ".dropdown-menu li a", function() {
-    $("#event-name").text($(this).text());
-    $("#event-name").val($(this).text());
-    // Keeps the caret down displayed
-    $('#event-name').html($(this).text() + ' <span class="caret"></span>');
-  });
   // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
 
   // Strikeout a task when the checkbox next to it is clicked
@@ -141,12 +125,28 @@
 
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
+    // Validate that they didn't edit the task
+    // to have empty text
+    if ($("#edit-task-text").val().length == 0) {
+      // If there isn't already an alert displayed, make one
+      if (!($('#edit-task-alert')[0])) {
+        var errorText = `
+          <div class="alert alert-danger" id="edit-task-alert">
+            You cannot have an empty task.
+         </div>
+        `;
+        var errorDom = $.parseHTML(errorText);
+        $('#edit-task-text').after(errorDom);
+      }
+      return;
+    }
+
     isEditingSomething = false;
 
     // Create new task
     var task = {
-      'text': $("#new-task-text").val(),
-      'due': $('#new-task-due').val(),
+      'text': $("#edit-task-text").val(),
+      'due': $('#edit-task-due').val(),
     }
 
     // Remove div used for editing
@@ -158,8 +158,20 @@
 
   // When someone creates a new task, update the display
   $(document).on("click", "#create", function(evt) {
-    // TODO: We don't use the 'event name' field anymore
-    // should we still keep it?
+    // Validate that they didn't create a task with empty text
+    if ($("#create-task-text").val().length == 0) {
+      // If there isn't already an alert displayed, make one
+      if (!($('#new-task-alert')[0])) {
+        var errorText = `
+          <div class="alert alert-danger" id="new-task-alert">
+            You cannot have an empty task.
+         </div>
+        `;
+        var errorDom = $.parseHTML(errorText);
+        $('#create-task-due-date').after(errorDom);
+      }
+      return;
+    }
 
     // Create new task
     var task = {
@@ -167,6 +179,17 @@
       'due': $('#create-task-due-date').val(),
     }
     addNewTask(task);
+
+    // Return to default values
+    $("#create-task-text").val("");
+    $("#create-task-due-date").daterangepicker({
+      "applyClass": "btn-primary",
+      "singleDatePicker": true,
+      "startDate": moment().format("MM/DD/YYYY"),
+    });
+
+    // Remove the alert
+    $('#new-task-alert').remove();
   });
 
 
@@ -256,7 +279,7 @@
     // Add text box to edit task text
     var textBox = $('<input>', {
       type: "text",
-      id: "new-task-text",
+      id: "edit-task-text",
       val: task.text,
     });
     $(textBox).css("width", "100%");
@@ -266,7 +289,7 @@
     // Add due date box to edit with datepicker ability
     var dueDateBox = $('<input>', {
       type: "text",
-      id: "new-task-due",
+      id: "edit-task-due",
     });
     $(dueDateBox).css("width", "75%");
     $(dueDateBox).daterangepicker({
@@ -575,17 +598,11 @@
 
 	<div class="container-fluid">
 		<div class="row main-header">
-      <div class="col-lg-2"></div>
     </div>
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
   		</div>
   		<div class="col-lg-10">
-        <div class="page-header">
-          <h1>
-            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Tasks
-          </h1>
-        </div>
 
         <div class="page-content main-content row">
           <div class="col-lg-8">
@@ -601,9 +618,9 @@
             <div id="upcoming-contents"></div>
 
           </div>
-          <div class="col-lg-3 panel sticky" id="sidebar">
+          <div class="col-lg-2 panel sticky" id="sidebar">
 				  
-            <h2> Add new task </h2>
+            <h2> Create New Task </h2>
 
             <!-- Task text -->
             <div class="form-group">
@@ -615,34 +632,7 @@
                 <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
             </div>
 
-
-            <!-- Event dropdown -->
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="event-name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Event Name
-                <span class="caret"></span>
-              </button>
-
-              <!-- TODO(@Becky): Add more options -->
-              <ul class="dropdown-menu" aria-labelledby="event-name">
-                <li><a href="#">None</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Quiz 1</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Lecture 1</a></li>
-                <li><a href="#">Lecture 2</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Lab 1</a></li>
-                <li><a href="#">Lab 2</a></li>
-                <li><a href="#">Lab 3</a></li>
-                <li><a href="#">Lab 4</a></li>
-                <li><a href="#">Lab 5</a></li>
-              </ul>
-            </div>
-
-            <br />
-
-            <button type="button" class="btn btn-default" style="float: right" id="create">Create</button>
+            <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
 
 		  </div>
           <!-- Margin column -->
