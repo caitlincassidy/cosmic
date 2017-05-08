@@ -39,7 +39,6 @@
 2. Upon pressing the "Create" button, probably best to reset everything no? (i.e., clear the text box, reset the dropdown menu, and set the date to today)
 3. Maybe make the "Create" button a bootstrap primary button? Or do something that makes it stand out?
 4. Similar to 1., make it so that a user can't create a Task with an empty string?
-5. As we discussed, perhaps get rid of the "Event Name" dropdown?
 6. Capitalize all words in "Create new task" perhaps?]
 
 -->
@@ -86,13 +85,6 @@
   // DOCUMENT METHODS
   //
 
-  // Make new task dropdown display the selected event
-  $(document).on('click', ".dropdown-menu li a", function() {
-    $("#event-name").text($(this).text());
-    $("#event-name").val($(this).text());
-    // Keeps the caret down displayed
-    $('#event-name').html($(this).text() + ' <span class="caret"></span>');
-  });
   // Source: http://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
 
   // Strikeout a task when the checkbox next to it is clicked
@@ -158,9 +150,6 @@
 
   // When someone creates a new task, update the display
   $(document).on("click", "#create", function(evt) {
-    // TODO: We don't use the 'event name' field anymore
-    // should we still keep it?
-
     // Create new task
     var task = {
       'text': $("#create-task-text").val(),
@@ -613,31 +602,6 @@
             <!-- Date it's due -->
             <div class="form-group">
                 <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
-            </div>
-
-
-            <!-- Event dropdown -->
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="event-name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Event Name
-                <span class="caret"></span>
-              </button>
-
-              <!-- TODO(@Becky): Add more options -->
-              <ul class="dropdown-menu" aria-labelledby="event-name">
-                <li><a href="#">None</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Quiz 1</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Lecture 1</a></li>
-                <li><a href="#">Lecture 2</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Lab 1</a></li>
-                <li><a href="#">Lab 2</a></li>
-                <li><a href="#">Lab 3</a></li>
-                <li><a href="#">Lab 4</a></li>
-                <li><a href="#">Lab 5</a></li>
-              </ul>
             </div>
 
             <br />
