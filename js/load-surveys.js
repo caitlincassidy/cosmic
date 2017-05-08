@@ -351,11 +351,17 @@ var data = {
 	student_results: {},
 }
 
-console.log(data);
+var get_label = function(data) {
+	var start = moment(data.start_date).format("M/D");
+	var end = moment(data.end_date).format("M/D");
+	var label = data.title + " (" + start + " - " + end + ")";
+	return label;
+}
 
 // Overall setup
 var overallDivs = `
-<div class="row" id="`+data.id+`">
+<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 75%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+<div class="row collapse" id="`+data.id+`">
 <br />
 <div class="col-xs-3" id="`+data.id+`-people-types"></div>
 <div class="col-xs-9" id="`+data.id+`-avail-results"></div>
@@ -462,18 +468,6 @@ for (var row = 1; row < table_height; row++) {
  			cell.text(time); // row is indexed from 1
  		} else {
  			cell = $("<td>");
- 			// var avail_num = 0;
- 			// relevant_groups.forEach(function(group) {
- 			// 	avail_num += group[time][col-1]["available"].length;
- 			// });
- 			// if (avail_num == color_cutoffs["best"]) {
- 			// 	cell.css('background-color', 'green');
- 			// } else if (avail_num >= color_cutoffs["mid"]) {
- 			// 	cell.css('background-color', 'yellow');
- 			// } else {
- 			// 	cell.css('background-color', 'red');
- 			// }
-	  		// cell.text(avail_num); // row is indexed from 1
 	  	}
 	  	cell.css('width', "calc(50%px/"+table_width+")"); // Make them all the same width
 	  	table_row.append(cell);
