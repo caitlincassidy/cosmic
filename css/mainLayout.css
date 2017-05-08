@@ -354,6 +354,7 @@ a {
 	border-color: #4536cd !important;
 }
 
+
 #add-event-btn:hover {
 	background-color: #231b6d !important;
 	border-color: #231b6d !important;
@@ -408,3 +409,14 @@ a {
 .fc-event-container{
     pointer-events:auto; /*events*/
 /*}*/
+
+.availability-table {
+	width:80%; 
+	margin: 5px auto;
+}
+
+.availability-table table, th, td {
+	border: 1px solid black;
+	text-align: center;
+	border-collapse: collapse;
+}
