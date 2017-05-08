@@ -124,6 +124,7 @@ label {
 
 .container-fluid {
 	display: flex;
+	flex-flow: column;
 }
 
 .row {
