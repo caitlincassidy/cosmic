@@ -4,11 +4,13 @@ var new_event = function(date) {
 	current_event = null;
 	var day;
 	var time;
+	var startTime;
+	var endTime;
 	if (date !== undefined) {
 		if (date.format('HH:mm') !== '00:00') {
 			day = date.format('MM/DD/YYYY');
-			startTime = date.format('HH:mm');
-			endTime = moment(date.format()).add(1, 'hours').format('HH:mm');
+			startTime = date.format('h:mm a');
+			endTime = moment(date.format()).add(1, 'hours').format('h:mm a');
 		}
 		else {
 			day = date.format('MM/DD/YYYY');
@@ -25,8 +27,18 @@ var new_event = function(date) {
 		"singleDatePicker": true,
 		"startDate": day,
 	});
-	$("#new_event_start_time").val(startTime);
-	$("#new_event_end_time").val(endTime);
+	if (startTime !== undefined && endTime !== undefined) {
+		$("#new_event_start_time").val(startTime);
+		$("#new_event_end_time").val(endTime);
+	}
+	$('.timepicker').timepicker({
+    timeFormat: 'h:mm a',
+    interval: 60,
+    startTime: '08:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+});
 }
 
 var open_event = function(event) {
