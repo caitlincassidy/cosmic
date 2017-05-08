@@ -363,8 +363,8 @@ var overallDivs = `
 <a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 75%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 <div class="row collapse" id="`+data.id+`">
 <br />
-<div class="col-xs-3" id="`+data.id+`-people-types"></div>
-<div class="col-xs-9" id="`+data.id+`-avail-results"></div>
+<div class="col-xs-2" id="`+data.id+`-people-types"></div>
+<div class="col-xs-10" id="`+data.id+`-avail-results"></div>
 </div>`;
 
 $("#survey-results").append($.parseHTML(overallDivs))
@@ -490,10 +490,13 @@ for (var row = 1; row < table_height; row++) {
 				});
 				if (avail_num == color_cutoffs["best"]) {
 					cell.css('background-color', 'green');
+					cell.css('opacity', '1.0');
 				} else if (avail_num >= color_cutoffs["mid"]) {
 					cell.css('background-color', 'yellow');
+					cell.css('opacity', '0.5');
 				} else {
 					cell.css('background-color', 'red');
+					cell.css('opacity', '0.5');
 				}
 	  			cell.text(avail_num); // row is indexed from 1
 	  			}
