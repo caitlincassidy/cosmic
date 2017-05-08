@@ -36,7 +36,6 @@
 
 <!-- Code Review GR5 (by Isaac)
 1. I'd make it so that someone can't edit the Task text to be an empty string (give a Bootstrap error or something: https://www.w3schools.com/bootstrap/bootstrap_alerts.asp)
-4. Similar to 1., make it so that a user can't create a Task with an empty string?
 
 -->
 </head>
@@ -147,6 +146,21 @@
 
   // When someone creates a new task, update the display
   $(document).on("click", "#create", function(evt) {
+    // Validate that they didn't create a task with empty text
+    if ($("#create-task-text").val().length == 0) {
+      // If there isn't already an alert displayed, make one
+      if (!($('#new-task-alert')[0])) {
+        var errorText = `
+          <div class="alert alert-danger" id="new-task-alert">
+            You cannot have an empty task.
+         </div>
+        `;
+        var errorDom = $.parseHTML(errorText);
+        $('#create-task-due-date').after(errorDom);
+      }
+      return;
+    }
+
     // Create new task
     var task = {
       'text': $("#create-task-text").val(),
@@ -161,6 +175,9 @@
       "singleDatePicker": true,
       "startDate": moment().format("MM/DD/YYYY"),
     });
+
+    // Remove the alert
+    $('#new-task-alert').remove();
   });
 
 
