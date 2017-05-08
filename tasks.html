@@ -36,7 +36,6 @@
 
 <!-- Code Review GR5 (by Isaac)
 1. I'd make it so that someone can't edit the Task text to be an empty string (give a Bootstrap error or something: https://www.w3schools.com/bootstrap/bootstrap_alerts.asp)
-3. Maybe make the "Create" button a bootstrap primary button? Or do something that makes it stand out?
 4. Similar to 1., make it so that a user can't create a Task with an empty string?
 
 -->
@@ -610,9 +609,7 @@
                 <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
             </div>
 
-            <br />
-
-            <button type="button" class="btn btn-default" style="float: right" id="create">Create</button>
+            <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
 
 		  </div>
           <!-- Margin column -->
