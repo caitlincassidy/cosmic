@@ -68,11 +68,15 @@ label {
 }
 
 .btn.btn-default.login {
-	background-color: rgba(39, 39, 103, 0.4);
+	background-color: rgba(39, 39, 103, 0.2);
 	color: white;
 	font-weight: bold;
 	font-size: 24px;
 	border: 2px solid white;
+}
+
+.btn.btn-default.login:hover {
+	background-color: rgba(39, 39, 103, 0.5);
 }
 
 .form-control.login {
