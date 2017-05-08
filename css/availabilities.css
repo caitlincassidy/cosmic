@@ -1,0 +1,15 @@
+.listed-item-availability {
+  width: 50%;
+}
+
+ .lecture-event {
+  background-color: #4536cd;
+ }
+
+ .quiz-event {
+  background-color: #f45072;
+ }
+
+ .lab-event {
+  background-color: #ce4ad1; 
+ }

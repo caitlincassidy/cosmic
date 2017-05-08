@@ -1,0 +1,70 @@
+/** Login CSS */
+.welcome-background {
+}
+
+.image-overlay {
+  background-color: rgba(39, 39, 103, 0.1);
+  z-index: 2;
+}
+
+.welcome-container {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 98%;
+  color: white;
+  z-index: 3;
+}
+
+.welcome-title {
+  z-index: 2;
+  /*background-color: rgba(207,209,211,0.5);*/
+  background-color: rgba(245,122,114,0.3);
+  /*border: 3px solid #5329C9;*/
+  border-top: 3px solid #f7f7f7;
+  border-bottom: 3px solid #f7f7f7;
+}
+
+.welcome-title h1 {
+  font-size: 150px;
+  font-family: 'Cairo', sans-serif;
+  color: #f7f7f7;
+}
+
+.welcome-title h2 {
+  font-size: 38px;
+  font-family: 'Gentium Basic', serif;
+  color: #f7f7f7;
+}
+
+.welcome-container .btn {
+  font-family: 'Cairo', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.welcome-container input {
+  width: 20%; 
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Cairo', sans-serif;
+}
+
+.btn.btn-default.login {
+  background-color: rgba(39, 39, 103, 0.2);
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  border: 2px solid white;
+}
+
+.btn.btn-default.login:hover {
+  background-color: rgba(39, 39, 103, 0.5);
+}
+
+.form-control.login {
+  font-size: 24px;
+  font-family: 'Gentium Basic', serif;
+}
