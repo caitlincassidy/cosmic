@@ -6,12 +6,12 @@ var new_event = function(date) {
 	var time;
 	if (date !== undefined) {
 		if (date.format('HH:mm') !== '00:00') {
-			day = date.format('YYYY-MM-DD');
+			day = date.format('MM/DD/YYYY');
 			startTime = date.format('HH:mm');
 			endTime = moment(date.format()).add(1, 'hours').format('HH:mm');
 		}
 		else {
-			day = date.format();
+			day = date.format('MM/DD/YYYY');
 			startTime = undefined;
 			endTime = undefined;
 		}
@@ -20,7 +20,11 @@ var new_event = function(date) {
 	$("#change-event-modal-title").text("New Event");
 	$("#create-event-btn").text("Create");
 	$('#new-event-modal').modal('toggle');
-	$("#new_event_date").val(day);
+	$("#new_event_date").daterangepicker({
+		"applyClass": "btn-primary",
+		"singleDatePicker": true,
+		"startDate": day,
+	});
 	$("#new_event_start_time").val(startTime);
 	$("#new_event_end_time").val(endTime);
 }
