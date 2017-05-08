@@ -28,25 +28,25 @@ var newEventModalString =
 				<div class="row">
 					<label for="new_event_date" class="col-xs-3 col-form-label"><b>Date:</b></label>
 					<div class="col-xs-9">
-						<input class="form-control" type="date" value="" id="new_event_date">
+            <input type='text' class="form-control" id="new_event_date"/>
 					</div>
 				</div>
 				<div class="row">
 					<label for="new_event_start_time" class="col-xs-3 col-form-label"><b>Start Time:</b></label>
 					<div class="col-xs-9">
-						<input class="form-control" type="time" value="" id="new_event_start_time">
+						<input class="form-control timepicker" type="text" value="" id="new_event_start_time">
 					</div>
 				</div>
 				<div class="row">
 					<label for="new_event_end_time" class="col-xs-3 col-form-label"><b>End Time:</b></label>
 					<div class="col-xs-9">
-						<input class="form-control" type="time" value="" id="new_event_end_time">
+						<input class="form-control timepicker" type="text" value="" id="new_event_end_time">
 					</div>
 				</div>
 			</form>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			<button type="button" class="btn btn-default close-modal" data-dismiss="modal">Cancel</button>
 			<button id="create-event-btn" type="button" class="btn btn-primary">Create</button>
 		</div>
 	</div>

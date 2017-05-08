@@ -35,7 +35,7 @@ var eventModalString =
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal" id="delete-event-btn">Delete</button>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-default close-modal" data-dismiss="modal">Close</button>
 			<button id="edit-event-btn" type="button" class="btn btn-primary">Edit</button>
 		</div>
 	</div>

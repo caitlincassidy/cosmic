@@ -4,14 +4,16 @@ var new_event = function(date) {
 	current_event = null;
 	var day;
 	var time;
+	var startTime;
+	var endTime;
 	if (date !== undefined) {
 		if (date.format('HH:mm') !== '00:00') {
-			day = date.format('YYYY-MM-DD');
-			startTime = date.format('HH:mm');
-			endTime = moment(date.format()).add(1, 'hours').format('HH:mm');
+			day = date.format('MM/DD/YYYY');
+			startTime = date.format('h:mm a');
+			endTime = moment(date.format()).add(1, 'hours').format('h:mm a');
 		}
 		else {
-			day = date.format();
+			day = date.format('MM/DD/YYYY');
 			startTime = undefined;
 			endTime = undefined;
 		}
@@ -20,9 +22,23 @@ var new_event = function(date) {
 	$("#change-event-modal-title").text("New Event");
 	$("#create-event-btn").text("Create");
 	$('#new-event-modal').modal('toggle');
-	$("#new_event_date").val(day);
-	$("#new_event_start_time").val(startTime);
-	$("#new_event_end_time").val(endTime);
+	$("#new_event_date").daterangepicker({
+		"applyClass": "btn-primary",
+		"singleDatePicker": true,
+		"startDate": day,
+	});
+	if (startTime !== undefined && endTime !== undefined) {
+		$("#new_event_start_time").val(startTime);
+		$("#new_event_end_time").val(endTime);
+	}
+	$('.timepicker').timepicker({
+    timeFormat: 'h:mm a',
+    interval: 60,
+    startTime: '08:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+});
 }
 
 var open_event = function(event) {
@@ -35,14 +51,10 @@ var open_event = function(event) {
 	$('#event-modal').modal('toggle');
 }
 
-
-
 // necessary to cleanly update event
 var current_event = null;
 
 var calendarView = function() {
-	var sampleEvents = JSON.parse(window.localStorage.getItem("events"));
-	
 	$('#calendar').fullCalendar('destroy');
 	$('#calendar').fullCalendar({
 		// put your options and callbacks here
@@ -50,10 +62,41 @@ var calendarView = function() {
 	    left: 'prev, next, today, title',
 	    right: 'month, agendaWeek, agendaDay'
 	  },
+	  lazyFetching: false,  // This allows the events function to be called when the view switches
 	  defaultView: 'month',
+	  events: function(start, end, timezone, callback) {
+	  	var events = JSON.parse(window.localStorage.getItem("events"));
+	  	var filters = JSON.parse(window.localStorage.getItem("filters"));
+	  	if (filters) {
+	  		events = events.filter(function(e) { return filters.indexOf(e.eventType) < 0; });
+	  	}
+	  	callback(events);
+	  },
+	  fixedWeekCount: false,
+	  scrollTime: '09:00:00',
+	  contentHeight: 535,  // TODO: make it dynamically adjust to screen
 	  editable: true,
 	  eventStartEditable: true,
-	  events: sampleEvents,
+	  eventDrop: function(event, dayDelta, minuteDelta) {
+	  	// save new event to local storage
+	  	var eventTitle = event.title;  // TODO: put id's here? Or just assume there won't be events with the same title?
+			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+			// remove old event
+			savedEvents = savedEvents.filter(function(e) { return e.title !== eventTitle; });
+			// add updated event
+			savedEvents.push(event);
+			window.localStorage.setItem("events", JSON.stringify(savedEvents));
+	  },
+	  eventResize: function(event, dayDelta, minuteDelta) {
+	  	// save new event to local storage
+	  	var eventTitle = event.title;  // TODO: put id's here? Or just assume there won't be events with the same title?
+			var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+			// remove old event
+			savedEvents = savedEvents.filter(function(e) { return e.title !== eventTitle; });
+			// add updated event
+			savedEvents.push(event);
+			window.localStorage.setItem("events", JSON.stringify(savedEvents));
+	  },
 		displayEventEnd: true,
 		dayClick: new_event,
 		eventClick: open_event,
@@ -76,8 +119,18 @@ var listView = function() {
       right: 'listMonth, listWeek, listDay'
     },
     defaultView: 'listMonth',
+    fixedWeekCount: false,
+    contentHeight: 550,  // TODO: make it dynamically adjust to screen
     editable: true,
-    events: sampleEvents,
+    lazyFetching: false,  // This allows the events function to be called when the view switches
+    events: function(start, end, timezone, callback) {
+	  	var events = JSON.parse(window.localStorage.getItem("events"));
+	  	var filters = JSON.parse(window.localStorage.getItem("filters"));
+	  	if (filters) {
+	  		events = events.filter(function(e) { return filters.indexOf(e.eventType) < 0; });
+	  	}
+	  	callback(events);
+	  },
     displayEventEnd: true,
     dayClick: new_event,
     eventClick: open_event,
@@ -92,6 +145,10 @@ var listView = function() {
     	jsEvent.currentTarget.childNodes.forEach(function(child) {
     		child.style.color = 'white';
     	});
+    },
+    eventAfterAllRender: function( view ) { 
+    	// get rid of weird blue dots
+			$('.fc-list-item-marker').remove();
     }
   });
 
@@ -99,9 +156,6 @@ var listView = function() {
 	$('.fc-listMonth-button').text('Month');
 	$('.fc-listWeek-button').text('Week');
 	$('.fc-listDay-button').text('Day');
-
-	// get rid of weird blue dots
-	$('.fc-list-item-marker').remove();
 };
 
 var filterEvents = function() {
@@ -119,7 +173,6 @@ var toggleView = function(target) {
 		listView();
 	else
 		calendarView();
-	filterEvents();
 };
 
 $(document).on('click', '#add-event-btn', function() {
