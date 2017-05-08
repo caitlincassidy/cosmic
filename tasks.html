@@ -33,11 +33,7 @@
 
   <!-- Custom scripts -->
   <script src="js/load-header.js" defer></script>
-
-<!-- Code Review GR5 (by Isaac)
-1. I'd make it so that someone can't edit the Task text to be an empty string (give a Bootstrap error or something: https://www.w3schools.com/bootstrap/bootstrap_alerts.asp)
-
--->
+  
 </head>
 
 <body>
@@ -129,12 +125,28 @@
 
   // When someone saves a task edit, update the display
   $(document).on("click", "#save", function(evt) {
+    // Validate that they didn't edit the task
+    // to have empty text
+    if ($("#edit-task-text").val().length == 0) {
+      // If there isn't already an alert displayed, make one
+      if (!($('#edit-task-alert')[0])) {
+        var errorText = `
+          <div class="alert alert-danger" id="edit-task-alert">
+            You cannot have an empty task.
+         </div>
+        `;
+        var errorDom = $.parseHTML(errorText);
+        $('#edit-task-text').after(errorDom);
+      }
+      return;
+    }
+
     isEditingSomething = false;
 
     // Create new task
     var task = {
-      'text': $("#new-task-text").val(),
-      'due': $('#new-task-due').val(),
+      'text': $("#edit-task-text").val(),
+      'due': $('#edit-task-due').val(),
     }
 
     // Remove div used for editing
@@ -267,7 +279,7 @@
     // Add text box to edit task text
     var textBox = $('<input>', {
       type: "text",
-      id: "new-task-text",
+      id: "edit-task-text",
       val: task.text,
     });
     $(textBox).css("width", "100%");
@@ -277,7 +289,7 @@
     // Add due date box to edit with datepicker ability
     var dueDateBox = $('<input>', {
       type: "text",
-      id: "new-task-due",
+      id: "edit-task-due",
     });
     $(dueDateBox).css("width", "75%");
     $(dueDateBox).daterangepicker({
