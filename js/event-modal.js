@@ -1,5 +1,5 @@
 var errorMessages = {
-	missingStartTime: "*Event must have a start time",
+	missingStartTime: "* Event must have a start time",
 	missingEndTime: "* Event must have an end time",
 	invalidTimes: "* Beginning time must be before ending time",
 	missingEventType: "* Must select an event type",

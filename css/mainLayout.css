@@ -367,4 +367,21 @@ a {
 	font-size: 12px;
 }
 
+/* Calendar Day hover styling: might not be feasible....
+/*
+.fc-month-view .fc-day:hover{
+   background: rgba(191, 215, 252, 0.4);
+}
 
+/*Allow pointer-events through*/
+/*.fc-slats, /*horizontals*/
+/*.fc-content-skeleton, /*day numbers*/
+/*.fc-bgevent-skeleton /*events container*/{
+/*    pointer-events:none
+}*/
+
+/*Turn pointer events back on*/
+/*.fc-bgevent,
+.fc-event-container{
+    pointer-events:auto; /*events*/
+/*}*/
