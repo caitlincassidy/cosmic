@@ -32,17 +32,115 @@
 <!-- Custom scripts -->
 <script src="js/load-header.js" defer></script>
 	
-<script>
-	$(document).ready(function() {
-		$("#quiz_1_save").click(function() {
-			alert("Note saved!");
-		})
-	});
-</script>
-
 </head>
 
 <body>
+<script>
+  ///////////////////
+  // GLOBAL VARIABLES
+  //
+
+  // Set to true when user is currently editing a note
+  // Used to disable editing another task until user
+  // has clicked save
+  var isEditingSomething = false;
+
+  // Placeholder message in case there aren't any tasks
+  // under a particular heading.
+  var PLACEHOLDER_MESSAGE_STRING = `
+    <div class="placeholder-message">
+      <p style="margin-left:30px"> There are no events in this category. </p>
+    </div>
+  `;
+
+	$(document).ready(function() {
+       displayPreDeterminedNotes(); 
+	});
+	
+  /**
+   * Creates a DOM element for a note.
+   *
+   * @param note a JSON object with 'text' fields
+   * @returns a DOM object representing that task
+   */
+  var makeNoteDom = function(note) {
+      
+    // Two columns for note text and pencil icon
+    var noteDivString = `
+      <div>
+          <a class="list-group-item listed-item" data-toggle="collapse" data-target="#` + note.title.split(' ').join('_') + `">
+                `+ note.title +` 
+             <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+          </a>
+      </div>
+
+          <div class="row note-item collapse" id="`+note.title.split(' ').join('_')+`">
+            <div class="col-xs-11 text"></div>
+            <div class="col-xs-1 pencil"></div>
+          </div>
+    `;
+    
+    var noteDiv = $.parseHTML(noteDivString);
+
+    // Store note information to be used for editing
+    $(noteDiv).data('note-json', note);
+    // Add note text to first column
+    var textElt = $('<p>', {
+      text: note.text,
+    });
+//    console.log($(noteDiv).children()[2]);
+    var textChild = $(noteDiv).children()[1];
+    var pencilChild = $(noteDiv).children()[2];
+    textElt.appendTo(textChild);
+//
+//    console.log(textChild);
+//    // Add (hidden) pencil icon for editing to third column
+    pencilElt = $('<span/>', {
+      class: "glyphicon glyphicon-pencil",
+    });
+    pencilElt.appendTo(pencilChild);
+//
+//    // Return the entire DOM object
+//      console.log(noteDiv)
+    return noteDiv;
+  }
+
+  /**
+   * Gets pre-determined tasks from storage and
+   * displays them.
+   */
+  var displayPreDeterminedNotes = function() {
+    // Load tasks from storage
+    var sampleNotes = JSON.parse(window.localStorage.getItem("notes"));
+    // Sort earliest to latest so they're appended correctly
+//    sampleNotes.sort(function(a, b) {
+//      // Should return positive if a is later than b
+//      return moment(a.due).diff(moment(b.due));
+//    });
+
+    // Add each task to the document
+    sampleNotes.forEach(function(note) {
+      var noteDom = makeNoteDom(note);
+      var divId;
+      // Add it under correct heading
+        // Each dropdown toggle should have an id equivalent to note.title + -'dropdown'
+//      var title = note.title + '-dropdown';
+//      title = title.split(' ').join('_');
+      if (note.noteType == "Lecture") {
+        divId = "#lecs";
+      } else if (note.noteType == "Quiz") {
+        divId = "#quizzes";
+      } else if (note.noteType == "Lab"){
+        divId = "#labs";
+      }
+      $(divId).append(noteDom);
+    });
+    // Fill in any headers that are empty
+//    checkEmptyHeaders();
+  };
+</script>
+	
+	
 	
 	<div class="container-fluid">
 		<div class="row main-header">
@@ -67,12 +165,16 @@
 				<br>
 			</div>
 			<div>
-				<h2 id="lecs">
+				<h2 id="lecs_header">
 					Lectures 
+<!--
 					<button type="button" class="btn btn-default" id="expand_all_lec"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 					<button type="button" class="btn btn-default" id="collapse_all_lec"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+-->
 				</h2>
+                <div id="lecs"></div>
 				<br>
+<!--
 				<div class="list-group">
 					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".gen_lec">General Lecture Notes <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<textarea placeholder="You don't have anything here yet..." class="lec_col form-control collapse input-lg gen_lec">Handouts are effective </textarea>
@@ -89,15 +191,20 @@
 					<textarea placeholder="You don't have anything here yet..." class="lec_col collapse form-control input-lg lec_3">Standing ovation! They loved the candy!</textarea>
 					<button type="button" class="btn btn-primary pull-right lec_col collapse lec_3"> Save Note</button>
 				</div>
+-->
 			</div>
 			<br>
 			<div>
-				<h2 id="quizzes">
+				<h2 id="quizzes_header">
 					Quizzes 
+<!--
 					<button type="button" class="btn btn-default" id="expand_all_quiz"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 					<button type="button" class="btn btn-default" id="collapse_all_quiz"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+-->
 				</h2>
+                <div id="quizzes"></div>
 				<br>
+<!--
 				<div class="list-group">
 					<a data-toggle="collapse" data-target=".gen_quiz" class="list-group-item listed-item">General Quiz Notes<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg gen_quiz">Quiz review sessions are important! </textarea>
@@ -108,17 +215,21 @@
 					<textarea placeholder="You don't have anything here yet..." class="quiz_col collapse form-control input-lg quiz_1" data-toggle="collapse"></textarea>
 					<button type="button" class="btn btn-primary pull-right quiz_col collapse quiz_1" id="quiz_1_save"> Save Note</button>
 				</div>
+-->
 			</div>
 			
 			<div>
 				<br>
-				<h2 id="labs">
+				<h2 id="labs_header">
 					Labs 
+<!--
 					<button type="button" class="btn btn-default" id="expand_all_lab"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 					<button type="button" class="btn btn-default" id="collapse_all_lab"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-
+-->
 				</h2>
+                <div id="labs"></div>
 				<br>
+<!--
 				<div class="list-group">
 					<a class="list-group-item listed-item" data-toggle="collapse" data-target=".gen_lab">General Lab Notes <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>					
 					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg gen_lab" data-toggle="collapse"></textarea>
@@ -135,6 +246,7 @@
 					<textarea placeholder="You don't have anything here yet..." class="lab_col collapse form-control input-lg lab_3" data-toggle="collapse">Standing ovation! They loved the candy!</textarea>
 					<button type="button" class="btn btn-primary pull-right lab_col collapse lab_3"> Save Note</button>
 				</div>
+-->
 			</div>
 			
   		</div>
