@@ -18,17 +18,18 @@ The ‘Save’ buttons should be consistenly colored. Right now the general note
 
 Feedback Page:
 
-The 'Request Feedback' buttons should be vertically aligned with the toggle header. Also, there should more margin between
+DONE - The 'Request Feedback' buttons should be vertically aligned with the toggle header. Also, there should more margin between
 the top of the button and toggle header.
-Also, I think there should be a message that says something like "You have not sent out a feedback form for this event."
+
+DONE - Also, I think there should be a message that says something like "You have not sent out a feedback form for this event."
 and then button next to it or something.
 
-There should be more margin between the toggle headers when they are open  (e.g. the request feedback buttons are right
+DONE - There should be more margin between the toggle headers when they are open  (e.g. the request feedback buttons are right
 up against each other)
 
-I would use less intense colors for the pie chart. Go with pastels.
+DONE - I would use less intense colors for the pie chart. Go with pastels.
 
-Maybe have a confirmation dialog that the feedback form was sent after you click 'Send'?
+DONE - Maybe have a confirmation dialog that the feedback form was sent after you click 'Send'?
 
 Where are the student comments from the feedback form going to be accesible? It would be good to include an example where
 it shows those as well. I only see pie chart stuff.

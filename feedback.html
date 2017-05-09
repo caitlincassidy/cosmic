@@ -49,6 +49,14 @@
             
             displayPreDeterminedFeedbacks();
             
+            $("#success-alert").hide();
+            $("#send-button").click(function showAlert() {
+                $("#success-alert").alert();
+                $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+                $("#success-alert").slideUp(500);
+                });   
+            });
+            
             $(document).on('click', "#send-button", function() {
                 $("#"+editingParentID).remove();
                 $("#"+editingAttachingID).append(PLACEHOLDER_MESSAGE_STRING);
@@ -175,16 +183,16 @@
 			});
 			
 			
-			$(".quiz_but").click(function() {
-				
-				var x = document.getElementById('request');
-				if (x.style.display === 'none') {
-					x.style.display = 'inline-block';
-				} else {
-					x.style.display = 'none';
-				}
-//				$(".add_feedback").collapse('toggle');
-			});
+//			$(".quiz_but").click(function() {
+//				
+//				var x = document.getElementById('request');
+//				if (x.style.display === 'none') {
+//					x.style.display = 'inline-block';
+//				} else {
+//					x.style.display = 'none';
+//				}
+////				$(".add_feedback").collapse('toggle');
+//			});
 		});
         
   /**
@@ -240,7 +248,7 @@
              <span class="pull-right glyphicon glyphicon-chevron-down"></span>
           </a>
 
-          <div class="row feedback-item collapse `+collapseClass+` " id="`+feedback.title.split(' ').join('_')+`"></div>
+          <div class="feedback-item collapse `+collapseClass+` " id="`+feedback.title.split(' ').join('_')+`"></div>
       </div>
     `;
     
@@ -261,20 +269,6 @@
             </div>
         `
         var hidden = $(feedbackDiv).children()[1];
-//        var requestMsg = $('<div/>', {
-//            text: "You have not yet requested feedback for this event: ",
-//            class: collapseClass,
-//            id: feedback.title.split(' ').join('_') + "_request"
-//        })
-//        var requestButton = $('<button/>', {
-//            text: "Request Feedback",
-//            type: "button",
-//            class: "btn btn-primary add_feedback ",
-//            id: feedback.title.split(' ').join('_') + "_request_button"
-//        });
-        
-//        requestButton.appendTo(requestMsg);
-//        hidden.append(request);
         $(request).appendTo(hidden);
     }
     else if (feedback.requested == "given") {
@@ -311,6 +305,10 @@
 					<h1>
 						<span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Feedback
 					</h1>
+                    <div class="alert alert-success" id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        <strong> Feedback Request sent! </strong>
+                    </div>
 				</div>
 
 				<!-- Request feedback modal -->
@@ -448,6 +446,7 @@
 						Lectures <button type="button" class="btn btn-default" id="expand_all_lec"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 						<button type="button" class="btn btn-default" id="collapse_all_lec"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
+                    <br>
                     <div id="lecs"></div>
 					<br>
 				</div>
@@ -458,7 +457,8 @@
 						Quizzes <button type="button" class="btn btn-default" id="expand_all_quiz"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 						<button type="button" class="btn btn-default" id="collapse_all_quiz"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
-                    <div id="quizzes"></div>
+                    <br>
+                    <div id="quizzes" style="vertical-align:left"></div>
 					<br>
 				</div>
 
@@ -468,6 +468,7 @@
 						Labs <button type="button" class="btn btn-default" id="expand_all_lab"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 						<button type="button" class="btn btn-default" id="collapse_all_lab"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
+                    <br>
                     <div id="labs"></div>
 					<br>
 				</div>
