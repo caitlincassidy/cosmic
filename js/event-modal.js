@@ -59,6 +59,7 @@ $(document).on('click', "#create-event-btn", function(evt)
 		current_event = null;
         
 		addNoteFromEvent();
+        addFeedbacksFromEvent();
         
 		$('#new-event-modal').modal('toggle');
 	}
@@ -83,6 +84,7 @@ $(document).on('click', "#confirm-delete-btn", function(evt)
 	current_event = null;
     
     removeNoteFromEvent();
+    removeFeedbackFromEvent();
     
 	$('#confirm-delete-event-modal').modal('toggle');
 });
@@ -277,7 +279,7 @@ var validateInputs = function(start, end) {
                     'className': event.className.split('-')[0]+'-feedback'
                 }
                 console.log(newFeedback);
-                addToLocalStorage(newFeedback);
+                addFeedbackToLocalStorage(newFeedback);
                   // Need to create a note json object by parsing event
                   // Need to append it to proper header
               }
@@ -285,6 +287,30 @@ var validateInputs = function(start, end) {
       }
   }
   
+
+  
+    // There are too many notes, and at least one needs to be deleted.    
+    var removeFeedbackFromEvent = function() {
+      var events = JSON.parse(window.localStorage.getItem("events"));
+      var feedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+        
+        if (feedbacks.length > events.length){
+          feedbacks.forEach(function(feedback) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a feedback corresponding to the event
+              var eventExists = false;
+              events.forEach(function(event) {
+                  if (feedback.title == event.title){
+                      eventExists = true;
+                  }
+              })
+              // If an event no longer exists, the feedback must be deleted
+            if (!eventExists) {
+                removeFeedbackFromLocalStorage(feedback);
+              }
+          })
+      }
+  }
   /** 
    * Adds the given feedback from local storage.
    *
