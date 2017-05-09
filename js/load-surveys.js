@@ -8,46 +8,55 @@ surveys.forEach(function(survey) {
 	});
 });
 
-console.log(surveys);
-
-
-var get_label = function(data) {
-	var start = moment(data.start_date).format("M/D");
-	var end = moment(data.end_date).format("M/D");
-	var label = data.title + " (" + start + " - " + end + ")";
-	return label;
-}
-
-var get_relevant_groups = function(data) {
-	var groups = []
-	console.log(data);
-	if ($("#"+data.id+"-students").prop('checked')) {
-		groups.push(data.student_results);
+var reverse_end_date_order = function(a, b) {
+	if (b.end_date.isBefore(a.end_date)) {
+		return -1;
 	}
-	if ($("#"+data.id+"-tas").prop('checked')) {
-		groups.push(data.ta_results);
+	if (a.end_date.isBefore(b.end_date)) {
+		return 1;
 	}
-	if ($("#"+data.id+"-las").prop('checked')) {
-		groups.push(data.la_results);
-	}
-	return groups;
-}
+  	// a must be equal to b
+  	return 0;
+  }
 
-var get_cutoffs = function(groups) {
-	if (groups.length == 0) return {best: 1, mid:1};
-	var avail_numbers = [];
-	Object.keys(groups[0]).forEach(function(time) {
-		groups[0][time].forEach(function(avail, day_index) {
-			var total_avail = 0;
-			groups.forEach(function(person_type) {
-				total_avail += person_type[time][day_index]["available"].length;
-			})
-			avail_numbers.push(total_avail);
-		});
-	});
-	
-	avail_numbers = avail_numbers.sort();
-	// console.log(avail_numbers);
+  surveys = surveys.sort(reverse_end_date_order);
+
+
+  var get_label = function(data) {
+  	var start = moment(data.start_date).format("M/D");
+  	var end = moment(data.end_date).format("M/D");
+  	var label = data.title + " (" + start + " - " + end + ")";
+  	return label;
+  }
+
+  var get_relevant_groups = function(data) {
+  	var groups = []
+  	if ($("#"+data.id+"-students").prop('checked')) {
+  		groups.push(data.student_results);
+  	}
+  	if ($("#"+data.id+"-tas").prop('checked')) {
+  		groups.push(data.ta_results);
+  	}
+  	if ($("#"+data.id+"-las").prop('checked')) {
+  		groups.push(data.la_results);
+  	}
+  	return groups;
+  }
+
+  var get_cutoffs = function(groups) {
+  	if (groups.length == 0) return {best: 1, mid:1};
+  	var avail_numbers = [];
+  	Object.keys(groups[0]).forEach(function(time) {
+  		groups[0][time].forEach(function(avail, day_index) {
+  			var total_avail = 0;
+  			groups.forEach(function(person_type) {
+  				total_avail += person_type[time][day_index]["available"].length;
+  			})
+  			avail_numbers.push(total_avail);
+  		});
+  	});
+
+  	avail_numbers = avail_numbers.sort(function(a,b){return a - b});
 	return {best: avail_numbers[avail_numbers.length-1], mid: avail_numbers[avail_numbers.length/2]};
 }
 
@@ -81,9 +90,24 @@ var color_table = function(data) {
 	  	}
 	  }
 
+var upcoming_heading = false;
+var past_heading = false;
 	  surveys.forEach(function(data) {
 
-		//console.log(data);
+	  	if (!upcoming_heading && moment().isBefore(data.end_date)) {
+	  		var heading = $("<h2>", {
+	  			text: "Upcoming"
+	  		});
+	  		$("#survey-results").append(heading);
+	  		upcoming_heading = true;
+	  	}
+	  	if (!past_heading && data.end_date.isBefore(moment())) {
+	  		var heading = $("<h2>", {
+	  			text: "Past"
+	  		});
+	  		$("#survey-results").append(heading);
+	  		past_heading = true;
+	  	}
 
 		// Overall setup
 		var overallDivs = `
@@ -176,7 +200,7 @@ for (var row = 1; row < table_height; row++) {
 	color_table(data);
 
 	$(document).on('click', '.'+data.id+'-people-checkbox', function() {
-		color_table();
+		color_table(data);
 	});
 });
 

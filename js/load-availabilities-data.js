@@ -27,18 +27,30 @@ var data3 = {
 	title: "Quiz 1 Review Session",
 	tas_asked: true,
 	las_asked: false,
-	students_asked: false,
+	students_asked: true,
 	start_date: moment("2017-03-20"),
 	end_date: moment("2017-03-23"),
 	start_time: moment("2017-03-20 07:30 PM"), // use first date to make it a valid moment
 	end_time: moment("2017-03-20 09:30 PM"),
 }
 
+var data4 = {
+	id: "final-review-session",
+	title: "Final Review Session",
+	tas_asked: true,
+	las_asked: false,
+	students_asked: true,
+	start_date: moment("2017-05-15"),
+	end_date: moment("2017-05-19"),
+	start_time: moment("2017-05-15 07:30 PM"), // use first date to make it a valid moment
+	end_time: moment("2017-05-15 09:30 PM"),
+}
+
 // populate surveys
-var surveys = [data1, data2, data3];
+var surveys = [data1, data2, data3, data4];
 var tas = ["Rachel", "Caitlin", "Becky", "Isaac"];
 var las = ["Laura", "Ben", "Louis", "Ricky", "Kelly"];
-var students = ["Kim", "Dan", "Alice", "Bob", "Rob", "Melinda"];
+var students = ["Kim", "Dan", "Alice", "Bob", "Rob", "Melinda", "George", "Lily", "Pat", "Albert", "Will"];
 
 var populate = function(people_set, start_time, end_time, num_days) {
 	var time = moment(start_time);
@@ -79,7 +91,7 @@ surveys.forEach(function(survey) {
 		survey["la_results"] = {};
 	}
 	if (survey.students_asked) {
-		survey["students_results"] = populate(students, survey.start_time, survey.end_time, num_days);
+		survey["student_results"] = populate(students, survey.start_time, survey.end_time, num_days);
 	} else {
 		survey["student_results"] = {};
 	}
