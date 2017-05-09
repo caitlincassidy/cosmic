@@ -28,19 +28,55 @@
 	<!-- custom scripts -->
 	<script src="js/load-header.js" defer></script>
 	<script src="js/sticky-sidebar.js"></script>
+    <script src="js/collapse-expand-all.js"></script>
 
 </head>
 
 <body>
 
 	<script>
+        var editingID;
+        var editingParentID;
+        
+        var PLACEHOLDER_MESSAGE_STRING = `
+            <div class="placeholder-message">
+              <p style="margin-left:30px"> Feedback Requested (pending...) </p>
+            </div>
+        `;
+        
 		$(document).ready(function() {
             
             displayPreDeterminedFeedbacks();
+            
+            $(document).on('click', "#send-button", function() {
+                $("#"+editingID).remove();
+                $("#"+editingParentID).append(PLACEHOLDER_MESSAGE_STRING);
+                
+                var sampleFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+                
+                sampleFeedbacks.forEach(function(feedback) {
+                    if (feedback.title.split(' ').join('_')+"_request" == editingID) {
+                        feedback.requested = "pending";
+                        
+                        var foundElt = sampleFeedbacks.find(function(elt) {
+                          return elt.title == feedback.title;
+                        });
+                        var indexToDelete = sampleFeedbacks.indexOf(foundElt);
+                        sampleFeedbacks.splice(indexToDelete, 1);
+                        
+                        sampleFeedbacks.push(feedback);
+                        window.localStorage.setItem("feedbacks", JSON.stringify(sampleFeedbacks));
+                    }
+                })
+            })
 
 			// Display request new feedback form
 			$(document).on('click', ".add_feedback", function(evt)
 			{
+                editingParentID = evt.target.parentElement.id;
+                editingID = evt.target.id;
+                
+                $("#email_string").remove();
 				$('#request-feedback').get(0).reset();
 				$('#request-feedback-modal').modal('toggle');
 
@@ -49,6 +85,7 @@
 			// Display request new feedback form
 			$(document).on('click', "#back-to-request-feedback", function(evt)
 			{
+                $("#email_string").remove();
 				$('#request-feedback-modal').modal('toggle');
 
 			});
@@ -88,7 +125,32 @@
 				} else {
 					$("#general_comments").show();
 				}
-
+                
+                var subject = editingID.substr(0, editingID.indexOf("_request")).split('_').join(' ');
+                var EMAIL_STRING = `
+                <div id="email_string">
+                    <h4><strong>Email Preview</strong></h4>
+                    From: Professor Bilbo
+                    <br/>
+                    To: Students
+                    <br/>
+                    Subject: `+ subject +` Feedback
+                    <br/><br/>
+                    Dear Students,
+                    <br/><br/>
+                    Please fill out <a>this form</a> to tell me what you thought of `+ subject +`.
+                    I value your opinions and want to continually improve the class.
+                    <br/><br/>
+                    <span id="additional_info_loc"></span>
+                    Thank you,<br>
+                    Professor Bilbo
+                </div> 
+                `;
+                
+                $("#request-feedback-email").append($(EMAIL_STRING));
+                console.log($(EMAIL_STRING))
+                console.log(editingID);
+                
 				var additional_info = $("#additional_info").val();
 
 				if(additional_info.length > 0) {
@@ -170,32 +232,43 @@
                 `+ feedback.title +` 
              <span class="pull-right glyphicon glyphicon-chevron-down"></span>
           </a>
-      </div>
 
           <div class="row feedback-item collapse `+collapseClass+` " id="`+feedback.title.split(' ').join('_')+`"></div>
+      </div>
     `;
     
     var feedbackDiv = $.parseHTML(feedbackDivString);
 
-    // Store feedback information to be used for editing
-//    $(feedbackDiv).data('feedback-json', feedback);
-    // Add feedback text to first column
-//    var textElt = $('<p>', {
-//      text: feedback.text,
-//    });
-
-//    var textChild = $(noteDiv).children()[1];
-//    var pencilChild = $(noteDiv).children()[2];
-//    textElt.appendTo(textChild);
       
-    // Add (hidden) pencil icon for editing to third column
-//    pencilElt = $('<span>', {
-//      class: "glyphicon glyphicon-pencil",
-//    });
-//    pencilElt.appendTo(pencilChild);
+    // TODO - fix bug where you can't open an individual lecture after collapsing all
+      
+    // All Lectures will have no feedback listed
+      
+    if (feedback.requested == "false") {
+        var hidden = $(feedbackDiv).children()[1];
+        var requestButton = $('<button/>', {
+            text: "Request Feedback",
+            type: "button",
+            class: "btn btn-primary add_feedback " + collapseClass,
+            id: feedback.title.split(' ').join('_') + "_request"
+        });
+        requestButton.appendTo(hidden);
+    }  
+    else if (feedback.requested == "given") {
+          // Attach feedback image to dropdown
+        var hidden = $(feedbackDiv).children()[1];
+        var image = $('<img>', {
+            src: "img/feedback.png"
+        })
+        image.appendTo(hidden);        
+    }
+      
+      else if (feedback.requested == "pending") {
+        var hidden = $(feedbackDiv).children()[1];
+        $(PLACEHOLDER_MESSAGE_STRING).appendTo(hidden);
+      }
 
     // Return the entire DOM object
-
     return feedbackDiv;
   }
 
@@ -301,28 +374,14 @@
 							</div>
 							<div class="modal-body">
 								<div id="request-feedback-email">
-									<h4>Email Preview</h4>
-									From: Professor Bilbo
-									<br/>
-									To: Students
-									<br/>
-									Subject: Quiz 1 Feedback
-									<br/><br/>
-									Dear Students,
-									<br/><br/>
-									Please fill out <a>this form</a> to tell me what you thought of Quiz 1.
-									I value your opinions and want to continually improve the class.
-									<br/><br/>
-									<span id="additional_info_loc"></span>
-									Thank you,
-									<br/>
-									Professor Bilbo
+                                    
 								</div>
 								<hr>
 								<form id="request-feedback-form">
-									<h4>Form Preview</h4>
+									-------------------------------------------------------------------------------------------------
+                                    <h4><strong>Form Preview</strong></h4>
 									<span id="satisfied">
-										<label for="satisfied_radio"><b>Were you satisfied with Quiz 1:</b></label>
+										<label for="satisfied_radio"><i>Were you satisfied?:</i></label>
 										<fieldset class="form-group" id="satisfied_radio">
 											<div class="form-check">
 												<label class="form-check-label">
@@ -339,15 +398,15 @@
 										</fieldset>
 									</span>
 									<div class="form-group" id="positives">
-										<label for="positives_textarea"><b>Positives</b></label>
+										<label for="positives_textarea"><i>Positives</i></label>
 										<textarea class="form-control" id="positives_textarea" rows="2" value=""></textarea>
 									</div>
 									<div class="form-group" id="negatives">
-										<label for="negatives_textarea"><b>Negatives</b></label>
+										<label for="negatives_textarea"><i>Negatives</i></label>
 										<textarea class="form-control" id="negatives_textarea" rows="2" value=""></textarea>
 									</div>
 									<div class="form-group" id="general_comments">
-										<label for="general_textarea"><b>General Comments</b></label>
+										<label for="general_textarea"><i>General Comments</i></label>
 										<textarea class="form-control" id="general_textarea" rows="2" value=""></textarea>
 									</div>
 								</form>
@@ -361,73 +420,39 @@
 					</div>
 				</div>
 
-<!--
-				<h2 id="gen">General</h2>
-				<ul id="gen_feedback">
-					<li>I really wish you would wear shoes when lecturing...</li>
-					<li>What's that fancy ring you wear around your neck?</li>
-					<li>I like your face.</li>
-				</ul>
--->
-
 				<div>
 					<h2 id="lecs_header">
-						Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+						Lectures <button type="button" class="btn btn-default" id="expand_all_lec"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+						<button type="button" class="btn btn-default" id="collapse_all_lec"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
                     <div id="lecs"></div>
 					<br>
-<!--					<div class="list-group">-->
-<!--
-						<a href="#" class="list-group-item listed-item">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-						<a href="#" class="list-group-item listed-item">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-						<a href="#" class="list-group-item listed-item">Lecture 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
--->
-<!--					</div>-->
 				</div>
 
 				<br>
 				<div>
 					<h2 id="quizzes_header">
-						Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+						Quizzes <button type="button" class="btn btn-default" id="expand_all_quiz"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+						<button type="button" class="btn btn-default" id="collapse_all_quiz"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
                     <div id="quizzes"></div>
 					<br>
-<!--
-					<div class="input-group">
-						<a data-toggle="collapse" data-target=".fb_quiz_1" class="list-group-item listed-item quiz_but" style="display:inline-block">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-						<img src="img/satisfied.png" class="collapse fb_quiz_1" data-toggle="collapse" style="width:20em;">
-						<ul class="collapse fb_quiz_1">
-							<li>The quiz was really hard! I think the practice quizzes weren't adequate.</li>
-							<li>Wasn't too bad; however, I wish I had more review time in Office Hours</li>
-						</ul>
-						&nbsp;
-							<a id="request" class="btn btn-primary add_feedback collapse in" style="display:inline-block"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Request Feedback</a>
-					</div>
--->
 				</div>
 
 				<br>
 				<div>
 					<h2 id="labs_header">
-						Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+						Labs <button type="button" class="btn btn-default" id="expand_all_lab"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+						<button type="button" class="btn btn-default" id="collapse_all_lab"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
                     <div id="labs"></div>
 					<br>
-<!--
-					<div class="list-group">
-						<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					</div>
--->
 				</div>
 				
 			</div>
 			<div class="col-lg-2">
 				<br><br><br><br><br>
 				<ul class="nav nav-stacked events-press-cta panel sticky" id="sidebar">
-					<li><a href="#gen">General</a></li>
 					<li><a href="#lecs">Lectures</a></li>
 					<li><a href="#quizzes">Quizzes</a></li>
 					<li><a href="#labs">Labs</a></li>
