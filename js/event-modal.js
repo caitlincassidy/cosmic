@@ -317,8 +317,8 @@ var validateInputs = function(start, end) {
    * @param feedback a JSON object with 'text' and 'due' fields
    */
   var addFeedbackToLocalStorage = function(feedback) {
-    var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedback"));
-    savedFeedback.push(feedback);
+    var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+    savedFeedbacks.push(feedback);
     window.localStorage.setItem("feedbacks", JSON.stringify(savedFeedbacks));
   }
 
