@@ -57,10 +57,10 @@ var reverse_end_date_order = function(a, b) {
   	});
 
   	avail_numbers = avail_numbers.sort(function(a,b){return a - b});
-	return {best: avail_numbers[avail_numbers.length-1], mid: avail_numbers[avail_numbers.length/2]};
-}
+  	return {best: avail_numbers[avail_numbers.length-1], mid: avail_numbers[avail_numbers.length/2]};
+  }
 
-var color_table = function(data) {
+  var color_table = function(data) {
 	var table_height = 2*data.end_time.diff(data.start_time, 'hours')+1; // plus 1 for header
 	var table_width = data.end_date.diff(data.start_date, 'days')+2; // plus 2 b/c 1 for header, 1 to get last day
 	var relevant_groups = get_relevant_groups(data);
@@ -70,64 +70,87 @@ var color_table = function(data) {
 		var avail_table = $("#"+data.id+"-avail-table");
 		for (var col = 0; col < table_width-1; col++) {
 			var cell = avail_table.find('tr').eq(row).find('td').eq(col);
-				var time = moment(data.start_time).add((row-1)*30, 'minute').format("LT"); // clone to not mutate date
-				var avail_num = 0;
-				relevant_groups.forEach(function(group) {
-					avail_num += group[time][col]["available"].length;
-				});
-				if (avail_num == color_cutoffs["best"]) {
-					// green
-					cell.css('background-color', '#0ba848');	
-				} else if (avail_num >= color_cutoffs["mid"]) {
-					// yellow
-					cell.css('background-color', '#f9f577');
-				} else {
-					// red
-					cell.css('background-color', '#f77171');
-				}
-	  			cell.text(avail_num); // row is indexed from 1
+			var time = moment(data.start_time).add((row-1)*30, 'minute').format("LT"); // clone to not mutate date
+			var avail_num = 0;
+			var avail_people = [];
+			var unavail_people = [];
+			relevant_groups.forEach(function(group) {
+				avail_num += group[time][col]["available"].length;
+				avail_people = avail_people.concat(group[time][col]["available"]);
+				// console.log(group[time][col]["available"]);
+				unavail_people = unavail_people.concat(group[time][col]["unavailable"]);
+			});
+			if (avail_num == color_cutoffs["best"]) {
+				// green
+				cell.css('background-color', '#0ba848');	
+			} else if (avail_num >= color_cutoffs["mid"]) {
+				// yellow
+				cell.css('background-color', '#f9f577');
+			} else {
+				// red
+				cell.css('background-color', '#f77171');
+			}
+	  		cell.text(avail_num); // row is indexed from 1
+	  		var date = moment(data.start_date).add(col, 'day').format("ddd M/D");
+	  		var tell_user = "On "+ date + " at "+ time  +":\nAvailable: ";
+	  		if (avail_people.length > 0) {
+	  			tell_user = avail_people.reduce(function(str, name) {
+	  				return str + name + ", ";
+	  			}, tell_user).slice(0,-2);
+	  		} else {
+	  			tell_user = tell_user + "None"
 	  		}
+	  		tell_user = tell_user + "\nUnavailable: ";
+	  		if (unavail_people > 0) {
+	  			tell_user = unavail_people.reduce(function(str, name) {
+	  				return str + name + ", ";
+	  			}, tell_user).slice(0,-2);
+	  		} else {
+	  			tell_user = tell_user + "None";
+	  		}
+	  		cell.attr("data-available_people", tell_user);
 	  	}
 	  }
+	}
 
-	  var no_results = function(data) {
-	  	var outline = `<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 100%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+	var no_results = function(data) {
+		var outline = `<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 100%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 		<div class="row collapse col-xs-12" id="`+data.id+`">No Results... Yet!</div>`;
 		$("#no-results").append($.parseHTML(outline))
-	  }
+	}
 
-var upcoming_heading = false;
-var current_heading = false;
-var past_heading = false;
-	  surveys.forEach(function(data) {
-	  	console.log(data);
+	var upcoming_heading = false;
+	var current_heading = false;
+	var past_heading = false;
+	surveys.forEach(function(data) {
+		console.log(data);
 
-	  	if ($.isEmptyObject(data.ta_results) && $.isEmptyObject(data.la_results) && $.isEmptyObject(data.student_results)) {
-	  		no_results(data);
-	  		return;
-	  	}
+		if ($.isEmptyObject(data.ta_results) && $.isEmptyObject(data.la_results) && $.isEmptyObject(data.student_results)) {
+			no_results(data);
+			return;
+		}
 
-	  	if (!upcoming_heading && moment().isBefore(data.start_date)) {
-	  		var heading = $("<h2>", {
-	  			text: "Upcoming"
-	  		});
-	  		$("#survey-results").append(heading);
-	  		upcoming_heading = true;
-	  	}
-	  	if (!current_heading && moment().isBefore(data.end_date) && data.start_date.isBefore(moment())) {
-	  		var heading = $("<h2>", {
-	  			text: "Current"
-	  		});
-	  		$("#survey-results").append(heading);
-	  		current_heading = true;
-	  	}
-	  	if (!past_heading && data.end_date.isBefore(moment())) {
-	  		var heading = $("<h2>", {
-	  			text: "Past"
-	  		});
-	  		$("#survey-results").append(heading);
-	  		past_heading = true;
-	  	}
+		if (!upcoming_heading && moment().isBefore(data.start_date)) {
+			var heading = $("<h2>", {
+				text: "Upcoming"
+			});
+			$("#survey-results").append(heading);
+			upcoming_heading = true;
+		}
+		if (!current_heading && moment().isBefore(data.end_date) && data.start_date.isBefore(moment())) {
+			var heading = $("<h2>", {
+				text: "Current"
+			});
+			$("#survey-results").append(heading);
+			current_heading = true;
+		}
+		if (!past_heading && data.end_date.isBefore(moment())) {
+			var heading = $("<h2>", {
+				text: "Past"
+			});
+			$("#survey-results").append(heading);
+			past_heading = true;
+		}
 
 		// Overall setup
 		var overallDivs = `
@@ -213,7 +236,10 @@ for (var row = 1; row < table_height; row++) {
 			cell = $("<th>");
  			cell.text(time); // row is indexed from 1
  		} else {
- 			cell = $("<td>");
+ 			cell = $("<td>", {
+ 				style: "cursor:pointer;",
+ 			});
+ 			cell.addClass("avail_cell");
  		}
 	  	cell.css('width', "calc(100%px/"+table_width+")"); // Make them all the same width
 	  	table_row.append(cell);
@@ -228,6 +254,10 @@ for (var row = 1; row < table_height; row++) {
 	$(document).on('click', '.'+data.id+'-people-checkbox', function() {
 		color_table(data);
 	});
+});
+
+$(document).on('click', '.avail_cell', function() {
+	alert($(this).attr("data-available_people"));
 });
 
 
