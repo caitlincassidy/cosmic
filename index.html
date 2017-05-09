@@ -15,6 +15,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
 	<link rel="stylesheet" href="css/mainLayout.css">
+	<link rel="stylesheet" href="css/index.css">
 	<!-- Use mobile-aware viewport -->
 	<meta name="viewport" content=
 	"width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -66,11 +67,11 @@
 	<div class="container-fluid">
 		<div class="row main-header">
 		</div>
-		<div class="row main-content">
-			<div class="col-lg-2" id="menubar">
+		<div class="row content-row">
+			<div class="col-lg-2 content sidebar-left" id="menubar">
 			</div>
 			<!-- main content column -->
-			<div class="col-lg-8 middle-content">
+			<div class="col-lg-8 content main-content">
 				<!-- New event modal -->
 				<div class="modal fade" id="new-event-modal" role="dialog"></div>
 				<!-- Event info modal -->
@@ -78,8 +79,9 @@
 				<!-- Confirm Delete Event modal -->
 				<div class="modal fade" id="confirm-delete-event-modal" role="dialog"></div>
 				<div id='calendar'></div>
-			</div> <!-- main content column -->
-			<div class="col-lg-2 event-right-sidebar right-sidebar">
+			</div> <!-- main-content column -->
+
+			<div class="col-lg-2 content event-right-sidebar sidebar-right">
 				<div class="row toggle-container">
           <div class="btn-group toggle" data-toggle="buttons">
 					  <label class="btn btn-primary btn-lg active">

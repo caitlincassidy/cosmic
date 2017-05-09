@@ -34,6 +34,7 @@ body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 18px;
 	height: 100%;
+	width: 100%;
 }
 
 h2 {
@@ -50,7 +51,7 @@ a {
 	cursor:pointer
 }
 
-.main-content {
+.content-row {
 	margin-bottom: 1%;
 }
 
@@ -73,34 +74,64 @@ a {
 }
 
 /* Flexbox CSS */
+
+/*
+Every page has this format (class names shown):
+------------------------------------------------------------
+| container-fluid                                          |
+|  ------------------------------------------------------- |
+| | row main-header                                      | |
+| -------------------------------------------------------- |
+| | row content-row                                      | |
+| | ---------------------------------------------------- | |
+| | |content      |content             |content        | | |
+| | |sidebar-left |main-content        |sidebar-right  | | |
+| | |col-lg-2     |col-lg-8            |col-lg-2       | | |
+| | |             |                    |               | | |
+| | |             |                    |               | | |
+| | |             |                    |               | | |
+| | |             |                    |               | | |
+| | |             |                    |               | | |
+| | ---------------------------------------------------- | |
+| -------------------------------------------------------| |
+------------------------------------------------------------
+Everything must have height=100% except main-header
+so that the sidebar colors work. */
+
+body, html {
+    height: 100%;
+}
+
 .container-fluid {
-	display: flex;
-	flex-flow: column;
-	height: 100%;
+  height: 100%;
+  border: 5px dotted blue;
 }
 
-.container-fluid .row {
-	border: 3px dotted blue;
+.container-fluid > .content-row {
+  height: 100%;
+  border: 3px dotted green;
 }
 
-.container-fluid .row.header {
-	flex-grow: 0;
-	flex-shrink: 1;
-	flex-basis: auto;
+.container-fluid > .row > .content {
+  height: 100%;
+  border: 2px dotted red;
 }
 
-.container-fluid .row.content {
-	flex: 1 1 auto;
+.sidebar-left {
+  height: 100%;
 }
 
-.middle-content {
-	border-right: 1px solid #cfd1d3;
-	border-left: 1px solid #cfd1d3;
+.sidebar-right {
+  height: 100%;
+}
+
+.main-content {
+  height: 100%;
 }
 
 /* Right sidebar CSS */
-.right-sidebar {
-	background-color: #FFF3FF;
+.sidebar-right {
+	background-color: #d1bcd8;
 }
 
 .sticky {

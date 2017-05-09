@@ -13,7 +13,6 @@
 
 <link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
- <link rel="stylesheet" href="css/mainLayout.css">
  <link rel="stylesheet" href="css/tasks.css">
 
 <!-- Use mobile-aware viewport -->
@@ -556,53 +555,53 @@
    * Sets up CSS and JS for keeping the 'add new task'
    * form always displayed, even when scrolling.
    */
-	var setupStickySidebar = function() {
+  var setupStickySidebar = function() {
     // From http://zurb.com/building-blocks/sticky-sidebar
-  	var stickySidebar = $('.sticky');
+    var stickySidebar = $('.sticky');
 
-  	if (stickySidebar.length > 0) { 
-  	  var stickyHeight = stickySidebar.height(),
-  		  sidebarTop = stickySidebar.offset().top;
-  	}
+    if (stickySidebar.length > 0) { 
+      var stickyHeight = stickySidebar.height(),
+        sidebarTop = stickySidebar.offset().top;
+    }
 
-  	// on scroll move the sidebar
-  	$(window).scroll(function () {
-  	  if (stickySidebar.length > 0) { 
-    		var scrollTop = $(window).scrollTop();
+    // on scroll move the sidebar
+    $(window).scroll(function () {
+      if (stickySidebar.length > 0) { 
+        var scrollTop = $(window).scrollTop();
 
-    		if (sidebarTop < scrollTop) {
-    		  stickySidebar.css('top', scrollTop - sidebarTop);
+        if (sidebarTop < scrollTop) {
+          stickySidebar.css('top', scrollTop - sidebarTop);
 
-    		  // stop the sticky sidebar at the footer to avoid overlapping
-    		  var sidebarBottom = stickySidebar.offset().top + stickyHeight,
-    			  stickyStop = $('.main-content').offset().top + $('.main-content').height();
-    		  if (stickyStop < sidebarBottom) {
-    			var stopPosition = $('.main-content').height() - stickyHeight;
-    			stickySidebar.css('top', stopPosition);
-    		  }
-    		}
-    		else {
-    		  stickySidebar.css('top', '0');
-    		} 
-	    }
-	  });
+          // stop the sticky sidebar at the footer to avoid overlapping
+          var sidebarBottom = stickySidebar.offset().top + stickyHeight,
+            stickyStop = $('.main-content').offset().top + $('.main-content').height();
+          if (stickyStop < sidebarBottom) {
+          var stopPosition = $('.main-content').height() - stickyHeight;
+          stickySidebar.css('top', stopPosition);
+          }
+        }
+        else {
+          stickySidebar.css('top', '0');
+        } 
+      }
+    });
 
-  	$(window).resize(function () {
-  	  if (stickySidebar.length > 0) { 
-  		stickyHeight = stickySidebar.height();
-  	  }
-  	});	
-	};
+    $(window).resize(function () {
+      if (stickySidebar.length > 0) { 
+      stickyHeight = stickySidebar.height();
+      }
+    }); 
+  };
 
 </script>
 
 
-	<div class="container-fluid">
-		<div class="row main-header">
+  <div class="container-fluid">
+    <div class="row main-header">
     </div>
-  	<div class="row content-row">
-  		<div class="col-lg-2 content sidebar-left" id="menubar">
-  		</div>
+    <div class="row content-row">
+      <div class="col-lg-2 content sidebar-left" id="menubar">
+      </div>
       <div class="col-lg-8 content page-content main-content">
 
         <!-- TODO(@Becky): choose an actually good accent color -->
@@ -617,7 +616,7 @@
 
       </div>
       <div class="col-lg-2 content panel sticky sidebar-right" id="sidebar">
-		  
+      
         <h2> Create New Task </h2>
 
         <!-- Task text -->
@@ -633,8 +632,8 @@
         <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
       </div>
 
-  	</div> <!-- class="row" -->
-	</div> <!-- class="container" -->
+    </div> <!-- class="row" -->
+  </div> <!-- class="container" -->
 
   <script id="load-menubar-script" src="js/load-menubar.js" link="tasks.html"></script>
 
