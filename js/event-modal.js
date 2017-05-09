@@ -247,3 +247,66 @@ var validateInputs = function(start, end) {
     window.localStorage.setItem("notes", JSON.stringify(savedNotes));
   }
   
+/***********************************************************************************
+****************************** Feedback Stuff *****************************************
+************************************************************************************/
+  
+  
+  // Bring in all Notes from Events local storage
+  var addFeedbacksFromEvent = function() {
+      var events = JSON.parse(window.localStorage.getItem("events"));
+      var feedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+      
+      // If there are missing notes
+      if (events.length > feedbacks.length) {
+          
+          events.forEach(function(event) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a note corresponding to the event
+              var feedbackExists = false;
+              feedbacks.forEach(function(feedback) {
+                  if (feedback.title == event.title){
+                      feedbackExists = true;
+                  }
+              })
+              // If an event doesn't have a feedback yet
+            if (!feedbackExists) {
+                var newFeedback = {
+                    'title': event.title,
+                    'feedbackType': event.eventType,
+                    'className': event.className.split('-')[0]+'-feedback'
+                }
+                console.log(newFeedback);
+                addToLocalStorage(newFeedback);
+                  // Need to create a note json object by parsing event
+                  // Need to append it to proper header
+              }
+          })
+      }
+  }
+  
+  /** 
+   * Adds the given feedback from local storage.
+   *
+   * @param feedback a JSON object with 'text' and 'due' fields
+   */
+  var addFeedbackToLocalStorage = function(feedback) {
+    var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedback"));
+    savedFeedback.push(feedback);
+    window.localStorage.setItem("feedbacks", JSON.stringify(savedFeedbacks));
+  }
+
+  /** 
+   * Removes the given feedback from local storage.
+   *
+   * @param feedback a JSON object with a 'text' fields
+   */
+  var removeFeedbackFromLocalStorage = function(feedback) {
+    var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+    var foundElt = savedFeedbacks.find(function(elt) {
+      return elt.title == feedback.title;
+    });
+    var indexToDelete = savedFeedbacks.indexOf(foundElt);
+    savedFeedbacks.splice(indexToDelete, 1);
+    window.localStorage.setItem("feedbacks", JSON.stringify(savedFeedbacks));
+  }

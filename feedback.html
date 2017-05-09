@@ -35,6 +35,8 @@
 
 	<script>
 		$(document).ready(function() {
+            
+            displayPreDeterminedFeedbacks();
 
 			// Display request new feedback form
 			$(document).on('click', ".add_feedback", function(evt)
@@ -115,6 +117,89 @@
 //				$(".add_feedback").collapse('toggle');
 			});
 		});
+        
+  /**
+   * Gets pre-determined feedbacks from storage and
+   * displays them.
+   */
+  var displayPreDeterminedFeedbacks = function() {
+    // Load notes from storage
+    var sampleFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+
+    // Add each note to the document
+    sampleFeedbacks.forEach(function(feedback) {
+      var feedbackDom = makeFeedbackDom(feedback);
+      var divId;
+      // Add it under correct heading
+      if (feedback.feedbackType == "Lecture") {
+        divId = "#lecs";
+      } else if (feedback.feedbackType == "Quiz") {
+        divId = "#quizzes";
+      } else if (feedback.feedbackType == "Lab"){
+        divId = "#labs";
+      }
+      $(divId).append(feedbackDom);
+    });
+    // Fill in any headers that are empty
+//    checkEmptyHeaders();
+  };
+        
+        
+        
+  /**
+   * Creates a DOM element for a note.
+   *
+   * @param note a JSON object with 'text' fields
+   * @returns a DOM object representing that task
+   */
+  var makeFeedbackDom = function(feedback) {
+    
+    var collapseClass;
+    // Assign correct class for collapse/expand all buttons
+    if (feedback.feedbackType == "Lecture") {
+    collapseClass = "lec_col";
+    } else if (feedback.feedbackType == "Quiz") {
+    collapseClass = "quiz_col";
+    } else if (feedback.feedbackType == "Lab"){
+    collapseClass = "lab_col";
+    }
+    // Two columns for note text and pencil icon
+    var feedbackDivString = `
+      <div id="`+feedback.title.split(' ').join('_')+'-dropdown'+`">
+          <a class="list-group-item listed-item" data-toggle="collapse" data-target="#` + feedback.title.split(' ').join('_') + `">
+                `+ feedback.title +` 
+             <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+          </a>
+      </div>
+
+          <div class="row feedback-item collapse `+collapseClass+` " id="`+feedback.title.split(' ').join('_')+`"></div>
+    `;
+    
+    var feedbackDiv = $.parseHTML(feedbackDivString);
+
+    // Store feedback information to be used for editing
+//    $(feedbackDiv).data('feedback-json', feedback);
+    // Add feedback text to first column
+//    var textElt = $('<p>', {
+//      text: feedback.text,
+//    });
+
+//    var textChild = $(noteDiv).children()[1];
+//    var pencilChild = $(noteDiv).children()[2];
+//    textElt.appendTo(textChild);
+      
+    // Add (hidden) pencil icon for editing to third column
+//    pencilElt = $('<span>', {
+//      class: "glyphicon glyphicon-pencil",
+//    });
+//    pencilElt.appendTo(pencilChild);
+
+    // Return the entire DOM object
+
+    return feedbackDiv;
+  }
+
+        
 	</script>
 	
 	<div class="container-fluid">
@@ -276,33 +361,40 @@
 					</div>
 				</div>
 
+<!--
 				<h2 id="gen">General</h2>
 				<ul id="gen_feedback">
 					<li>I really wish you would wear shoes when lecturing...</li>
 					<li>What's that fancy ring you wear around your neck?</li>
 					<li>I like your face.</li>
 				</ul>
+-->
 
-				<div><br>
-					<h2 id="lecs">
+				<div>
+					<h2 id="lecs_header">
 						Lectures <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
+                    <div id="lecs"></div>
 					<br>
-					<div class="list-group">
+<!--					<div class="list-group">-->
+<!--
 						<a href="#" class="list-group-item listed-item">Lecture 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 						<a href="#" class="list-group-item listed-item">Lecture 2 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 						<a href="#" class="list-group-item listed-item">Lecture 3 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-					</div>
+-->
+<!--					</div>-->
 				</div>
 
 				<br>
 				<div>
-					<h2 id="quizzes">
+					<h2 id="quizzes_header">
 						Quizzes <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
+                    <div id="quizzes"></div>
 					<br>
+<!--
 					<div class="input-group">
 						<a data-toggle="collapse" data-target=".fb_quiz_1" class="list-group-item listed-item quiz_but" style="display:inline-block">Quiz 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 						<img src="img/satisfied.png" class="collapse fb_quiz_1" data-toggle="collapse" style="width:20em;">
@@ -313,18 +405,22 @@
 						&nbsp;
 							<a id="request" class="btn btn-primary add_feedback collapse in" style="display:inline-block"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Request Feedback</a>
 					</div>
+-->
 				</div>
 
 				<br>
 				<div>
-					<h2 id="labs">
+					<h2 id="labs_header">
 						Labs <button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
 						<button type="button" class="btn btn-default"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
 					</h2>
+                    <div id="labs"></div>
 					<br>
+<!--
 					<div class="list-group">
 						<a href="#" class="list-group-item listed-item">Lab 1 <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 					</div>
+-->
 				</div>
 				
 			</div>
