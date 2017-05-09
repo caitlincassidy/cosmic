@@ -90,16 +90,36 @@ var color_table = function(data) {
 	  	}
 	  }
 
+	  var no_results = function(data) {
+	  	var outline = `<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 100%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+		<div class="row collapse col-xs-12" id="`+data.id+`">No Results... Yet!</div>`;
+		$("#no-results").append($.parseHTML(outline))
+	  }
+
 var upcoming_heading = false;
+var current_heading = false;
 var past_heading = false;
 	  surveys.forEach(function(data) {
+	  	console.log(data);
 
-	  	if (!upcoming_heading && moment().isBefore(data.end_date)) {
+	  	if ($.isEmptyObject(data.ta_results) && $.isEmptyObject(data.la_results) && $.isEmptyObject(data.student_results)) {
+	  		no_results(data);
+	  		return;
+	  	}
+
+	  	if (!upcoming_heading && moment().isBefore(data.start_date)) {
 	  		var heading = $("<h2>", {
 	  			text: "Upcoming"
 	  		});
 	  		$("#survey-results").append(heading);
 	  		upcoming_heading = true;
+	  	}
+	  	if (!current_heading && moment().isBefore(data.end_date) && data.start_date.isBefore(moment())) {
+	  		var heading = $("<h2>", {
+	  			text: "Current"
+	  		});
+	  		$("#survey-results").append(heading);
+	  		current_heading = true;
 	  	}
 	  	if (!past_heading && data.end_date.isBefore(moment())) {
 	  		var heading = $("<h2>", {
@@ -111,12 +131,18 @@ var past_heading = false;
 
 		// Overall setup
 		var overallDivs = `
-		<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 75%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+		<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 100%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
 		<div class="row collapse" id="`+data.id+`">
 		<br />
 		<div class="col-xs-2" id="`+data.id+`-people-types"></div>
-		<div class="col-xs-10" id="`+data.id+`-avail-results"></div>
+		<div class="col-xs-10">
+		<div id="`+data.id+`-avail-results"></div>
+		<br />
+		<br />
+		<p><button type="button" class="btn btn-default new-event-btn" style="float: right;">New Event</button></p>
+		</div>
 		<br/>
+		
 		</div>`;
 
 		$("#survey-results").append($.parseHTML(overallDivs))
@@ -155,7 +181,7 @@ var past_heading = false;
 		}
 
 // create availabilities table
-var avail_table = $.parseHTML(`<table id="`+data.id+`-avail-table" class="availability-table"></table>`);
+var avail_table = $.parseHTML(`<table id="`+data.id+`-avail-table" class="availability-table" style="float:right;"></table>`);
 $("#"+data.id+"-avail-results").append(avail_table);
 var avail_table = $("#"+data.id+"-avail-table");
 
@@ -168,7 +194,7 @@ var table_row = $("<tr>");
 table_row.append($("<th>"));
 for (var col = 0; col < table_width-1; col++) {
 	var cell = $("<th>");
-  	cell.css('width', "calc(50%px/"+table_width+")"); // Make them all the same width
+  	cell.css('width', "calc(100%px/"+table_width+")"); // Make them all the same width
   	var date = moment(data.start_date).add(col, 'day').format("ddd M/D"); // clone to not mutate date
  	cell.text(date); // row is indexed from 1
  	table_row.append(cell);
@@ -189,7 +215,7 @@ for (var row = 1; row < table_height; row++) {
  		} else {
  			cell = $("<td>");
  		}
-	  	cell.css('width', "calc(50%px/"+table_width+")"); // Make them all the same width
+	  	cell.css('width', "calc(100%px/"+table_width+")"); // Make them all the same width
 	  	table_row.append(cell);
 	  }
 	  avail_table.append(table_row);

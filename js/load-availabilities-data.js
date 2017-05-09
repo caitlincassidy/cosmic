@@ -46,8 +46,20 @@ var data4 = {
 	end_time: moment("2017-05-15 09:30 PM"),
 }
 
+var empty = {
+	id: "final-exam-grading",
+	title: "Final Exam Grading",
+	tas_asked: false, // to have an example of no results
+	las_asked: false,
+	students_asked: false,
+	start_date: moment("2017-05-24"),
+	end_date: moment("2017-05-25"),
+	start_time: moment("2017-05-15 09:00 AM"), // use first date to make it a valid moment
+	end_time: moment("2017-05-15 6:00 PM"),
+}
+
 // populate surveys
-var surveys = [data1, data2, data3, data4];
+var surveys = [data1, data2, data3, data4, empty];
 var tas = ["Rachel", "Caitlin", "Becky", "Isaac"];
 var las = ["Laura", "Ben", "Louis", "Ricky", "Kelly"];
 var students = ["Kim", "Dan", "Alice", "Bob", "Rob", "Melinda", "George", "Lily", "Pat", "Albert", "Will"];

@@ -48,13 +48,13 @@ var request_availabilities_string =
                     <div class="row">
                       <label for="availabilities_start_time" class="col-xs-4 col-form-label"><b>Start Time:</b></label>
                       <div class="col-xs-8">
-                        <input class="form-control" type="time" value="" id="availabilities_start_time">
+                        <input class="form-control timepicker" type="text" value="" id="availabilities_start_time">
                       </div>
                     </div>
                     <div class="row">
                       <label for="availabilities_end_time" class="col-xs-4 col-form-label"><b>End Time:</b></label>
                       <div class="col-xs-8">
-                        <input class="form-control" type="time" value="" id="availabilities_end_time">
+                        <input class="form-control timepicker" type="text" value="" id="availabilities_end_time">
                       </div>
                     </div>
                   </div>
@@ -73,7 +73,7 @@ var request_availabilities_string =
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
+              <button type="button" class="btn btn-primary" id="send-new-survey-btn">Send</button>
             </div>
           </div>
         </div>`
