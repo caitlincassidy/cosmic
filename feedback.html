@@ -37,6 +37,7 @@
 	<script>
         var editingID;
         var editingParentID;
+        var editingAttachingID;
         
         var PLACEHOLDER_MESSAGE_STRING = `
             <div class="placeholder-message">
@@ -49,13 +50,13 @@
             displayPreDeterminedFeedbacks();
             
             $(document).on('click', "#send-button", function() {
-                $("#"+editingID).remove();
-                $("#"+editingParentID).append(PLACEHOLDER_MESSAGE_STRING);
+                $("#"+editingParentID).remove();
+                $("#"+editingAttachingID).append(PLACEHOLDER_MESSAGE_STRING);
                 
                 var sampleFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
                 
                 sampleFeedbacks.forEach(function(feedback) {
-                    if (feedback.title.split(' ').join('_')+"_request" == editingID) {
+                    if (feedback.title.split(' ').join('_')+"_request" == editingParentID) {
                         feedback.requested = "pending";
                         
                         var foundElt = sampleFeedbacks.find(function(elt) {
@@ -75,8 +76,14 @@
 			{
                 editingParentID = evt.target.parentElement.id;
                 editingID = evt.target.id;
+                editingAttachingID = evt.target.parentElement.parentElement.id;
+                
+                console.log(editingID);
+                console.log(editingParentID);
+                console.log(editingAttachingID);
                 
                 $("#email_string").remove();
+                
 				$('#request-feedback').get(0).reset();
 				$('#request-feedback-modal').modal('toggle');
 
@@ -245,15 +252,31 @@
     // All Lectures will have no feedback listed
       
     if (feedback.requested == "false") {
+        var request = `
+            <div class="`+collapseClass+`" id="`+feedback.title.split(' ').join('_') + `_request">
+                You have not yet requested feedback for this event:
+                    <button type="button" class="btn btn-primary add_feedback" id="`+feedback.title.split(' ').join('_')+`_request_button"> 
+                        Request Feedback 
+                    </button>
+            </div>
+        `
         var hidden = $(feedbackDiv).children()[1];
-        var requestButton = $('<button/>', {
-            text: "Request Feedback",
-            type: "button",
-            class: "btn btn-primary add_feedback " + collapseClass,
-            id: feedback.title.split(' ').join('_') + "_request"
-        });
-        requestButton.appendTo(hidden);
-    }  
+//        var requestMsg = $('<div/>', {
+//            text: "You have not yet requested feedback for this event: ",
+//            class: collapseClass,
+//            id: feedback.title.split(' ').join('_') + "_request"
+//        })
+//        var requestButton = $('<button/>', {
+//            text: "Request Feedback",
+//            type: "button",
+//            class: "btn btn-primary add_feedback ",
+//            id: feedback.title.split(' ').join('_') + "_request_button"
+//        });
+        
+//        requestButton.appendTo(requestMsg);
+//        hidden.append(request);
+        $(request).appendTo(hidden);
+    }
     else if (feedback.requested == "given") {
           // Attach feedback image to dropdown
         var hidden = $(feedbackDiv).children()[1];
