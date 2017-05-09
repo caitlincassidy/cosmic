@@ -101,7 +101,7 @@ var reverse_end_date_order = function(a, b) {
 	  			tell_user = tell_user + "None"
 	  		}
 	  		tell_user = tell_user + "\nUnavailable: ";
-	  		if (unavail_people > 0) {
+	  		if (unavail_people.length > 0) {
 	  			tell_user = unavail_people.reduce(function(str, name) {
 	  				return str + name + ", ";
 	  			}, tell_user).slice(0,-2);
