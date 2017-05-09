@@ -9,7 +9,7 @@ var lecture2 = {
 	title: "Lecture 2",
 	className: "lecture-note",
 	noteType: "Lecture",
-	text: ""
+	text: "The material wasn't easy for the students to understand."
 }
 
 var lecture3 = {

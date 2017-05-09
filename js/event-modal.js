@@ -276,12 +276,11 @@ var validateInputs = function(start, end) {
                 var newFeedback = {
                     'title': event.title,
                     'feedbackType': event.eventType,
-                    'className': event.className.split('-')[0]+'-feedback'
+                    'className': event.className.split('-')[0]+'-feedback',
+                    'requested': "false"
                 }
                 console.log(newFeedback);
                 addFeedbackToLocalStorage(newFeedback);
-                  // Need to create a note json object by parsing event
-                  // Need to append it to proper header
               }
           })
       }
