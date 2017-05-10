@@ -49,6 +49,10 @@
   var editingTitle;
   var editingNoteType;
   var editingClassName;
+  var editingStart;
+  var originalNote;
+  // What needs to be appended to after editing-div is removed()
+  var originalParent;
 
   // Placeholder message in case there aren't any tasks
   // under a particular heading.
@@ -64,12 +68,9 @@
         // TODO: Need to load in notes for events created in Events page
         
         $("#success-alert").hide();
-        $("#save_gen").click(function showAlert() {
-            $("#success-alert").alert();
-            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-            $("#success-alert").slideUp(500);
-            });   
-        });
+//        $("#save_gen").click(function showAlert() {
+//
+//        });
 	});
     
 // Hovering over a task item that isn't strikethrough
@@ -77,7 +78,7 @@
       // Color light gray
       // TODO(@Becky): pick good accent color
 //      console.log($(this)[0].parentNode);
-      $(this).css('background-color', " #eac0f7");
+      //$(this).css('background-color', " #ddd");
       // Make pencil appear
 //      console.log($(this).find(".glyphicon-pencil"));
       $(this).find(".glyphicon-pencil").css("visibility", "visible");
@@ -113,21 +114,37 @@
 
     var noteDiv = $(pencilObj).parent().parent();
     var note = $(noteDiv).data('note-json');
+//    console.log(note);
       
     editingClassName = note.className;
     editingNoteType = note.noteType;
     editingTitle = note.title;
-
+    editingStart = note.start;
+    originalNote = note;
+    originalParent = noteDiv[0].previousElementSibling.id;  
+      
     // Give this div an ID so it can be removed later
     noteDiv.attr("id", "editing-div");
 //    // Empty all column divs
     $('#editing-div div').empty();
 //    // Add text box to edit note text
-    var textBox = $('<input>', {
-      type: "text",
-      id: "new-note-text",
-      val: note.text,
-    });
+
+    var textBox;
+      console.log(note.text[0])
+    if (note.text[0] == "\*") {
+        textBox = $('<input>', {
+          type: "text",
+          id: "new-note-text",
+          placeholder: note.text,
+        });        
+    }
+      else {
+          textBox = $('<input>', {
+          type: "text",
+          id: "new-note-text",
+          val: note.text,
+        });
+      }
     $(textBox).css("width", "100%");
     $(textBox).css("margin-right", "15px");
     textBox.appendTo($(noteDiv).children()[0]);
@@ -162,22 +179,22 @@
     addToLocalStorage(note);
 
     // Create the note DOM
-    var noteDom = makeNoteDom(note);
-
-    // Find correct heading the task should be under
-    var divId;
-      if (note.noteType == "Lecture") {
-        divId = "#lecs";
-      } else if (note.noteType == "Quiz") {
-        divId = "#quizzes";
-      } else if (note.noteType == "Lab"){
-        divId = "#labs";
-      }
-    
-    // Remove old dropdown
-    $("#"+note.title.split(' ').join('_')+'-dropdown').remove(); 
-    // TODO - retain original ordering somehow
-    $(divId).append(noteDom);
+//    var noteDom = makeNoteDom(note);
+//
+//    // Find correct heading the task should be under
+//    var divId;
+//      if (note.noteType == "Lecture") {
+//        divId = "#lecs";
+//      } else if (note.noteType == "Quiz") {
+//        divId = "#quizzes";
+//      } else if (note.noteType == "Lab"){
+//        divId = "#labs";
+//      }
+//    
+//    // Remove old dropdown
+//    $("#"+note.title.split(' ').join('_')+'-dropdown').remove(); 
+//    // TODO - retain original ordering somehow
+//    $(divId).append(noteDom);
   }
   
   // When someone saves a Note edit    
@@ -189,13 +206,60 @@
       'text': $("#new-note-text").val(),
       'title': editingTitle,
       'noteType': editingNoteType,
-      'className': editingClassName
+      'className': editingClassName,
+      'start': editingStart
     }
 
     // Remove div used for editing
+//      console.log($("#editing-div"));
     $("#editing-div").remove();
+      // TODO - need to append new note div to parent of editing-div
+//      console.log($("#"+originalParent));
+      var noteDivString = `<div class="row note-item collapse" id="`+note.title.split(' ').join('_')+`">
+            <div class="col-xs-11 text"></div>
+            <div class="col-xs-1 pencil"></div>
+          </div>`
+//    $("#"+originalParent).append();
+      
+      
+    var noteDiv = $.parseHTML(noteDivString);
+    // Store note information to be used for editing
+    $(noteDiv).data('note-json', note);
+    // Add note text to first column
+    var textElt = $('<p>', {
+      text: note.text,
+    });
 
-    addNewNote(note);
+    var textChild = $(noteDiv).children()[0];
+    var pencilChild = $(noteDiv).children()[1];
+    textElt.appendTo(textChild);
+      
+    // Add (hidden) pencil icon for editing to third column
+    pencilElt = $('<span>', {
+      class: "glyphicon glyphicon-pencil",
+    });
+    pencilElt.appendTo(pencilChild);
+      
+    console.log($(noteDiv[0]));
+    $("#"+originalParent).after(noteDiv);
+//    addNewNote(note);
+      
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    var foundElt = savedNotes.find(function(elt) {
+      return elt.title == editingTitle;
+    });
+    var indexToDelete = savedNotes.indexOf(foundElt);
+    if (indexToDelete != -1) {
+        savedNotes.splice(indexToDelete, 1);
+        window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+    }
+      
+      addToLocalStorage(note);
+      
+    $("#success-alert").alert();
+    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#success-alert").slideUp(500);
+    });   
 //    checkEmptyHeaders();
   });
     
@@ -203,13 +267,13 @@
   $(document).on("click", "#save_gen", function(evt) {
     isEditingSomething = false;
     var content = $("#general").val();
-      console.log(content);
     // Create new note
     var note = {
       'text': content,
       'title': "General",
       'noteType': "General",
-      'className': "general-note"
+      'className': "general-note",
+      'start': moment("04/26/2017 13:00").format()
     }
 
     // Remove div used for editing
@@ -224,7 +288,12 @@
         window.localStorage.setItem("notes", JSON.stringify(savedNotes));
     }
     
-    addNewNote(note);
+      addToLocalStorage(note);
+      
+    $("#success-alert").alert();
+    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#success-alert").slideUp(500);
+    });   
   });
     
   /**
@@ -246,7 +315,7 @@
     }
     // Two columns for note text and pencil icon
     var noteDivString = `
-      <div id="`+note.title.split(' ').join('_')+'-dropdown'+`">
+      <div class="note-dropdown" id="`+note.title.split(' ').join('_')+'-dropdown'+`">
           <a class="list-group-item listed-item" data-toggle="collapse" data-target="#` + note.title.split(' ').join('_') + `">
                 `+ note.title +` 
              <span class="pull-right glyphicon glyphicon-chevron-down"></span>
@@ -291,6 +360,10 @@
     // Load notes from storage
     var sampleNotes = JSON.parse(window.localStorage.getItem("notes"));
 
+    sampleNotes.sort(function(a, b) {
+      // Should return positive if a is later than b
+      return moment(a.start).diff(moment(b.start));
+    });
     // Add each note to the document
     sampleNotes.forEach(function(note) {
       var noteDom = makeNoteDom(note);
@@ -383,51 +456,47 @@ var loadGeneralNotes = function() {
 <!--			</div>-->
 			
 			<div class="form-group">
-				<h2 id="gen">
+				<h3 class="content-header" id="gen">
 					General
-                <button type="button" class="btn btn-default" id="expand_gen"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand </button>
-                <button type="button" class="btn btn-default" id="collapse_gen"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse </button>
-				</h2>
-				<textarea id="general" type="textarea" class="form-control input-lg collapse in gen_col" placeholder="Type your notes here before you forget them..."></textarea>
-                <button type="button" text="Save" class="btn btn-default collapse in gen_col" id="save_gen" style="float:right; margin-top: 10px"> Save </button>
-				<br>
-			</div>
-			<div>
-				<h2 id="lecs_header">
-					Lectures 
-					<button type="button" class="btn btn-default" id="expand_all_lec"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-					<button type="button" class="btn btn-default" id="collapse_all_lec"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-				</h2>
-                <br>
-                <div id="lecs"></div>
-				<br>
-
+                <button type="button" class="btn btn-default exp-coll" id="expand_gen"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand </button>
+                <button type="button" class="btn btn-default exp-coll" id="collapse_gen"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse </button>
+				</h3>
+				<div class="gen-note-area">
+					<textarea id="general" type="textarea" class="form-control input-lg collapse in gen_col" placeholder="Type your notes here before you forget them..."></textarea>
+	        <button type="button" text="Save" class="btn btn-default collapse in gen_col" id="save_gen" style="float:right; margin-top: 10px"> Save </button>
+	      </div>
 			</div>
 			<br>
+			<br>
 			<div>
-				<h2 id="quizzes_header">
-					Quizzes 
-					<button type="button" class="btn btn-default" id="expand_all_quiz"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-					<button type="button" class="btn btn-default" id="collapse_all_quiz"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-				</h2>
-                <br>
-                <div id="quizzes"></div>
-				<br>
+				<h3 class="content-header"  id="lecs_header">
+					Lectures 
+					<button type="button" class="btn btn-default exp-coll" id="expand_all_lec"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+				  <button type="button" class="btn btn-default exp-coll" id="collapse_all_lec"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+				</h3>
+        <div id="lecs"></div>
 			</div>
-			
+			<br>
+			<br>
 			<div>
-				<br>
-				<h2 id="labs_header">
-					Labs 
-					<button type="button" class="btn btn-default" id="expand_all_lab"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
-					<button type="button" class="btn btn-default" id="collapse_all_lab"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
-				</h2>
-                <br>
-                <div id="labs"></div>
+				<h3 class="content-header" id="quizzes_header"> Quizzes 
+					<button type="button" class="btn btn-default exp-coll" id="expand_all_quiz"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+					<button type="button" class="btn btn-default exp-coll" id="collapse_all_quiz"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+				</h3>
+        <div id="quizzes"></div>
+			</div>
+			<br>
+			<br>
+			<div>
+				<h3 class="content-header" id="labs_header"> Labs 
+					<button type="button" class="btn btn-default exp-coll" id="expand_all_lab"> <span class="glyphicon glyphicon-expand" aria-hidden="true"></span> Expand All </button>
+					<button type="button" class="btn btn-default exp-coll" id="collapse_all_lab"> <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse All </button>
+				</h3>
+          <div id="labs"></div>
                 <br>
                 <br>
 			</div>
-			
+			<br>
   		</div>
   		<div class="col-lg-2">
 			<ul class="nav nav-stacked events-press-cta panel sticky" id="sidebar">

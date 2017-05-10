@@ -205,7 +205,7 @@ a#logout.btn:hover {
 Modifying the width of list items on the Notes and Feedback page
 */
 .listed-item {
-	width: 300px;
+	width: 100%;
 }
 
 .sticky {
@@ -217,10 +217,15 @@ Modifying the width of list items on the Notes and Feedback page
 /* Task page CSS */
 
 .task-item {
+	margin-left: .25%;
 	width: 100%;
 	padding: 5px;
-	border-radius: 10px;
 	cursor: default;
+}
+
+.task-item:hover {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
 }
 
 /* todo: align vertically center */
@@ -232,10 +237,23 @@ Modifying the width of list items on the Notes and Feedback page
 
 .note-item {
 	width: 100%;
-	padding: 5px;
-	border-radius: 10px;
+	margin-left: .25%;
+	padding: 1%;
 	cursor: default;
 }
+
+.note-item:hover {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.feedback-item {
+	width: 100%;
+	margin-left: .25%;
+	padding: 1%;
+	cursor: default;
+}
+
 /*
 
 .note-item > .pencil > .glyphicon-pencil {
@@ -301,7 +319,7 @@ a {
 }
 
 .event-filter {
-	margin-top: 10%;
+	margin-top: 5%;
 	margin-bottom: 5%;
 }
 
@@ -327,7 +345,7 @@ a {
 .toggle-container {
 	margin-right: 1%;
 	margin-left: 1%;
-	margin-bottom: 5%;
+	margin-bottom: 4%;
 	text-align:center;
 }
 
@@ -341,20 +359,29 @@ a {
 
 .btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
 	background-color: #e27fce!important;
+	font-weight: bold;
 }
 
 .add-event-button-container {
-	border-top: thin solid #a8a9ad;
+	/*border-top: thin solid #a8a9ad;*/
 	margin-right: 1%;
 	margin-left: 1%;
 	text-align: center;
 }
 
 #add-event-btn {
-	margin-bottom: 10%;
-	margin-top: 10%;
+	margin-bottom: 2%;
+	margin-top: 135%;
 	background-color: #4536cd !important;
 	border-color: #4536cd !important;
+	/*border-radius: 25px;
+	width: 45px;
+  height: 45px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.42;*/
 }
 
 
@@ -380,6 +407,14 @@ a {
 	border: 1px solid black;
 	text-align: center;
 	border-collapse: collapse;
+}
+
+td.fc-event-container {
+	text-align: left;
+}
+
+td.fc-list-item-title {
+	text-align: left;
 }
 
 .ui-timepicker-container.ui-timepicker-standard {
@@ -416,6 +451,36 @@ a {
 .wrapper {
     display: flex;
 }
+
+.content-header {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	padding: 10px;
+	background-color: #eee;
+	margin-top: 0%;
+}
+
+.exp-coll {
+	float: right;
+	background-color: transparent;
+}
+
+.gen-note-area {
+	padding-top: .2%;
+	padding-bottom: 2%;
+}
+
+.fc-toolbar.fc-header-toolbar {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	background-color: #eee;
+	padding: 10px;
+}
+
+#past-header {
+	margin-top: 2%;
+}
+
 
 /*Allow pointer-events through*/
 /*.fc-slats, /*horizontals*/

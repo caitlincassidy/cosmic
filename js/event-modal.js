@@ -186,7 +186,8 @@ var validateInputs = function(start, end) {
                     'text': "** You have not made any notes for this event yet! **",
                     'title': event.title,
                     'noteType': event.eventType,
-                    'className': event.className.split('-')[0]+'-note'
+                    'className': event.className.split('-')[0]+'-note',
+                    'start': event.start
                 }
                 console.log(newNote);
                 addToLocalStorage(newNote);
@@ -277,7 +278,8 @@ var validateInputs = function(start, end) {
                     'title': event.title,
                     'feedbackType': event.eventType,
                     'className': event.className.split('-')[0]+'-feedback',
-                    'requested': "false"
+                    'requested': "false",
+                    'start': event.start
                 }
                 console.log(newFeedback);
                 addFeedbackToLocalStorage(newFeedback);

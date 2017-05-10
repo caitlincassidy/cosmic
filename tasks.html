@@ -94,7 +94,7 @@
     if (!isEditingSomething) {
       // Color light gray
       // TODO(@Becky): pick good accent color
-      $(this).css('background-color', " #eac0f7");
+      //$(this).css('background-color', " #eac0f7");
       // Make pencil appear
       $(this).find("span").css("visibility", "visible");
     }
@@ -605,14 +605,13 @@
   		</div>
   		<div class="col-lg-8 middle-content">
 
-        <!-- TODO(@Becky): choose an actually good accent color -->
-        <h3 id="outstanding" style="background-color:#eac0f7"> Outstanding </h3>
+        <h3 id="outstanding" class="content-header"> Outstanding </h3>
         <div id="outstanding-contents"></div>
 
-        <h3 id="due-today" style="background-color:#eac0f7"> Due today </h3>
+        <h3 id="due-today" class="content-header"> Due today </h3>
         <div id="due-today-contents"></div>
 
-        <h3 id="upcoming" style="background-color:#eac0f7"> Upcoming </h3>
+        <h3 id="upcoming" class="content-header"> Upcoming </h3>
         <div id="upcoming-contents"></div>
 
       </div>
