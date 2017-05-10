@@ -134,22 +134,25 @@ var reverse_end_date_order = function(a, b) {
 		}
 
 		if (!upcoming_heading && moment().isBefore(data.start_date)) {
-			var heading = $("<h2>", {
-				text: "Upcoming"
+			var heading = $("<h3>", {
+				text: "Upcoming",
+				class: "content-header"
 			});
 			$("#survey-results").append(heading);
 			upcoming_heading = true;
 		}
 		if (!current_heading && moment().isBefore(data.end_date) && data.start_date.isBefore(moment())) {
-			var heading = $("<h2>", {
-				text: "Current"
+			var heading = $("<h3>", {
+				text: "Current",
+				class: "content-header"
 			});
 			$("#survey-results").append(heading);
 			current_heading = true;
 		}
 		if (!past_heading && data.end_date.isBefore(moment())) {
-			var heading = $("<h2>", {
-				text: "Past"
+			var heading = $("<h3>", {
+				text: "Past",
+				class: "content-header"
 			});
 			$("#survey-results").append(heading);
 			past_heading = true;
