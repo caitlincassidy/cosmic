@@ -215,10 +215,15 @@ Modifying the width of list items on the Notes and Feedback page
 /* Task page CSS */
 
 .task-item {
+	margin-left: .25%;
 	width: 100%;
 	padding: 5px;
-	border-radius: 10px;
 	cursor: default;
+}
+
+.task-item:hover {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
 }
 
 /* todo: align vertically center */
@@ -230,10 +235,23 @@ Modifying the width of list items on the Notes and Feedback page
 
 .note-item {
 	width: 100%;
-	padding: 5px;
-	border-radius: 10px;
+	margin-left: .25%;
+	padding: 1%;
 	cursor: default;
 }
+
+.note-item:hover {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.feedback-item {
+	width: 100%;
+	margin-left: .25%;
+	padding: 1%;
+	cursor: default;
+}
+
 /*
 
 .note-item > .pencil > .glyphicon-pencil {
@@ -436,7 +454,7 @@ td.fc-list-item-title {
 	border-radius: 4px;
 	padding: 10px;
 	background-color: #eee;
-	margin-top: 2%;
+	margin-top: 0%;
 }
 
 .exp-coll {
@@ -446,7 +464,18 @@ td.fc-list-item-title {
 
 .gen-note-area {
 	padding-top: .2%;
-	padding-bottom: 4%;
+	padding-bottom: 2%;
+}
+
+.fc-toolbar.fc-header-toolbar {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	background-color: #eee;
+	padding: 10px;
+}
+
+#past-header {
+	margin-top: 2%;
 }
 
 
