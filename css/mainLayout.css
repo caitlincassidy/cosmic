@@ -503,3 +503,13 @@ td.fc-list-item-title {
 	text-align: left;
 }
 
+#new-survey-btn {
+	background-color: #4536cd !important;
+	border-color: #4536cd !important;
+}
+
+#new-survey-btn:hover {
+	background-color: #231b6d !important;
+	border-color: #231b6d !important;
+}
+
