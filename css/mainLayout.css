@@ -513,3 +513,6 @@ td.fc-list-item-title {
 	border-color: #231b6d !important;
 }
 
+.modal {
+	position: absolute;
+}
