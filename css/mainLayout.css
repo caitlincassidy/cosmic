@@ -346,7 +346,14 @@ a {
 
 .availability-table {
 	width:100%; 
-	/*margin: 5px auto;*/
+}
+
+.avail_cell {
+	cursor:pointer;
+}
+
+.avail_cell:hover {
+	opacity: .75;
 }
 
 .availability-table table, th, td {

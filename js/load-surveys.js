@@ -245,9 +245,7 @@ for (var row = 1; row < table_height; row++) {
 			cell = $("<th>");
  			cell.text(time); // row is indexed from 1
  		} else {
- 			cell = $("<td>", {
- 				style: "cursor:pointer;",
- 			});
+ 			cell = $("<td>");
  			cell.attr("data-survey-id", data.id);
  			cell.addClass("avail_cell");
  		}
