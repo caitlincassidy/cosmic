@@ -31,5 +31,5 @@ DONE - I would use less intense colors for the pie chart. Go with pastels.
 
 DONE - Maybe have a confirmation dialog that the feedback form was sent after you click 'Send'?
 
-Where are the student comments from the feedback form going to be accesible? It would be good to include an example where
+DONE -Where are the student comments from the feedback form going to be accesible? It would be good to include an example where
 it shows those as well. I only see pie chart stuff.

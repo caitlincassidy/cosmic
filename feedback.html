@@ -271,14 +271,44 @@
         var hidden = $(feedbackDiv).children()[1];
         $(request).appendTo(hidden);
     }
-    else if (feedback.requested == "given") {
+    else if (feedback.requested == "given" && feedback.feedbackType == "Quiz") {
           // Attach feedback image to dropdown
+        var hidden = $(feedbackDiv).children()[1];
+        var image = $('<img>', {
+            src: "img/feedback_full.png"
+        })
+        image.appendTo(hidden);        
+//        
+//        // Temporary
+//        var FEEDBACK_TEMP = `
+//
+//        <img src="img/feedback.png">
+//            <h4><strong>General</strong></h4>                    
+//            <ul>
+//                <li> I thought the problems were pretty interesting</li>
+//            </ul>
+//<h4><strong>Positives</strong></h4>            
+//<ul>
+//            <li> The review session was really helpful! </li>
+//            <li> The quiz was similar to the practice exams - thanks!</li>
+//            </ul>
+//<h4><strong>Negatives</strong></h4>
+//<ul>
+//            <li> The quiz was way harder than the psets! I didn't feel prepared to actually do the problems...</li>
+//            <li> It was a really serious time crunch - I had to leave 2/5 problems blank.</li>
+//            <li> Could you spend less time talking about your time with the dwarves and more time on class material?</li>
+//    </ul>
+//        `
+//        $(FEEDBACK_TEMP).appendTo(hidden);
+//        // Temporary END
+    }
+      else if (feedback.requested == "given") {
         var hidden = $(feedbackDiv).children()[1];
         var image = $('<img>', {
             src: "img/feedback.png"
         })
-        image.appendTo(hidden);        
-    }
+        image.appendTo(hidden);  
+      }
       
       else if (feedback.requested == "pending") {
         var hidden = $(feedbackDiv).children()[1];
@@ -350,7 +380,7 @@
 												<div class="form-check">
 													<label class="form-check-label">
 														<input id="inc_positives" class="form-check-input" type="checkbox" value="" checked>
-														Postives (open)
+														Positives (open)
 													</label>
 												</div>
 												<div class="form-check">
