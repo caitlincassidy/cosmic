@@ -514,5 +514,6 @@ td.fc-list-item-title {
 }
 
 .modal {
-	position: absolute;
+	/*position: absolute;*/
+	overflow-y: auto;
 }
