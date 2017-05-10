@@ -1,0 +1,35 @@
+Notes page:
+
+DONE - If there are no notes associated with an event, there should be a message or something indicating that is the case. Otherwise it looks like it’s broken/didn’t load the data.
+
+Can you add a border around the div that contains the notes? And more of a margin between the top of the note and the toggle header?
+
+DONE - Can you add more margin at the very bottom of the page? The Lab 1 toggle header is like right up against the edge of the screen.
+
+DONE - Can you put more margin between the top of the purple save button and the general notes entry?
+
+Can the edit button be highlighted when it’s on hover-over?
+
+And can the notes not be highlighted on hover-over?
+
+Idk if Caitlin is supposed to handle this, but the side bar should be more distinguished
+
+DONE - The ‘Save’ buttons should be consistenly colored. Right now the general notes ‘save’ button is purple while the others are not.
+
+Feedback Page:
+
+DONE - The 'Request Feedback' buttons should be vertically aligned with the toggle header. Also, there should more margin between
+the top of the button and toggle header.
+
+DONE - Also, I think there should be a message that says something like "You have not sent out a feedback form for this event."
+and then button next to it or something.
+
+DONE - There should be more margin between the toggle headers when they are open  (e.g. the request feedback buttons are right
+up against each other)
+
+DONE - I would use less intense colors for the pie chart. Go with pastels.
+
+DONE - Maybe have a confirmation dialog that the feedback form was sent after you click 'Send'?
+
+DONE -Where are the student comments from the feedback form going to be accesible? It would be good to include an example where
+it shows those as well. I only see pie chart stuff.

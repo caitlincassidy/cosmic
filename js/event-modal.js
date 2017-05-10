@@ -57,7 +57,10 @@ $(document).on('click', "#create-event-btn", function(evt)
 
 		$('#calendar').fullCalendar(action, event);
 		current_event = null;
-		
+        
+		addNoteFromEvent();
+        addFeedbacksFromEvent();
+        
 		$('#new-event-modal').modal('toggle');
 	}
 });
@@ -79,6 +82,10 @@ $(document).on('click', "#confirm-delete-btn", function(evt)
 		return event === current_event;
 	});
 	current_event = null;
+    
+    removeNoteFromEvent();
+    removeFeedbackFromEvent();
+    
 	$('#confirm-delete-event-modal').modal('toggle');
 });
 /* End Event Deletion Handling */
@@ -150,3 +157,181 @@ var validateInputs = function(start, end) {
 	else if ($("#new_event_end_time").val())
 		$('#endTimeError').remove();
 };
+
+
+/***********************************************************************************
+****************************** Notes Stuff *****************************************
+************************************************************************************/
+
+  // Bring in all Notes from Events local storage
+  var addNoteFromEvent = function() {
+      var events = JSON.parse(window.localStorage.getItem("events"));
+      var notes = JSON.parse(window.localStorage.getItem("notes"));
+      
+      // If there are missing notes
+      if (events.length > notes.length) {
+          
+          events.forEach(function(event) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a note corresponding to the event
+              var noteExists = false;
+              notes.forEach(function(note) {
+                  if (note.title == event.title){
+                      noteExists = true;
+                  }
+              })
+              // If an event doesn't have a note yet
+            if (!noteExists) {
+                var newNote = {
+                    'text': "** You have not made any notes for this event yet! **",
+                    'title': event.title,
+                    'noteType': event.eventType,
+                    'className': event.className.split('-')[0]+'-note'
+                }
+                console.log(newNote);
+                addToLocalStorage(newNote);
+                  // Need to create a note json object by parsing event
+                  // Need to append it to proper header
+              }
+          })
+      }
+  }
+  
+    // There are too many notes, and at least one needs to be deleted.    
+    var removeNoteFromEvent = function() {
+        var events = JSON.parse(window.localStorage.getItem("events"));
+        var notes = JSON.parse(window.localStorage.getItem("notes"));
+        
+        if (notes.length > events.length){
+          notes.forEach(function(note) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a note corresponding to the event
+              var eventExists = false;
+              events.forEach(function(event) {
+                  if (note.title == event.title){
+                      eventExists = true;
+                  }
+              })
+              // If an event no longer exists, the note must be deleted
+            if (!eventExists) {
+                removeFromLocalStorage(note);
+              }
+          })
+      }
+  }
+    
+    
+  /** 
+   * Adds the given note from local storage.
+   *
+   * @param note a JSON object with 'text' and 'due' fields
+   */
+  var addToLocalStorage = function(note) {
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    savedNotes.push(note);
+    window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+  }
+
+  /** 
+   * Removes the given note from local storage.
+   *
+   * @param note a JSON object with a 'text' fields
+   */
+  var removeFromLocalStorage = function(note) {
+    // Assumes there are no notes with both the same text
+    // and the same due date
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    var foundElt = savedNotes.find(function(elt) {
+      return elt.text == note.text;
+    });
+    var indexToDelete = savedNotes.indexOf(foundElt);
+    savedNotes.splice(indexToDelete, 1);
+    window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+  }
+  
+/***********************************************************************************
+****************************** Feedback Stuff *****************************************
+************************************************************************************/
+  
+  
+  // Bring in all Notes from Events local storage
+  var addFeedbacksFromEvent = function() {
+      var events = JSON.parse(window.localStorage.getItem("events"));
+      var feedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+      
+      // If there are missing notes
+      if (events.length > feedbacks.length) {
+          
+          events.forEach(function(event) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a note corresponding to the event
+              var feedbackExists = false;
+              feedbacks.forEach(function(feedback) {
+                  if (feedback.title == event.title){
+                      feedbackExists = true;
+                  }
+              })
+              // If an event doesn't have a feedback yet
+            if (!feedbackExists) {
+                var newFeedback = {
+                    'title': event.title,
+                    'feedbackType': event.eventType,
+                    'className': event.className.split('-')[0]+'-feedback',
+                    'requested': "false"
+                }
+                console.log(newFeedback);
+                addFeedbackToLocalStorage(newFeedback);
+              }
+          })
+      }
+  }
+  
+
+  
+    // There are too many notes, and at least one needs to be deleted.    
+    var removeFeedbackFromEvent = function() {
+      var events = JSON.parse(window.localStorage.getItem("events"));
+      var feedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+        
+        if (feedbacks.length > events.length){
+          feedbacks.forEach(function(feedback) {
+    //          console.log(event.title);
+              // Boolean representing whether or not there is a feedback corresponding to the event
+              var eventExists = false;
+              events.forEach(function(event) {
+                  if (feedback.title == event.title){
+                      eventExists = true;
+                  }
+              })
+              // If an event no longer exists, the feedback must be deleted
+            if (!eventExists) {
+                removeFeedbackFromLocalStorage(feedback);
+              }
+          })
+      }
+  }
+  /** 
+   * Adds the given feedback from local storage.
+   *
+   * @param feedback a JSON object with 'text' and 'due' fields
+   */
+  var addFeedbackToLocalStorage = function(feedback) {
+    var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+    savedFeedbacks.push(feedback);
+    window.localStorage.setItem("feedbacks", JSON.stringify(savedFeedbacks));
+  }
+
+  /** 
+   * Removes the given feedback from local storage.
+   *
+   * @param feedback a JSON object with a 'text' fields
+   */
+  var removeFeedbackFromLocalStorage = function(feedback) {
+    var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
+    var foundElt = savedFeedbacks.find(function(elt) {
+      return elt.title == feedback.title;
+    });
+    var indexToDelete = savedFeedbacks.indexOf(foundElt);
+    savedFeedbacks.splice(indexToDelete, 1);
+    window.localStorage.setItem("feedbacks", JSON.stringify(savedFeedbacks));
+  }

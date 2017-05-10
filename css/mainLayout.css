@@ -212,6 +212,40 @@ Modifying the width of list items on the Notes and Feedback page
   position: relative;
   top: 0; }
 
+<<<<<<< HEAD
+=======
+/* Task page CSS */
+
+.task-item {
+	width: 100%;
+	padding: 5px;
+	border-radius: 10px;
+	cursor: default;
+}
+
+/* todo: align vertically center */
+.task-item > .pencil > .glyphicon-pencil {
+	float: right;
+	visibility: hidden;
+	margin-right: 10px;
+}
+
+.note-item {
+	width: 100%;
+	padding: 5px;
+	border-radius: 10px;
+	cursor: default;
+}
+/*
+
+.note-item > .pencil > .glyphicon-pencil {
+	float: right;
+	visibility: hidden;
+	margin-right: 10px;
+}
+*/
+
+>>>>>>> master
 /*To allow the modal to scroll*/
 .modal {
 	overflow:auto;
@@ -323,10 +357,12 @@ a {
 	border-color: #4536cd !important;
 }
 
+
 #add-event-btn:hover {
 	background-color: #231b6d !important;
 	border-color: #231b6d !important;
 }
+
 
 .availability-table {
 	width:100%; 
@@ -377,10 +413,8 @@ a {
 	font-size: 12px;
 }
 
-/* Calendar Day hover styling: might not be feasible....
-/*
-.fc-month-view .fc-day:hover{
-   background: rgba(191, 215, 252, 0.4);
+.wrapper {
+    display: flex;
 }
 
 /*Allow pointer-events through*/
