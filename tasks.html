@@ -617,20 +617,22 @@
 
       </div>
       <div class="col-lg-2 content panel sticky sidebar-right" id="sidebar">
-		  
-        <h2> Create New Task </h2>
 
-        <!-- Task text -->
-        <div class="form-group">
-          <textarea class="form-control" rows="2" id="create-task-text" placeholder="Task to add"></textarea>
+        <div id="create-task-div">
+          <h2> Create New Task </h2>
+
+          <!-- Task text -->
+          <div class="form-group">
+            <textarea class="form-control" rows="2" id="create-task-text" placeholder="Task to add"></textarea>
+          </div>
+
+          <!-- Date it's due -->
+          <div class="form-group">
+              <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
+          </div>
+
+          <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
         </div>
-
-        <!-- Date it's due -->
-        <div class="form-group">
-            <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
-        </div>
-
-        <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
       </div>
 
   	</div> <!-- class="row" -->

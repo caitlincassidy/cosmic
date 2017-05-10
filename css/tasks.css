@@ -11,3 +11,9 @@
   visibility: hidden;
   margin-right: 10px;
 }
+
+#create-task-div {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}

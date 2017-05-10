@@ -98,6 +98,41 @@ Every page has this format (class names shown):
 Everything must have height=100% except main-header
 so that the sidebar colors work. */
 
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+/*
+.container-fluid {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	border: 5px dotted blue;
+}
+*/
+
+.container-fluid {
+	height: 100%;
+	border: 5px dotted blue;
+}
+
+.main-header {
+	flex: 0 1 auto;
+}
+
+.container-fluid > .content-row {
+  border: 3px dotted green;
+  display: flex;
+  flex-flow: row;
+}
+
+.container-fluid > .row > .content {
+	flex: 1 1 auto;
+	border: 2px dotted red;
+}
+
+/*
 body, html {
     height: 100%;
 }
@@ -128,10 +163,11 @@ body, html {
 .main-content {
   height: 100%;
 }
+*/
 
 /* Right sidebar CSS */
 .sidebar-right {
-	background-color: #d1bcd8;
+	background-color: #e8e8e8;
 }
 
 .sticky {
