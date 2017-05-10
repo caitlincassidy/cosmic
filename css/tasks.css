@@ -1,0 +1,18 @@
+.task-item {
+  width: 100%;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: default;
+}
+
+.task-item > .pencil > .glyphicon-pencil {
+  float: right;
+  visibility: hidden;
+  margin-right: 10px;
+}
+
+#create-new-task-div {
+  width: 85%;
+  text-align: center;
+  margin: 0 auto;
+}
