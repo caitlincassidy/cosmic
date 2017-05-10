@@ -205,7 +205,7 @@ a#logout.btn:hover {
 Modifying the width of list items on the Notes and Feedback page
 */
 .listed-item {
-	width: 70%;
+	width: 100%;
 }
 
 .sticky {
