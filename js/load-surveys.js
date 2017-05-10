@@ -138,7 +138,7 @@ var reverse_end_date_order = function(a, b) {
 				text: "Upcoming",
 				class: "content-header"
 			});
-			$("#survey-results").append(heading);
+			$("#survey-results").append($("<br>")).append(heading);
 			upcoming_heading = true;
 		}
 		if (!current_heading && moment().isBefore(data.end_date) && data.start_date.isBefore(moment())) {
@@ -146,15 +146,16 @@ var reverse_end_date_order = function(a, b) {
 				text: "Current",
 				class: "content-header"
 			});
-			$("#survey-results").append(heading);
+			$("#survey-results").append($("<div></div><br>")).append(heading);
 			current_heading = true;
 		}
 		if (!past_heading && data.end_date.isBefore(moment())) {
 			var heading = $("<h3>", {
 				text: "Past",
-				class: "content-header"
+				class: "content-header",
+				id: "past-header"
 			});
-			$("#survey-results").append(heading);
+			$("#survey-results").append($("<div></div><br>")).append(heading);
 			past_heading = true;
 		}
 
