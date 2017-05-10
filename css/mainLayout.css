@@ -431,6 +431,14 @@ td.fc-list-item-title {
     display: flex;
 }
 
+.content-header {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	padding: 10px;
+	background-color: #eee;
+	margin-top: 0px;
+}
+
 /*Allow pointer-events through*/
 /*.fc-slats, /*horizontals*/
 /*.fc-content-skeleton, /*day numbers*/
