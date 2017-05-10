@@ -51,6 +51,8 @@
   var editingClassName;
   var editingStart;
   var originalNote;
+  // What needs to be appended to after editing-div is removed()
+  var originalParent;
 
   // Placeholder message in case there aren't any tasks
   // under a particular heading.
@@ -66,12 +68,9 @@
         // TODO: Need to load in notes for events created in Events page
         
         $("#success-alert").hide();
-        $("#save_gen").click(function showAlert() {
-            $("#success-alert").alert();
-            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-            $("#success-alert").slideUp(500);
-            });   
-        });
+//        $("#save_gen").click(function showAlert() {
+//
+//        });
 	});
     
 // Hovering over a task item that isn't strikethrough
@@ -114,14 +113,15 @@
     isEditingSomething = true;
 
     var noteDiv = $(pencilObj).parent().parent();
-      console.log($(pencilObj));
     var note = $(noteDiv).data('note-json');
+//    console.log(note);
       
     editingClassName = note.className;
     editingNoteType = note.noteType;
     editingTitle = note.title;
     editingStart = note.start;
     originalNote = note;
+    originalParent = noteDiv[0].previousElementSibling.id;  
       
     // Give this div an ID so it can be removed later
     noteDiv.attr("id", "editing-div");
@@ -202,7 +202,35 @@
 //      console.log($("#editing-div"));
     $("#editing-div").remove();
       // TODO - need to append new note div to parent of editing-div
+//      console.log($("#"+originalParent));
+      var noteDivString = `<div class="row note-item collapse" id="`+note.title.split(' ').join('_')+`">
+            <div class="col-xs-11 text"></div>
+            <div class="col-xs-1 pencil"></div>
+          </div>`
+//    $("#"+originalParent).append();
+      
+      
+    var noteDiv = $.parseHTML(noteDivString);
+    console.log($(noteDiv[0])[0]);
+    // Store note information to be used for editing
+    $(noteDiv).data('note-json', note);
+    // Add note text to first column
+    var textElt = $('<p>', {
+      text: note.text,
+    });
 
+    var textChild = $(noteDiv).children()[0];
+    var pencilChild = $(noteDiv).children()[1];
+    textElt.appendTo(textChild);
+      
+    // Add (hidden) pencil icon for editing to third column
+    pencilElt = $('<span>', {
+      class: "glyphicon glyphicon-pencil",
+    });
+    pencilElt.appendTo(pencilChild);
+      
+    console.log($(noteDiv[0]));
+    $("#"+originalParent).after(noteDiv);
 //    addNewNote(note);
       
     var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
@@ -216,6 +244,11 @@
     }
       
       addToLocalStorage(note);
+      
+    $("#success-alert").alert();
+    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#success-alert").slideUp(500);
+    });   
 //    checkEmptyHeaders();
   });
     
@@ -246,6 +279,11 @@
     
 //    addNewNote(note);
       addToLocalStorage(note);
+      
+    $("#success-alert").alert();
+    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+    $("#success-alert").slideUp(500);
+    });   
   });
     
   /**
