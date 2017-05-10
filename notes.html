@@ -49,6 +49,7 @@
   var editingTitle;
   var editingNoteType;
   var editingClassName;
+  var editingStart;
 
   // Placeholder message in case there aren't any tasks
   // under a particular heading.
@@ -117,6 +118,7 @@
     editingClassName = note.className;
     editingNoteType = note.noteType;
     editingTitle = note.title;
+    editingStart = note.start;
 
     // Give this div an ID so it can be removed later
     noteDiv.attr("id", "editing-div");
@@ -189,7 +191,8 @@
       'text': $("#new-note-text").val(),
       'title': editingTitle,
       'noteType': editingNoteType,
-      'className': editingClassName
+      'className': editingClassName,
+      'start': editingStart
     }
 
     // Remove div used for editing
@@ -209,7 +212,8 @@
       'text': content,
       'title': "General",
       'noteType': "General",
-      'className': "general-note"
+      'className': "general-note",
+      'start': moment("04/26/2017 13:00").format()
     }
 
     // Remove div used for editing
@@ -291,6 +295,10 @@
     // Load notes from storage
     var sampleNotes = JSON.parse(window.localStorage.getItem("notes"));
 
+    sampleNotes.sort(function(a, b) {
+      // Should return positive if a is later than b
+      return moment(a.start).diff(moment(b.start));
+    });
     // Add each note to the document
     sampleNotes.forEach(function(note) {
       var noteDom = makeNoteDom(note);
