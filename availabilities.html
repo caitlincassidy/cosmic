@@ -93,8 +93,46 @@
       // $("#availabilities_end_time").val("22:00");
     });
 
+    var errorMessages = {
+      missingStartTime: "* Event must have a start time", // used
+      missingEndTime: "* Event must have an end time", // used
+      invalidTimes: "* Beginning time must be before ending time", // used
+      missingAvailabilityName: "* Must choose a name" // used
+    };
+
+    // copied from event modal
+    var validateNewSurveyInputs = function(start, end) {
+      if (!$("#availability_name").val() && !document.getElementById('availabilityNameError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityNameError">`+errorMessages.missingAvailabilityName+`</p>`;
+        $("#availability_name").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if ($("#availability_name").val())
+        $('#availabilityNameError').remove();
+
+      if ($("#availabilities_start_time").val() && $("#availabilities_end_time").val() && end.diff(start) <= 0 && !document.getElementById('availabilityTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityTimeError">`+errorMessages.invalidTimes+`</p>`;
+        $("#availabilities_start_time").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if (end.diff(start) > 0)
+        $('#availabilityTimeError').remove();
+
+      if (!$("#availabilities_start_time").val() && !document.getElementById('startTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="startTimeError">`+errorMessages.missingStartTime+`</p>`;
+        $("#availabilities_start_time").after($.parseHTML(errorMessageHTMLString));
+      }
+      else if ($("#availabilities_start_time").val())
+        $('#startTimeError').remove();
+
+      if (!$("#availabilities_end_time").val() && !document.getElementById('endTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="endTimeError">`+errorMessages.missingEndTime+`</p>`;
+        $("#availabilities_end_time").after($.parseHTML(errorMessageHTMLString));
+      }
+      else if ($("#availabilities_end_time").val())
+        $('#endTimeError').remove();
+    };
+
     $(document).on('click', "#send-new-survey-btn", function(evt) {
-      $('#new-survey-modal').modal('toggle');
+      
       var new_survey = {};
       if (new_survey_start_date) {
         new_survey["start_date"] = moment(new_survey_start_date);
@@ -108,35 +146,52 @@
       } else {
         new_survey["end_date"] = moment().endOf("week").add(1,"week");
       }
-      var title = $("#availability_name").val();
-      new_survey["title"] = title;
-      var id = title.replace(/ /g, "-").toLowerCase();
-      var check_taken = function(id) {
-        var taken = false;
-        // super inefficient but whatever
-        surveys.forEach(function(survey) {
-          if (survey.id == id) taken = true;
-        });
-        return taken;
+
+      var format_date = new_survey["start_date"].format("YYYY-MM-DD");
+      var start = moment(format_date+" " +$("#availabilities_start_time").val());
+      var end = moment(format_date+" " +$("#availabilities_end_time").val());
+
+      /* Form Input Validation */
+      var missingData = !$("#availability_name").val() || end.diff(start) <= 0 || 
+      !$("#availabilities_start_time").val() || !$("#availabilities_end_time").val();
+      console.log(missingData);
+      if (missingData) {
+        console.log("here");
+        validateNewSurveyInputs(start, end);
       }
-      // don't repeat ids
-      while (check_taken(id)) {
-        id += "1";
+      else {
+
+        var title = $("#availability_name").val();
+        new_survey["title"] = title;
+        var id = title.replace(/ /g, "-").toLowerCase();
+        var check_taken = function(id) {
+          var taken = false;
+          // super inefficient but whatever
+          surveys.forEach(function(survey) {
+            if (survey.id == id) taken = true;
+          });
+          return taken;
+        }
+        // don't repeat ids
+        while (check_taken(id)) {
+          id += "1";
+        }
+        new_survey["id"] = id;
+        new_survey["tas_asked"] = $("#inc_tas").prop('checked');
+        new_survey["las_asked"] = $("#inc_las").prop('checked');
+        new_survey["students_asked"] = $("#inc_students").prop('checked');
+        new_survey["start_time"] = start;
+        new_survey["end_time"] = end;
+        new_survey["ta_results"] = {};
+        new_survey["la_results"] = {};
+        new_survey["student_results"] = {};
+        no_results(new_survey);
+        var saved_surveys = JSON.parse(window.localStorage.getItem("availabilities"));
+        // add updated event
+        saved_surveys.push(new_survey);
+        window.localStorage.setItem("availabilities", JSON.stringify(saved_surveys));
+        $('#new-survey-modal').modal('toggle');
       }
-      new_survey["id"] = id;
-      new_survey["tas_asked"] = $("#inc_tas").prop('checked');
-      new_survey["las_asked"] = $("#inc_las").prop('checked');
-      new_survey["students_asked"] = $("#inc_students").prop('checked');
-      new_survey["start_time"] = moment(new_survey["start_date"].format("YYYY-MM-DD") + " " +$("#availabilities_start_time").val());
-      new_survey["end_time"] = moment(new_survey["start_date"].format("YYYY-MM-DD") + " " +$("#availabilities_end_time").val());
-      new_survey["ta_results"] = {};
-      new_survey["la_results"] = {};
-      new_survey["student_results"] = {};
-      no_results(new_survey);
-      var saved_surveys = JSON.parse(window.localStorage.getItem("availabilities"));
-      // add updated event
-      saved_surveys.push(new_survey);
-      window.localStorage.setItem("availabilities", JSON.stringify(saved_surveys));
     });
 
     $(document).on('click', "#create-event-btn", function(evt)

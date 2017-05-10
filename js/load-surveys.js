@@ -118,7 +118,7 @@ var reverse_end_date_order = function(a, b) {
 
 	var no_results = function(data) {
 		var outline = `<a data-toggle="collapse" data-target="#`+data.id+`" class="list-group-item listed-item" style="display:inline-block; width: 100%">`+get_label(data)+`<span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-		<div class="row collapse col-xs-12" id="`+data.id+`">No Results... Yet!</div>`;
+		<div class="row collapse col-xs-12" id="`+data.id+`" style="margin: 5px;">No Results... Yet!</div>`;
 		$("#no-results").append($.parseHTML(outline))
 	}
 
@@ -165,7 +165,7 @@ var reverse_end_date_order = function(a, b) {
 		<div id="`+data.id+`-avail-results"></div>
 		<br />
 		<br />
-		<p><button type="button" class="btn btn-default new-event-btn" style="float: right;">New Event</button></p>
+		<p><button type="button" class="btn btn-default new-event-btn" style="float: right; margin: 5px;">New Event</button></p>
 		</div>
 		<div id="`+data.id+`-avail-people" class="col-xs-3">
 		<div class="alert alert-success alert-dismissible" id="`+data.id+`-avail-people-alert">
