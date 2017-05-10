@@ -183,7 +183,7 @@ var validateInputs = function(start, end) {
               // If an event doesn't have a note yet
             if (!noteExists) {
                 var newNote = {
-                    'text': "** You have not made any notes yet! **",
+                    'text': "** You have not made any notes for this event yet! **",
                     'title': event.title,
                     'noteType': event.eventType,
                     'className': event.className.split('-')[0]+'-note'

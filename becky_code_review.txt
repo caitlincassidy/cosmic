@@ -1,12 +1,12 @@
 Notes page:
 
-If there are no notes associated with an event, there should be a message or something indicating that is the case. Otherwise it looks like it’s broken/didn’t load the data.
+DONE - If there are no notes associated with an event, there should be a message or something indicating that is the case. Otherwise it looks like it’s broken/didn’t load the data.
 
 Can you add a border around the div that contains the notes? And more of a margin between the top of the note and the toggle header?
 
-Can you add more margin at the very bottom of the page? The Lab 1 toggle header is like right up against the edge of the screen.
+DONE - Can you add more margin at the very bottom of the page? The Lab 1 toggle header is like right up against the edge of the screen.
 
-Can you put more margin between the top of the purple save button and the general notes entry?
+DONE - Can you put more margin between the top of the purple save button and the general notes entry?
 
 Can the edit button be highlighted when it’s on hover-over?
 
@@ -14,7 +14,7 @@ And can the notes not be highlighted on hover-over?
 
 Idk if Caitlin is supposed to handle this, but the side bar should be more distinguished
 
-The ‘Save’ buttons should be consistenly colored. Right now the general notes ‘save’ button is purple while the others are not.
+DONE - The ‘Save’ buttons should be consistenly colored. Right now the general notes ‘save’ button is purple while the others are not.
 
 Feedback Page:
 
