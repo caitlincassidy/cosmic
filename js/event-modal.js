@@ -209,7 +209,7 @@ var validateInputs = function(start, end) {
               // Boolean representing whether or not there is a note corresponding to the event
               var eventExists = false;
               events.forEach(function(event) {
-                  if (note.title == event.title){
+                  if (note.start == event.start){
                       eventExists = true;
                   }
               })
@@ -243,7 +243,7 @@ var validateInputs = function(start, end) {
     // and the same due date
     var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
     var foundElt = savedNotes.find(function(elt) {
-      return elt.text == note.text;
+      return elt.start == note.start;
     });
     var indexToDelete = savedNotes.indexOf(foundElt);
     savedNotes.splice(indexToDelete, 1);
@@ -301,7 +301,7 @@ var validateInputs = function(start, end) {
               // Boolean representing whether or not there is a feedback corresponding to the event
               var eventExists = false;
               events.forEach(function(event) {
-                  if (feedback.title == event.title){
+                  if (feedback.start == event.start){
                       eventExists = true;
                   }
               })
@@ -331,7 +331,7 @@ var validateInputs = function(start, end) {
   var removeFeedbackFromLocalStorage = function(feedback) {
     var savedFeedbacks = JSON.parse(window.localStorage.getItem("feedbacks"));
     var foundElt = savedFeedbacks.find(function(elt) {
-      return elt.title == feedback.title;
+      return elt.start == feedback.start;
     });
     var indexToDelete = savedFeedbacks.indexOf(foundElt);
     savedFeedbacks.splice(indexToDelete, 1);
