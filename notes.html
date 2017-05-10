@@ -50,6 +50,7 @@
   var editingNoteType;
   var editingClassName;
   var editingStart;
+  var originalNote;
 
   // Placeholder message in case there aren't any tasks
   // under a particular heading.
@@ -113,13 +114,15 @@
     isEditingSomething = true;
 
     var noteDiv = $(pencilObj).parent().parent();
+      console.log($(pencilObj);
     var note = $(noteDiv).data('note-json');
       
     editingClassName = note.className;
     editingNoteType = note.noteType;
     editingTitle = note.title;
     editingStart = note.start;
-
+    originalNote = note;
+      
     // Give this div an ID so it can be removed later
     noteDiv.attr("id", "editing-div");
 //    // Empty all column divs
@@ -164,22 +167,22 @@
     addToLocalStorage(note);
 
     // Create the note DOM
-    var noteDom = makeNoteDom(note);
-
-    // Find correct heading the task should be under
-    var divId;
-      if (note.noteType == "Lecture") {
-        divId = "#lecs";
-      } else if (note.noteType == "Quiz") {
-        divId = "#quizzes";
-      } else if (note.noteType == "Lab"){
-        divId = "#labs";
-      }
-    
-    // Remove old dropdown
-    $("#"+note.title.split(' ').join('_')+'-dropdown').remove(); 
-    // TODO - retain original ordering somehow
-    $(divId).append(noteDom);
+//    var noteDom = makeNoteDom(note);
+//
+//    // Find correct heading the task should be under
+//    var divId;
+//      if (note.noteType == "Lecture") {
+//        divId = "#lecs";
+//      } else if (note.noteType == "Quiz") {
+//        divId = "#quizzes";
+//      } else if (note.noteType == "Lab"){
+//        divId = "#labs";
+//      }
+//    
+//    // Remove old dropdown
+//    $("#"+note.title.split(' ').join('_')+'-dropdown').remove(); 
+//    // TODO - retain original ordering somehow
+//    $(divId).append(noteDom);
   }
   
   // When someone saves a Note edit    
@@ -196,9 +199,23 @@
     }
 
     // Remove div used for editing
+//      console.log($("#editing-div"));
     $("#editing-div").remove();
+      // TODO - need to append new note div to parent of editing-div
 
-    addNewNote(note);
+//    addNewNote(note);
+      
+    var savedNotes = JSON.parse(window.localStorage.getItem("notes"));
+    var foundElt = savedNotes.find(function(elt) {
+      return elt.title == editingTitle;
+    });
+    var indexToDelete = savedNotes.indexOf(foundElt);
+    if (indexToDelete != -1) {
+        savedNotes.splice(indexToDelete, 1);
+        window.localStorage.setItem("notes", JSON.stringify(savedNotes));
+    }
+      
+      addToLocalStorage(note);
 //    checkEmptyHeaders();
   });
     
@@ -206,7 +223,6 @@
   $(document).on("click", "#save_gen", function(evt) {
     isEditingSomething = false;
     var content = $("#general").val();
-      console.log(content);
     // Create new note
     var note = {
       'text': content,
@@ -228,7 +244,8 @@
         window.localStorage.setItem("notes", JSON.stringify(savedNotes));
     }
     
-    addNewNote(note);
+//    addNewNote(note);
+      addToLocalStorage(note);
   });
     
   /**
