@@ -360,6 +360,25 @@ a {
 	border-color: #231b6d !important;
 }
 
+
+.availability-table {
+	width:100%; 
+}
+
+.avail_cell {
+	cursor:pointer;
+}
+
+.avail_cell:hover {
+	opacity: .75;
+}
+
+.availability-table table, th, td {
+	border: 1px solid black;
+	text-align: center;
+	border-collapse: collapse;
+}
+
 .ui-timepicker-container.ui-timepicker-standard {
   z-index: 2000 !important; 
   font-size: 14px;
@@ -395,14 +414,15 @@ a {
     display: flex;
 }
 
-.availability-table {
-	width:80%; 
-	margin: 5px auto;
-}
+/*Allow pointer-events through*/
+/*.fc-slats, /*horizontals*/
+/*.fc-content-skeleton, /*day numbers*/
+/*.fc-bgevent-skeleton { /*events container*/
+/*    pointer-events:none
+}*/
 
-.availability-table table, th, td {
-	border: 1px solid black;
-	text-align: center;
-	border-collapse: collapse;
-}
-    
+/*Turn pointer events back on*/
+/*.fc-bgevent,
+.fc-event-container{
+    pointer-events:auto; /*events*/
+/*}*/

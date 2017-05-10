@@ -29,6 +29,10 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
+  <!-- Time Picker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.js"></script>
+
   <!-- Custom javascript -->
   <script src="js/load-header.js" defer></script>
   <script src="js/load-new-event-modal.js" defer></script>
@@ -41,84 +45,181 @@
 
   <script type="text/javascript">
 
-    // Toggle the display of availability results
-    // for the review session form
-    $(document).on('click', '#review-session-item', function() {
-      if ($('#review-session-results').length == 0) {
-        // Currently, no results are displayed
-        // Add HTML to display them
-
-        // Who filled out the form
-        var peopleTypesString = `
-        <div id="people-types">
-          <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> TAs </p>
-          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> LAs </p>
-          <p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Students </p>
-        </div>
-        `;    
-        var peopleTypes = $.parseHTML(peopleTypesString);
-
-        // Times with colors indicating how many people are available
-        // TODO(@Becky): Make the colors + fonts correct with the rest of the page
-        // See https://docs.google.com/spreadsheets/d/1JJ1zOtqbRdkwyiZrcodbDxq-wx4hQzkr3sBdXDPLQP8/edit#gid=0
-        var results = $.parseHTML(`<img src="img/availability-results.png"></img>`);
-
-        // Key for what the colors mean
-        var key = $.parseHTML(`<img src="img/availability-key.png"></img>`);
-
-        // Overall setup
-        var overallDivs = `
-        <div class="row" id="review-session-results">
-          <br />
-          <div class="col-lg-2" id="results-1"></div>
-          <div class="col-lg-2" id="results-2"></div>
-          <div class="col-lg-8" id="results-3"></div>
-        </div>
-        `;
-
-        // Widen div
-        $("#review-session-item").css("width", "100%");
-
-        // Append to page
-        $("#review-session-item").append($.parseHTML(overallDivs));
-        $("#results-1").append(peopleTypes);
-        $("#results-2").append(key);
-        $("#results-3").append(results);
-
-      } else {
-        // Results are currently shown, so remove them
-        $('#review-session-results').remove();
-        
-        // Reset width
-        $("#review-session-item").css("width", "");
-      }
-
-    });
-
-    $(document).on('click', "#new-event-btn", function(evt) {
+    $(document).on('click', ".new-event-btn", function(evt) {
       $('#event-info-form').get(0).reset();
       $("#change-event-modal-title").text("New Event");
       $("#create-event-btn").text("Create");
       $('#new-event-modal').modal('toggle');
-      $("#new_event_date").val(moment().format("YYYY-MM-DD"));
-      $("#new_event_start_time").val("13:00");
-      $("#new_event_end_time").val("14:00");
+      $('.timepicker').timepicker({
+        timeFormat: 'h:mm a',
+        interval: 60,
+        startTime: '08:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+      });
+      $("#new_event_date").daterangepicker({
+        "applyClass": "btn-primary",
+        "singleDatePicker": true,
+      });
+      // $("#new_event_date").val(moment().format("YYYY-MM-DD"));
+      // $("#new_event_start_time").val("13:00");
+      // $("#new_event_end_time").val("14:00");
     });
 
-    $(document).on('click', "#create-event-btn", function(evt) {
-      $('#new-event-modal').modal('toggle');
-    })
-
+    var new_survey_start_date;
+    var new_survey_end_date;
     $(document).on('click', "#new-survey-btn", function(evt) {
       $('#request-availability-form').get(0).reset();
       $("#availabilities_dates").daterangepicker({
         "applyClass": "btn-primary",
         "startDate": moment().startOf("week").add(1,"week").format("MM/DD/YYYY"),
         "endDate": moment().endOf("week").add(1,"week").format("MM/DD/YYYY"),
+      }, function(start, end) {
+        new_survey_start_date = start;
+        new_survey_end_date = end;
+        console.log(new_survey_start_date.format("MM/DD/YYYY") + " - "+ new_survey_end_date.format("MM/DD/YYYY"));
       });
       $('#new-survey-modal').modal('toggle');
-      $("#availabilities_start_time").val("17:00");
-      $("#availabilities_end_time").val("22:00");
+      $('.timepicker').timepicker({
+        timeFormat: 'h:mm a',
+        interval: 60,
+        startTime: '08:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+      });
+      // $("#availabilities_start_time").val("17:00");
+      // $("#availabilities_end_time").val("22:00");
+    });
+
+    var errorMessages = {
+      missingStartTime: "* Event must have a start time", // used
+      missingEndTime: "* Event must have an end time", // used
+      invalidTimes: "* Beginning time must be before ending time", // used
+      missingAvailabilityName: "* Must choose a name" // used
+    };
+
+    // copied from event modal
+    var validateNewSurveyInputs = function(start, end) {
+      if (!$("#availability_name").val() && !document.getElementById('availabilityNameError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityNameError">`+errorMessages.missingAvailabilityName+`</p>`;
+        $("#availability_name").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if ($("#availability_name").val())
+        $('#availabilityNameError').remove();
+
+      if ($("#availabilities_start_time").val() && $("#availabilities_end_time").val() && end.diff(start) <= 0 && !document.getElementById('availabilityTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityTimeError">`+errorMessages.invalidTimes+`</p>`;
+        $("#availabilities_start_time").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if (end.diff(start) > 0)
+        $('#availabilityTimeError').remove();
+
+      if (!$("#availabilities_start_time").val() && !document.getElementById('startTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="startTimeError">`+errorMessages.missingStartTime+`</p>`;
+        $("#availabilities_start_time").after($.parseHTML(errorMessageHTMLString));
+      }
+      else if ($("#availabilities_start_time").val())
+        $('#startTimeError').remove();
+
+      if (!$("#availabilities_end_time").val() && !document.getElementById('endTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="endTimeError">`+errorMessages.missingEndTime+`</p>`;
+        $("#availabilities_end_time").after($.parseHTML(errorMessageHTMLString));
+      }
+      else if ($("#availabilities_end_time").val())
+        $('#endTimeError').remove();
+    };
+
+    $(document).on('click', "#send-new-survey-btn", function(evt) {
+      
+      var new_survey = {};
+      if (new_survey_start_date) {
+        new_survey["start_date"] = moment(new_survey_start_date);
+        new_survey_start_date = null;
+      } else {
+        new_survey["start_date"] = moment().startOf("week").add(1,"week");
+      }
+      if (new_survey_end_date) {
+        new_survey["end_date"] = moment(new_survey_end_date);
+        new_survey_end_date = null;
+      } else {
+        new_survey["end_date"] = moment().endOf("week").add(1,"week");
+      }
+
+      var format_date = new_survey["start_date"].format("YYYY-MM-DD");
+      var start = moment(format_date+" " +$("#availabilities_start_time").val());
+      var end = moment(format_date+" " +$("#availabilities_end_time").val());
+
+      /* Form Input Validation */
+      var missingData = !$("#availability_name").val() || end.diff(start) <= 0 || 
+      !$("#availabilities_start_time").val() || !$("#availabilities_end_time").val();
+      console.log(missingData);
+      if (missingData) {
+        console.log("here");
+        validateNewSurveyInputs(start, end);
+      }
+      else {
+
+        var title = $("#availability_name").val();
+        new_survey["title"] = title;
+        var id = title.replace(/ /g, "-").toLowerCase();
+        var check_taken = function(id) {
+          var taken = false;
+          // super inefficient but whatever
+          surveys.forEach(function(survey) {
+            if (survey.id == id) taken = true;
+          });
+          return taken;
+        }
+        // don't repeat ids
+        while (check_taken(id)) {
+          id += "1";
+        }
+        new_survey["id"] = id;
+        new_survey["tas_asked"] = $("#inc_tas").prop('checked');
+        new_survey["las_asked"] = $("#inc_las").prop('checked');
+        new_survey["students_asked"] = $("#inc_students").prop('checked');
+        new_survey["start_time"] = start;
+        new_survey["end_time"] = end;
+        new_survey["ta_results"] = {};
+        new_survey["la_results"] = {};
+        new_survey["student_results"] = {};
+        no_results(new_survey);
+        var saved_surveys = JSON.parse(window.localStorage.getItem("availabilities"));
+        // add updated event
+        saved_surveys.push(new_survey);
+        window.localStorage.setItem("availabilities", JSON.stringify(saved_surveys));
+        $('#new-survey-modal').modal('toggle');
+      }
+    });
+
+    $(document).on('click', "#create-event-btn", function(evt)
+    {
+      var format_date = moment($("#new_event_date").val()).format("YYYY-MM-DD");
+      var start = moment(format_date+" " +$("#new_event_start_time").val());
+      var end = moment(format_date+" " +$("#new_event_end_time").val());
+
+      /* Form Input Validation */
+      var missingData = !$("#new_event_type").val() || !$("#new_event_name").val() || end.diff(start) <= 0 || 
+      !$("#new_event_start_time").val() || !$("#new_event_end_time").val();
+      if (missingData)
+        validateInputs(start, end);
+      else {
+        // Create New Event
+        event.title = $("#new_event_name").val();
+        event.start = start.format();
+        event.end = end.format();
+        event.className = $("#new_event_type").val().toLowerCase() + "-event";
+        event.eventType = $("#new_event_type").val();
+
+        // save new event to local storage
+        var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+        savedEvents.push(event);
+        window.localStorage.setItem("events", JSON.stringify(savedEvents));
+
+        $('#new-event-modal').modal('toggle');
+      }
     });
 
   </script>
@@ -126,41 +227,37 @@
   <div class="container-fluid">
     <div class="row main-header">
     </div>
-  <div class="row">
-    <div class="col-lg-2" id="menubar">
-    </div>
-    <div class="col-lg-10">
-      <!-- New event modal -->
-      <div class="modal fade" id="new-event-modal" role="dialog"></div>
-      <div class="modal fade" id="new-survey-modal" role="dialog"></div>
-
+    <div class="row">
+      <div class="col-lg-2" id="menubar">
+      </div>
       <div class="col-lg-10">
+        <!-- New event modal -->
+        <div class="modal fade" id="new-event-modal" role="dialog"></div>
+        <div class="modal fade" id="new-survey-modal" role="dialog"></div>
 
-        <!-- Links so that they appear clickable -->
-        <a href="#" class="list-group-item listed-item-availability">Initial Staff Meeting (2/16 - 2/26) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-        <a href="#" class="list-group-item listed-item-availability">Weekly Office Hours (2/20 - 2/24) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
-        <!-- TODO: only make this appear after they've created the new survey? -->
-        <a href="#" class="list-group-item listed-item-availability" id="review-session-item">Quiz 1 Review Session (3/20 - 3/23) <span class="pull-right glyphicon glyphicon-chevron-down"></span></a>
+        <div class="col-lg-10">
+          <div id='no-results'>
+            <h2>No Results Yet</h2>
+          </div>
+          <div id='survey-results'></div>
+          <br/>
+        </div>
+
+
+        <div class="col-lg-1"> <!-- column for buttons -->
+          <button type="button" class="btn btn-default" id="new-survey-btn">New Survey</button> </p>
+        </div>
+
+        <div class="col-lg-1"> <!-- margin -->
+        </div>
+
 
       </div>
 
+    </div> <!-- class="row" -->
+  </div> <!-- class="container" -->
 
-      <div class="col-lg-1"> <!-- column for buttons -->
-        <button type="button" class="btn btn-default" id="new-survey-btn">New Survey</button> </p>
-
-        <button type="button" class="btn btn-default" id="new-event-btn">New Event</button> </p>
-      </div>
-
-      <div class="col-lg-1"> <!-- margin -->
-      </div>
-
-
-    </div>
-
-  </div> <!-- class="row" -->
-</div> <!-- class="container" -->
-
-<script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
+  <script id="load-menubar-script" src="js/load-menubar.js" link="availabilities.html"></script>
 </body>
 
 </html>
