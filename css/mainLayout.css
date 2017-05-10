@@ -436,8 +436,19 @@ td.fc-list-item-title {
 	border-radius: 4px;
 	padding: 10px;
 	background-color: #eee;
-	margin-top: 20px;
+	margin-top: 2%;
 }
+
+.exp-coll {
+	float: right;
+	background-color: transparent;
+}
+
+.gen-note-area {
+	padding-top: .2%;
+	padding-bottom: 4%;
+}
+
 
 /*Allow pointer-events through*/
 /*.fc-slats, /*horizontals*/
