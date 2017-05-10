@@ -395,3 +395,8 @@ a {
 .fc-event-container{
     pointer-events:auto; /*events*/
 /*}*/
+
+.sidebar-right {
+	text-align: center;
+}
+
