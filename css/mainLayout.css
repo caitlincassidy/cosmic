@@ -205,7 +205,7 @@ a#logout.btn:hover {
 Modifying the width of list items on the Notes and Feedback page
 */
 .listed-item {
-	width: 300px;
+	width: 70%;
 }
 
 .sticky {
@@ -233,6 +233,10 @@ Modifying the width of list items on the Notes and Feedback page
 	padding: 5px;
 	border-radius: 10px;
 	cursor: default;
+}
+
+.note-dropdown {
+    width: 100%;
 }
 /*
 

@@ -128,11 +128,23 @@
 //    // Empty all column divs
     $('#editing-div div').empty();
 //    // Add text box to edit note text
-    var textBox = $('<input>', {
-      type: "text",
-      id: "new-note-text",
-      val: note.text,
-    });
+
+    var textBox;
+      console.log(note.text[0])
+    if (note.text[0] == "\*") {
+        textBox = $('<input>', {
+          type: "text",
+          id: "new-note-text",
+          placeholder: note.text,
+        });        
+    }
+      else {
+          textBox = $('<input>', {
+          type: "text",
+          id: "new-note-text",
+          val: note.text,
+        });
+      }
     $(textBox).css("width", "100%");
     $(textBox).css("margin-right", "15px");
     textBox.appendTo($(noteDiv).children()[0]);
@@ -211,7 +223,6 @@
       
       
     var noteDiv = $.parseHTML(noteDivString);
-    console.log($(noteDiv[0])[0]);
     // Store note information to be used for editing
     $(noteDiv).data('note-json', note);
     // Add note text to first column
@@ -277,7 +288,6 @@
         window.localStorage.setItem("notes", JSON.stringify(savedNotes));
     }
     
-//    addNewNote(note);
       addToLocalStorage(note);
       
     $("#success-alert").alert();
@@ -305,7 +315,7 @@
     }
     // Two columns for note text and pencil icon
     var noteDivString = `
-      <div id="`+note.title.split(' ').join('_')+'-dropdown'+`">
+      <div class="note-dropdown" id="`+note.title.split(' ').join('_')+'-dropdown'+`">
           <a class="list-group-item listed-item" data-toggle="collapse" data-target="#` + note.title.split(' ').join('_') + `">
                 `+ note.title +` 
              <span class="pull-right glyphicon glyphicon-chevron-down"></span>
