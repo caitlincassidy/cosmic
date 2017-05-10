@@ -82,29 +82,32 @@ var reverse_end_date_order = function(a, b) {
 			});
 			if (avail_num == color_cutoffs["best"]) {
 				// green
-				cell.css('background-color', '#0ba848');	
+				cell.css('background-color', '#0ba848');
+				cell.attr("data-alert-type", "alert-success");	
 			} else if (avail_num >= color_cutoffs["mid"]) {
 				// yellow
 				cell.css('background-color', '#f9f577');
+				cell.attr("data-alert-type", "alert-warning");	
 			} else {
 				// red
 				cell.css('background-color', '#f77171');
+				cell.attr("data-alert-type", "alert-danger");	
 			}
 	  		cell.text(avail_num); // row is indexed from 1
 	  		var date = moment(data.start_date).add(col, 'day').format("ddd M/D");
-	  		var tell_user = "On "+ date + " at "+ time  +":\nAvailable: ";
+	  		var tell_user = date + " "+ time  +":<br><b>Available:</b><br>";
 	  		if (avail_people.length > 0) {
 	  			tell_user = avail_people.reduce(function(str, name) {
-	  				return str + name + ", ";
-	  			}, tell_user).slice(0,-2);
+	  				return str + name + "<br>";
+	  			}, tell_user);
 	  		} else {
 	  			tell_user = tell_user + "None"
 	  		}
-	  		tell_user = tell_user + "\nUnavailable: ";
+	  		tell_user = tell_user + "<br><b>Unavailable:</b><br>";
 	  		if (unavail_people.length > 0) {
 	  			tell_user = unavail_people.reduce(function(str, name) {
-	  				return str + name + ", ";
-	  			}, tell_user).slice(0,-2);
+	  				return str + name + "<br>";
+	  			}, tell_user);
 	  		} else {
 	  			tell_user = tell_user + "None";
 	  		}
@@ -158,11 +161,17 @@ var reverse_end_date_order = function(a, b) {
 		<div class="row collapse" id="`+data.id+`">
 		<br />
 		<div class="col-xs-2" id="`+data.id+`-people-types"></div>
-		<div class="col-xs-10">
+		<div class="col-xs-7">
 		<div id="`+data.id+`-avail-results"></div>
 		<br />
 		<br />
 		<p><button type="button" class="btn btn-default new-event-btn" style="float: right;">New Event</button></p>
+		</div>
+		<div id="`+data.id+`-avail-people" class="col-xs-3">
+		<div class="alert alert-success alert-dismissible" id="`+data.id+`-avail-people-alert">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		Click a box to see who's available!
+		</div>
 		</div>
 		<br/>
 		
@@ -239,6 +248,7 @@ for (var row = 1; row < table_height; row++) {
  			cell = $("<td>", {
  				style: "cursor:pointer;",
  			});
+ 			cell.attr("data-survey-id", data.id);
  			cell.addClass("avail_cell");
  		}
 	  	cell.css('width', "calc(100%px/"+table_width+")"); // Make them all the same width
@@ -257,8 +267,16 @@ for (var row = 1; row < table_height; row++) {
 });
 
 $(document).on('click', '.avail_cell', function() {
-	alert($(this).attr("data-available_people"));
+	var survey_id = $(this).attr("data-survey-id");
+	var spot = $("#"+survey_id+"-avail-people");
+	var alert_name = survey_id+"-avail-people-alert";
+	if ($("#"+alert_name).length) {
+		$("#"+alert_name).alert("close");
+	}
+	var box = `<div class="alert `+$(this).attr("data-alert-type")+` alert-dismissible" id="`+alert_name+`">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		`+$(this).attr("data-available_people")+`
+		</div>`;
+	spot.append($.parseHTML(box));
+	// alert($(this).attr("data-available_people"));
 });
-
-
-// avail_table.find('tr').eq(3).find('td').eq(2).css('background-color', "red");
