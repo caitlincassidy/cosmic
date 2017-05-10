@@ -67,10 +67,6 @@
       // $("#new_event_end_time").val("14:00");
     });
 
-    $(document).on('click', "#create-event-btn", function(evt) {
-      $('#new-event-modal').modal('toggle');
-    })
-
     var new_survey_start_date;
     var new_survey_end_date;
     $(document).on('click', "#new-survey-btn", function(evt) {
@@ -96,18 +92,6 @@
       // $("#availabilities_start_time").val("17:00");
       // $("#availabilities_end_time").val("22:00");
     });
-
-    // var data1 = {
-    //   xx id: "initial-staff-meeting",
-    //   xx title: "Initial Staff Meeting",
-    //   xx tas_asked: true,
-    //   xx las_asked: true,
-    //   xx students_asked: false,
-    //   xx start_date: moment("2017-02-13"),
-    //   xx end_date: moment("2017-02-17"),
-    //   start_time: moment("2017-02-13 05:00 PM"), // use first date to make it a valid moment
-    //   end_time: moment("2017-02-13 09:00 PM"),
-    // }
 
     $(document).on('click', "#send-new-survey-btn", function(evt) {
       $('#new-survey-modal').modal('toggle');
@@ -153,6 +137,34 @@
       // add updated event
       saved_surveys.push(new_survey);
       window.localStorage.setItem("availabilities", JSON.stringify(saved_surveys));
+    });
+
+    $(document).on('click', "#create-event-btn", function(evt)
+    {
+      var format_date = moment($("#new_event_date").val()).format("YYYY-MM-DD");
+      var start = moment(format_date+" " +$("#new_event_start_time").val());
+      var end = moment(format_date+" " +$("#new_event_end_time").val());
+
+      /* Form Input Validation */
+      var missingData = !$("#new_event_type").val() || !$("#new_event_name").val() || end.diff(start) <= 0 || 
+      !$("#new_event_start_time").val() || !$("#new_event_end_time").val();
+      if (missingData)
+        validateInputs(start, end);
+      else {
+        // Create New Event
+        event.title = $("#new_event_name").val();
+        event.start = start.format();
+        event.end = end.format();
+        event.className = $("#new_event_type").val().toLowerCase() + "-event";
+        event.eventType = $("#new_event_type").val();
+
+        // save new event to local storage
+        var savedEvents = JSON.parse(window.localStorage.getItem("events"));
+        savedEvents.push(event);
+        window.localStorage.setItem("events", JSON.stringify(savedEvents));
+
+        $('#new-event-modal').modal('toggle');
+      }
     });
 
   </script>
