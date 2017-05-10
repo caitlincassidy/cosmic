@@ -110,5 +110,4 @@ surveys.forEach(function(survey) {
 });
 
 // save data to local storage
-window.localStorage.clear();
 window.localStorage.setItem("availabilities", JSON.stringify(surveys));
