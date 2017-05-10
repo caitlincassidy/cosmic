@@ -93,7 +93,7 @@
       // $("#availabilities_end_time").val("22:00");
     });
 
-    var errorMessages = {
+    var newSurveyErrorMessages = {
       missingStartTime: "* Event must have a start time", // used
       missingEndTime: "* Event must have an end time", // used
       invalidTimes: "* Beginning time must be before ending time", // used
@@ -103,36 +103,36 @@
     // copied from event modal
     var validateNewSurveyInputs = function(start, end) {
       if (!$("#availability_name").val() && !document.getElementById('availabilityNameError')) {
-        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityNameError">`+errorMessages.missingAvailabilityName+`</p>`;
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityNameError">`+newSurveyErrorMessages.missingAvailabilityName+`</p>`;
         $("#availability_name").after($.parseHTML(errorMessageHTMLString));
       } 
       else if ($("#availability_name").val())
         $('#availabilityNameError').remove();
 
       if ($("#availabilities_start_time").val() && $("#availabilities_end_time").val() && end.diff(start) <= 0 && !document.getElementById('availabilityTimeError')) {
-        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityTimeError">`+errorMessages.invalidTimes+`</p>`;
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityTimeError">`+newSurveyErrorMessages.invalidTimes+`</p>`;
         $("#availabilities_start_time").after($.parseHTML(errorMessageHTMLString));
       } 
       else if (end.diff(start) > 0)
         $('#availabilityTimeError').remove();
 
-      if (!$("#availabilities_start_time").val() && !document.getElementById('startTimeError')) {
-        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="startTimeError">`+errorMessages.missingStartTime+`</p>`;
+      if (!$("#availabilities_start_time").val() && !document.getElementById('availabilityStartTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityStartTimeError">`+newSurveyErrorMessages.missingStartTime+`</p>`;
         $("#availabilities_start_time").after($.parseHTML(errorMessageHTMLString));
       }
       else if ($("#availabilities_start_time").val())
-        $('#startTimeError').remove();
+        $('#availabilityStartTimeError').remove();
 
-      if (!$("#availabilities_end_time").val() && !document.getElementById('endTimeError')) {
-        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="endTimeError">`+errorMessages.missingEndTime+`</p>`;
+      if (!$("#availabilities_end_time").val() && !document.getElementById('availabilityEndTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="availabilityEndTimeError">`+newSurveyErrorMessages.missingEndTime+`</p>`;
         $("#availabilities_end_time").after($.parseHTML(errorMessageHTMLString));
       }
       else if ($("#availabilities_end_time").val())
-        $('#endTimeError').remove();
+        $('#availabilityEndTimeError').remove();
     };
 
     $(document).on('click', "#send-new-survey-btn", function(evt) {
-      
+
       var new_survey = {};
       if (new_survey_start_date) {
         new_survey["start_date"] = moment(new_survey_start_date);
@@ -194,6 +194,51 @@
       }
     });
 
+    var errorMessages = {
+      missingStartTime: "* Event must have a start time",
+      missingEndTime: "* Event must have an end time",
+      invalidTimes: "* Beginning time must be before ending time",
+      missingEventType: "* Must select an event type",
+      missingEventName: "* Must choose an event name"
+    };
+
+    var validateInputs = function(start, end) {
+      if (!$("#new_event_type").val() && !document.getElementById('eventTypeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="eventTypeError">`+errorMessages.missingEventType+`</p>`;
+        $("#new_event_type").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if ($("#new_event_type").val())
+        $('#eventTypeError').remove();
+      
+      if (!$("#new_event_name").val() && !document.getElementById('eventNameError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="eventNameError">`+errorMessages.missingEventName+`</p>`;
+        $("#new_event_name").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if ($("#new_event_name").val())
+        $('#eventNameError').remove();
+      
+      if ($("#new_event_start_time").val() && $("#new_event_end_time").val() && end.diff(start) <= 0 && !document.getElementById('eventTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="eventTimeError">`+errorMessages.invalidTimes+`</p>`;
+        $("#new_event_start_time").after($.parseHTML(errorMessageHTMLString));
+      } 
+      else if (end.diff(start) > 0)
+        $('#eventTimeError').remove();
+      
+      if (!$("#new_event_start_time").val() && !document.getElementById('startTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="startTimeError">`+errorMessages.missingStartTime+`</p>`;
+        $("#new_event_start_time").after($.parseHTML(errorMessageHTMLString));
+      }
+      else if ($("#new_event_start_time").val())
+        $('#startTimeError').remove();
+
+      if (!$("#new_event_end_time").val() && !document.getElementById('endTimeError')) {
+        var errorMessageHTMLString = `<p class="modalInputValidationMessage" id="endTimeError">`+errorMessages.missingEndTime+`</p>`;
+        $("#new_event_end_time").after($.parseHTML(errorMessageHTMLString));
+      }
+      else if ($("#new_event_end_time").val())
+        $('#endTimeError').remove();
+    };
+
     $(document).on('click', "#create-event-btn", function(evt)
     {
       var format_date = moment($("#new_event_date").val()).format("YYYY-MM-DD");
@@ -230,30 +275,24 @@
     <div class="row">
       <div class="col-lg-2" id="menubar">
       </div>
-      <div class="col-lg-10">
+      <div class="col-lg-8 middle-content">
         <!-- New event modal -->
         <div class="modal fade" id="new-event-modal" role="dialog"></div>
         <div class="modal fade" id="new-survey-modal" role="dialog"></div>
 
-        <div class="col-lg-10">
-          <div id='no-results'>
-            <h3 class="content-header">No Results Yet</h3>
-          </div>
-          <br>
-          <div id='survey-results'></div>
-          <br/>
+        <div id='no-results'>
+          <h3 class="content-header">No Results Yet</h3>
         </div>
-
-
-        <div class="col-lg-1"> <!-- column for buttons -->
-          <button type="button" class="btn btn-default" id="new-survey-btn">New Survey</button> </p>
-        </div>
-
-        <div class="col-lg-1"> <!-- margin -->
-        </div>
-
+        <br>
+        <div id='survey-results'></div>
+        <br/>
 
       </div>
+      <div class="col-lg-2 sidebar-right">
+        <br>
+        <button type="button" class="btn btn-primary btn-lg" id="new-survey-btn">New Survey</button> </p>
+      </div>
+
 
     </div> <!-- class="row" -->
   </div> <!-- class="container" -->

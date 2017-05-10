@@ -212,6 +212,8 @@ Modifying the width of list items on the Notes and Feedback page
   position: relative;
   top: 0; }
 
+<<<<<<< HEAD
+=======
 /* Task page CSS */
 
 .task-item {
@@ -261,6 +263,7 @@ Modifying the width of list items on the Notes and Feedback page
 }
 */
 
+>>>>>>> master
 /*To allow the modal to scroll*/
 .modal {
 	overflow:auto;
@@ -482,7 +485,7 @@ td.fc-list-item-title {
 /*Allow pointer-events through*/
 /*.fc-slats, /*horizontals*/
 /*.fc-content-skeleton, /*day numbers*/
-/*.fc-bgevent-skeleton { /*events container*/
+/*.fc-bgevent-skeleton /*events container*/
 /*    pointer-events:none
 }*/
 
@@ -491,3 +494,8 @@ td.fc-list-item-title {
 .fc-event-container{
     pointer-events:auto; /*events*/
 /*}*/
+
+.sidebar-right {
+	text-align: center;
+}
+

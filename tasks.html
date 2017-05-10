@@ -14,6 +14,7 @@
 <link href="https://fonts.googleapis.com/css?family=Cairo|Gentium+Basic|Roboto" rel="stylesheet">
 
  <link rel="stylesheet" href="css/mainLayout.css">
+ <link rel="stylesheet" href="css/tasks.css">
 
 <!-- Use mobile-aware viewport -->
 <meta name="viewport" content=
@@ -602,47 +603,38 @@
   	<div class="row">
   		<div class="col-lg-2" id="menubar">
   		</div>
-  		<div class="col-lg-10">
+  		<div class="col-lg-8 middle-content">
 
-        <div class="page-content main-content row">
-          <div class="col-lg-8">
-            <h3 class="content-header" id="outstanding"> Outstanding </h3>
-            <div id="outstanding-contents"></div>
-            <br>
-            <br>
-            <h3 class="content-header" id="due-today"> Due today </h3>
-            <div id="due-today-contents"></div>
-            <br>
-            <br>
-            <h3 class="content-header" id="upcoming"> Upcoming </h3>
-            <div id="upcoming-contents"></div>
-            <br>
-            <br>
-          </div>
-          <div class="col-lg-2 panel sticky" id="sidebar">
-				  
-            <h2> Create New Task </h2>
+        <h3 id="outstanding" class="content-header"> Outstanding </h3>
+        <div id="outstanding-contents"></div>
 
-            <!-- Task text -->
-            <div class="form-group">
-              <textarea class="form-control" rows="2" id="create-task-text" placeholder="Task to add"></textarea>
-            </div>
+        <h3 id="due-today" class="content-header"> Due today </h3>
+        <div id="due-today-contents"></div>
 
-            <!-- Date it's due -->
-            <div class="form-group">
-                <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
-            </div>
+        <h3 id="upcoming" class="content-header"> Upcoming </h3>
+        <div id="upcoming-contents"></div>
 
-            <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
+      </div>
+      <div class="col-lg-2 sidebar-right panel sticky" id="sidebar">
+        <div id="create-new-task-div">
+      
+          <h2> Create New Task </h2>
 
-		  </div>
-          <!-- Margin column -->
-          <div class="col-lg-1">
+          <!-- Task text -->
+          <div class="form-group">
+            <textarea class="form-control" rows="2" id="create-task-text" placeholder="Task to add"></textarea>
           </div>
 
+          <!-- Date it's due -->
+          <div class="form-group">
+              <input type='text' class="form-control" placeholder="Due date" id="create-task-due-date"/>
+          </div>
 
+          <button type="button" class="btn btn-default btn-primary" style="float: right" id="create">Create</button>
 
-        </div> <!-- class=page-content -->
+        </div>
+
+      </div>
 
 
   	</div> <!-- class="row" -->
