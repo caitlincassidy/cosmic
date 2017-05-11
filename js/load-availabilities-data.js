@@ -35,15 +35,15 @@ var data3 = {
 }
 
 var data4 = {
-	id: "quiz2-review-session",
-	title: "Quiz 2 Review Session",
+	id: "quiz2-makeup",
+	title: "Proctor Quiz 2 Makeup",
 	tas_asked: true,
 	las_asked: false,
 	students_asked: false,
-	start_date: moment("2017-05-22"),
-	end_date: moment("2017-05-24"),
-	start_time: moment("2017-05-22 05:00 PM"), // use first date to make it a valid moment
-	end_time: moment("2017-05-22 09:00 PM"),
+	start_date: moment("2017-05-25"),
+	end_date: moment("2017-05-26"),
+	start_time: moment("2017-05-22 10:00 AM"), // use first date to make it a valid moment
+	end_time: moment("2017-05-22 05:00 PM"),
 }
 
 var empty = {
