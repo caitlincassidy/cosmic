@@ -35,27 +35,27 @@ var data3 = {
 }
 
 var data4 = {
-	id: "final-review-session",
-	title: "Final Review Session",
+	id: "quiz2-review-session",
+	title: "Quiz 2 Review Session",
 	tas_asked: true,
 	las_asked: false,
-	students_asked: true,
-	start_date: moment("2017-05-15"),
-	end_date: moment("2017-05-19"),
-	start_time: moment("2017-05-15 07:30 PM"), // use first date to make it a valid moment
-	end_time: moment("2017-05-15 09:30 PM"),
+	students_asked: false,
+	start_date: moment("2017-05-22"),
+	end_date: moment("2017-05-24"),
+	start_time: moment("2017-05-22 05:00 PM"), // use first date to make it a valid moment
+	end_time: moment("2017-05-22 09:00 PM"),
 }
 
 var empty = {
-	id: "final-exam-grading",
-	title: "Final Exam Grading",
+	id: "grades-meeting",
+	title: "Grades Meeting",
 	tas_asked: false, // to have an example of no results
 	las_asked: false,
 	students_asked: false,
-	start_date: moment("2017-05-24"),
-	end_date: moment("2017-05-25"),
-	start_time: moment("2017-05-15 09:00 AM"), // use first date to make it a valid moment
-	end_time: moment("2017-05-15 6:00 PM"),
+	start_date: moment("2017-05-29"),
+	end_date: moment("2017-05-31"),
+	start_time: moment("2017-05-29 09:00 AM"), // use first date to make it a valid moment
+	end_time: moment("2017-05-29 6:00 PM"),
 }
 
 // populate surveys

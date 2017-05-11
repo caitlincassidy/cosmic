@@ -43,6 +43,11 @@ var task8 = {
   due: moment("05/15/2017").format(),
 }
 
+var task9 = {
+  text: "Ask TAs when they can host extra OH",
+  due: moment("05/15/2017").format(),
+}
+
 
 // TODO: add more filler tasks
 
@@ -55,6 +60,7 @@ var tasks = [
   task6,
   task7,
   task8,
+  task9,
 ];
 
 // save data to local storage

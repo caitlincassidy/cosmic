@@ -122,7 +122,7 @@ var quiz1 = {
 	title: "Quiz 1",
 	className: "quiz-note",
 	noteType: "Quiz",
-	text: "Students felt adequately prepared, according to feedback.",
+	text: "** You have not made any notes for this event yet! **",
     start: moment("04/26/2017 19:00").format(),
 }
 

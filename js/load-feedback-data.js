@@ -122,7 +122,7 @@ var quiz1 = {
 	title: "Quiz 1",
 	className: "quiz-feedback",
 	feedbackType: "Quiz",
-    requested: "false",
+    requested: "given",
     start: moment("04/26/2017 19:00").format(),
 }
 
@@ -130,7 +130,7 @@ var quiz2 = {
 	title: "Quiz 2",
 	className: "quiz-feedback",
 	feedbackType: "Quiz",
-    requested: "given",
+    requested: "false",
     start: moment("05/25/2017 19:00").format(),
 }
 
